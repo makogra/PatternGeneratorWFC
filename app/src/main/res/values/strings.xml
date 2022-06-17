@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pattern Generator WFC</string>
+    <string name="lorem_ipsum">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra ultrices nunc eu maximus. Suspendisse sit amet leo nisl. Curabitur urna lectus, efficitur efficitur gravida vitae, placerat iaculis lorem. Etiam accumsan rhoncus magna eu vehicula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec cursus ac neque vel consequat. Aliquam erat volutpat. "</string>
 </resources>
