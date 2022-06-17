@@ -14,7 +14,10 @@
         android:theme="@style/Theme.PatternGeneratorWFC"
         tools:targetApi="31">
         <activity
-            android:name="MainActivity"
+            android:name=".ScreenSlidePager"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
