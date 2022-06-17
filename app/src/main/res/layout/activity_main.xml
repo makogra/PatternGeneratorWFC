@@ -9,7 +9,7 @@
     <ScrollView
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,7 +23,18 @@
             android:text="@string/lorem_ipsum" />
     </ScrollView>
 
+    <Button
+        android:id="@+id/go_to_slider_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to slider"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content" />
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Main activity"
