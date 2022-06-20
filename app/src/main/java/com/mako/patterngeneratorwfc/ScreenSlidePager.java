@@ -41,7 +41,8 @@ public class ScreenSlidePager extends FragmentActivity {
         mPager = findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), getLifecycle());
         mPager.setAdapter(pagerAdapter);
-        mPager.setPageTransformer(new DepthPageTransform());
+        // different page swap animation.
+        //mPager.setPageTransformer(new DepthPageTransform());
     }
 
     @Override
@@ -63,15 +64,6 @@ public class ScreenSlidePager extends FragmentActivity {
      */
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter{
 
-
-        public ScreenSlidePagerAdapter(@NonNull FragmentActivity fragmentActivity) {
-            super(fragmentActivity);
-        }
-
-        public ScreenSlidePagerAdapter(@NonNull Fragment fragment) {
-            super(fragment);
-        }
-
         public ScreenSlidePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
         }
@@ -79,7 +71,13 @@ public class ScreenSlidePager extends FragmentActivity {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return new TileSetFragment();
+            switch (position){
+                case 0:
+                    return TileSetFragment.newInstance();
+                    //TODO Add next pages
+                default:
+                    return new Fragment();
+            }
         }
 
         @Override

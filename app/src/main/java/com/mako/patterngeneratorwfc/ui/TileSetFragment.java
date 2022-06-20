@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.TileSetViewModel;
@@ -19,6 +20,10 @@ public class TileSetFragment extends Fragment {
 
     private TileSetViewModel mViewModel;
 
+    private Button test_button;
+
+
+
     public static TileSetFragment newInstance() {
         return new TileSetFragment();
     }
@@ -26,8 +31,13 @@ public class TileSetFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tile_set, container, false);
+        View view = inflater.inflate(R.layout.fragment_tile_set, container, false);
+        test_button = view.findViewById(R.id.fragment_tile_set_test_btn);
+        test_button.setOnClickListener(v -> test_button.setText(mViewModel.getString()));
+        return view;
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
