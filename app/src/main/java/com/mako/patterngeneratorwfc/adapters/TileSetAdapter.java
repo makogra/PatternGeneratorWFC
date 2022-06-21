@@ -45,6 +45,14 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText("" + tileSetList.get(position).getIdAsTempPreview());
+        holder.imageView.setFocusable(true);
+        holder.imageView.setFocusableInTouchMode(true);
+        holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
+        holder.imageView.setOnClickListener(v -> {
+            v.setActivated(true);
+            System.out.println(v.isFocused());
+            System.out.println("Touched " + position + " id: " + tileSetList.get(position).getId());
+        });
     }
 
     @Override

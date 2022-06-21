@@ -20,7 +20,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="cardView_tile_set_preview"
                 android:src="@mipmap/ic_launcher"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,8 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="Temp preview"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView_tile_set_preview_imageView"
-                app:layout_constraintEnd_toEndOf="@+id/cardView_tile_set_preview_imageView"
-                app:layout_constraintStart_toStartOf="@+id/cardView_tile_set_preview_imageView"
+                app:layout_constraintStart_toEndOf="@+id/cardView_tile_set_preview_imageView"
                 app:layout_constraintTop_toTopOf="@+id/cardView_tile_set_preview_imageView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
