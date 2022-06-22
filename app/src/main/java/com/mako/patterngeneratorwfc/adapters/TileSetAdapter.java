@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.TileSet;
+import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 
 import java.util.List;
 
 public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHolder> {
 
+    private final TileSetViewModel tileSetViewModel;
     private List<TileSet> tileSetList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -30,8 +32,9 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
         }
     }
 
-    public TileSetAdapter(List<TileSet> tileSetList) {
-        this.tileSetList = tileSetList;
+    public TileSetAdapter(TileSetViewModel tileSetViewModel) {
+        this.tileSetViewModel = tileSetViewModel;
+        this.tileSetList = tileSetViewModel.getTileSetList();
     }
 
     @NonNull
@@ -49,7 +52,9 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
         holder.imageView.setFocusableInTouchMode(true);
         holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
         holder.imageView.setOnClickListener(v -> {
-            v.setActivated(true);
+            //v.setActivated(true);
+            v.requestFocus();
+            tileSetViewModel.setCurrentId(tileSetList.get(position).getId());
             System.out.println(v.isFocused());
             System.out.println("Touched " + position + " id: " + tileSetList.get(position).getId());
         });

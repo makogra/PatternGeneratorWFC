@@ -1,29 +1,20 @@
 package com.mako.patterngeneratorwfc.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mako.patterngeneratorwfc.R;
-import com.mako.patterngeneratorwfc.TileSet;
-import com.mako.patterngeneratorwfc.TileSetViewModel;
+import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class TileSetFragment extends Fragment {
 
@@ -49,7 +40,7 @@ public class TileSetFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.fragment_tile_set_recycler_view);
-        TileSetAdapter adapter = new TileSetAdapter(mViewModel.getTileSetList());
+        TileSetAdapter adapter = new TileSetAdapter(mViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), SPAN_COUNT));
         // TODO Implement responsive grid layout. Or sth like that :).
@@ -61,7 +52,7 @@ public class TileSetFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(TileSetViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
     }
 
     // TODO Implement responsive grid layout. 1st try.

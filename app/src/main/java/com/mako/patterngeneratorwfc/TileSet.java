@@ -19,7 +19,7 @@ public class TileSet {
     }
 
     @Deprecated
-    TileSet(int id){
+    public TileSet(int id){
         this.id = id;
         idAsTempPreview = this.id;
     }

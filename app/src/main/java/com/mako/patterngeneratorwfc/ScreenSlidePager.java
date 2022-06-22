@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.mako.patterngeneratorwfc.ui.SettingsTileSetFragment;
 import com.mako.patterngeneratorwfc.ui.TileSetFragment;
 
 public class ScreenSlidePager extends FragmentActivity {
@@ -75,6 +76,8 @@ public class ScreenSlidePager extends FragmentActivity {
                 case 0:
                     return TileSetFragment.newInstance();
                     //TODO Add next pages
+                case 1:
+                    return SettingsTileSetFragment.newInstance();
                 default:
                     return new Fragment();
             }
