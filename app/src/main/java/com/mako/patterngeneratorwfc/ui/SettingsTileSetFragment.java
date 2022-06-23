@@ -22,6 +22,7 @@ public class SettingsTileSetFragment extends Fragment {
     private SettingsTileSetViewModel settingsTileSetViewModel;
     private TileSetViewModel tileSetViewModel;
     private View mainView;
+    private ViewModelProvider viewModelProvider;
 
 
     public SettingsTileSetFragment() {
@@ -34,8 +35,9 @@ public class SettingsTileSetFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ViewModelProvider viewModelProvider = new ViewModelProvider(requireActivity());
+        this.viewModelProvider = new ViewModelProvider(requireActivity());
         tileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
+        System.out.println(tileSetViewModel.getCurrentId());
         settingsTileSetViewModel = viewModelProvider.get(Integer.toString(tileSetViewModel.getCurrentId()), SettingsTileSetViewModel.class);
     }
 
@@ -50,7 +52,7 @@ public class SettingsTileSetFragment extends Fragment {
             updateSample();
         });
         Button sampleDecrease = view.findViewById(R.id.settings_tile_set_test_decrease_btn);
-        sampleIncrease.setOnClickListener(v -> {
+        sampleDecrease.setOnClickListener(v -> {
             settingsTileSetViewModel.decreaseSample();
             updateSample();
         });
@@ -67,6 +69,7 @@ public class SettingsTileSetFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        settingsTileSetViewModel = viewModelProvider.get(Integer.toString(tileSetViewModel.getCurrentId()), SettingsTileSetViewModel.class);
         TextView textView = this.requireView().findViewById(R.id.fragment_settings_tile_set_test_text_view);
         textView.setText("" + tileSetViewModel.getCurrentId());
         updateSample();
