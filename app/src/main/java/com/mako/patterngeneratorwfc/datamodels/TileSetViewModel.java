@@ -11,6 +11,7 @@ public class TileSetViewModel extends ViewModel {
 
     private List<TileSet> tileSetList;
     private int currentId;
+    private int currentIndex;
 
     //TODO remove hard coded
 
@@ -38,6 +39,15 @@ public class TileSetViewModel extends ViewModel {
 
     public void setCurrentId(int currentId) {
         this.currentId = currentId;
+    }
+
+    public void setCurrentIndex(int index){
+        currentIndex = index;
+        currentId = tileSetList.get(index).getId();
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
     }
 
     // TODO: Implement the ViewModel

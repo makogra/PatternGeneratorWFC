@@ -54,7 +54,7 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
         holder.imageView.setOnClickListener(v -> {
             //v.setActivated(true);
             v.requestFocus();
-            tileSetViewModel.setCurrentId(tileSetList.get(position).getId());
+            tileSetViewModel.setCurrentIndex(position);
             System.out.println(v.isFocused());
             System.out.println("Touched " + position + " id: " + tileSetList.get(position).getId());
         });

@@ -16,12 +16,19 @@ public class TileSet {
     TileSet(){
         this.id = this.hashCode();
         idAsTempPreview = this.id;
+        hardCodedValueGrid();
     }
 
     @Deprecated
     public TileSet(int id){
         this.id = id;
         idAsTempPreview = this.id;
+        hardCodedValueGrid();
+    }
+
+    @Deprecated
+    private void hardCodedValueGrid() {
+        valueGrid = new int[9][9];
     }
 
     TileSet(char[][] inputGrid){
@@ -34,5 +41,13 @@ public class TileSet {
 
     public int getIdAsTempPreview() {
         return idAsTempPreview;
+    }
+
+    public int getTileSetHeight() {
+        return valueGrid.length;
+    }
+
+    public int getTileSetLength() {
+        return valueGrid[0].length;
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_tile_set_arr">
+        <item>@string/pattern_size</item>
+        <item>@string/output_height</item>
+        <item>@string/output_width</item>
+        <item>@string/tiles_overlap</item>
+    </string-array>
+</resources>
