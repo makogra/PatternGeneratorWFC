@@ -1,4 +1,4 @@
-package com.mako.patterngeneratorwfc;
+package com.mako.patterngeneratorwfc.ui.animations;
 
 import android.view.View;
 
