@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mako.patterngeneratorwfc.R;
+import com.mako.patterngeneratorwfc.activities.AddTileSetActivity;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 
@@ -44,6 +45,8 @@ public class TileSetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tile_set, container, false);
         FloatingActionButton fabAddTileSet = view.findViewById(R.id.fragment_tile_set_add_new_tile_set_fab);
         fabAddTileSet.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), AddTileSetActivity.class);
+            mGetContent.launch(intent);
 
         });
 
