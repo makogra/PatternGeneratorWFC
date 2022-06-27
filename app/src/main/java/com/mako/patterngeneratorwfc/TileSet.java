@@ -3,7 +3,10 @@ package com.mako.patterngeneratorwfc;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.callback.CallbackHandler;
 
 public class TileSet implements Parcelable {
 
@@ -14,6 +17,13 @@ public class TileSet implements Parcelable {
     private List<Character> valueToChar;
     //private image preview;
     private int idAsTempPreview;
+
+    public TileSet(int id, int[][] valueGrid, List<Character> valueToChar, int idAsTempPreview) {
+        this.id = id;
+        this.valueGrid = valueGrid;
+        this.valueToChar = valueToChar;
+        this.idAsTempPreview = idAsTempPreview;
+    }
 
     @Deprecated
     TileSet(){
@@ -32,6 +42,15 @@ public class TileSet implements Parcelable {
     protected TileSet(Parcel in) {
         id = in.readInt();
         idAsTempPreview = in.readInt();
+        int arrLength = in.readInt();
+        int arrDepth = in.readInt();
+        valueGrid = new int[arrLength][arrDepth];
+        for (int i = 0; i < valueGrid.length; i++) {
+            System.out.println(i);
+           in.readIntArray(valueGrid[i]);
+        }
+        valueToChar = new ArrayList<>();
+        in.readList(valueToChar, Character.class.getClassLoader());
     }
 
     public static final Creator<TileSet> CREATOR = new Creator<TileSet>() {
@@ -71,6 +90,14 @@ public class TileSet implements Parcelable {
         return valueGrid[0].length;
     }
 
+    public int[][] getValueGrid() {
+        return valueGrid;
+    }
+
+    public List<Character> getValueToChar() {
+        return valueToChar;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -80,5 +107,11 @@ public class TileSet implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeInt(idAsTempPreview);
+        dest.writeInt(valueGrid.length);
+        dest.writeInt(valueGrid[0].length);
+        for (int[] ints : valueGrid) {
+            dest.writeIntArray(ints);
+        }
+        dest.writeList(valueToChar);
     }
 }
