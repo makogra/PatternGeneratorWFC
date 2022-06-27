@@ -1,8 +1,11 @@
 package com.mako.patterngeneratorwfc;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class TileSet {
+public class TileSet implements Parcelable {
 
     //TODO make this class to database
 
@@ -25,6 +28,23 @@ public class TileSet {
         idAsTempPreview = this.id;
         hardCodedValueGrid();
     }
+
+    protected TileSet(Parcel in) {
+        id = in.readInt();
+        idAsTempPreview = in.readInt();
+    }
+
+    public static final Creator<TileSet> CREATOR = new Creator<TileSet>() {
+        @Override
+        public TileSet createFromParcel(Parcel in) {
+            return new TileSet(in);
+        }
+
+        @Override
+        public TileSet[] newArray(int size) {
+            return new TileSet[size];
+        }
+    };
 
     @Deprecated
     private void hardCodedValueGrid() {
@@ -49,5 +69,16 @@ public class TileSet {
 
     public int getTileSetLength() {
         return valueGrid[0].length;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(idAsTempPreview);
     }
 }
