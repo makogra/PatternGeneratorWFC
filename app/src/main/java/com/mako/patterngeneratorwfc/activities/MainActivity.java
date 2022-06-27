@@ -1,10 +1,9 @@
-package com.mako.patterngeneratorwfc;
+package com.mako.patterngeneratorwfc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import com.mako.patterngeneratorwfc.R;

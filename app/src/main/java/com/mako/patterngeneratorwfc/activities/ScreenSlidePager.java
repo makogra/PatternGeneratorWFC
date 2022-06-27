@@ -1,4 +1,4 @@
-package com.mako.patterngeneratorwfc;
+package com.mako.patterngeneratorwfc.activities;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.ui.SettingsTileSetFragment;
 import com.mako.patterngeneratorwfc.ui.TileSetFragment;
 
