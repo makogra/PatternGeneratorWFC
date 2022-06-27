@@ -49,6 +49,4 @@ public class TileSetViewModel extends ViewModel {
     public int getCurrentIndex() {
         return currentIndex;
     }
-
-    // TODO: Implement the ViewModel
 }

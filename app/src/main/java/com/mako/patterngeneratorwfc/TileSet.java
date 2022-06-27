@@ -6,8 +6,6 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.callback.CallbackHandler;
-
 public class TileSet implements Parcelable {
 
     //TODO make this class to database
