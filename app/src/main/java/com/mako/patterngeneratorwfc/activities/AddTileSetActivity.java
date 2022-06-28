@@ -1,5 +1,6 @@
 package com.mako.patterngeneratorwfc.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,15 +28,19 @@ public class AddTileSetActivity extends AppCompatActivity {
         testTextView.setText(mAddTileSetViewModel.test());
 
         ImageButton cancelBtn = findViewById(R.id.cancel_button);
-        cancelBtn.setOnClickListener(v -> {
-            //TODO cancel end exit
-        });
+        cancelBtn.setOnClickListener(v -> cancel());
 
         ImageButton saveBtn = findViewById(R.id.save_button);
         saveBtn.setOnClickListener(v -> {
             //TODO save and return
         });
 
+    }
+
+    private void cancel() {
+        setResult(RESULT_CANCELED);
+
+        AddTileSetActivity.super.onBackPressed();
     }
 
     @Override

@@ -36,6 +36,7 @@ public class TileSetFragment extends Fragment {
     ActivityResultLauncher<Intent> mGetContent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK){
             Intent intent = result.getData();
+            System.out.println("result dziala");
         }
     });
 
