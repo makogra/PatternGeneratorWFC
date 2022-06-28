@@ -3,7 +3,10 @@ package com.mako.patterngeneratorwfc;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TileSet implements Parcelable {
@@ -110,5 +113,16 @@ public class TileSet implements Parcelable {
             dest.writeIntArray(ints);
         }
         dest.writeList(valueToChar);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "TileSet{" +
+                "id=" + id +
+                ", valueGrid=" + Arrays.toString(valueGrid) +
+                ", valueToChar=" + valueToChar +
+                ", idAsTempPreview=" + idAsTempPreview +
+                '}';
     }
 }
