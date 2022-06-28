@@ -44,10 +44,7 @@ public class TileSetFragment extends Fragment {
                 return;
             }
             TileSet tileSetFromResult = intent.getParcelableExtra("TileSet");
-            System.out.println("tileSetFromResult.getId() = " + tileSetFromResult.getId());
-            System.out.println("tileSetFromResult.getValueGrid() = " + Arrays.deepToString(tileSetFromResult.getValueGrid()));
-            System.out.println("tileSetFromResult.getValueToChar() = " + tileSetFromResult.getValueToChar());
-            System.out.println("tileSetFromResult.getIdAsTempPreview() = " + tileSetFromResult.getIdAsTempPreview());
+            System.out.println(tileSetFromResult);
             System.out.println("result dziala");
         }
     });

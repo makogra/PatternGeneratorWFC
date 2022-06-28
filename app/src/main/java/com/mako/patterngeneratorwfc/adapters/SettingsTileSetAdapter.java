@@ -47,7 +47,6 @@ public class SettingsTileSetAdapter extends RecyclerView.Adapter<SettingsTileSet
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        System.out.println("SettingsTileSetAdapter.onBindViewHolder" + " position = " + position);
         holder.name.setText(settingsTileSetViewModel.getHumanName(position));
         holder.incrementButton.setOnClickListener(v -> {
             try {
