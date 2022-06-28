@@ -43,9 +43,8 @@ public class TileSet implements Parcelable {
         int arrLength = in.readInt();
         int arrDepth = in.readInt();
         valueGrid = new int[arrLength][arrDepth];
-        for (int i = 0; i < valueGrid.length; i++) {
-            System.out.println(i);
-           in.readIntArray(valueGrid[i]);
+        for (int[] ints : valueGrid) {
+            in.readIntArray(ints);
         }
         valueToChar = new ArrayList<>();
         in.readList(valueToChar, Character.class.getClassLoader());
