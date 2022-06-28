@@ -1,5 +1,6 @@
 package com.mako.patterngeneratorwfc.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,8 @@ import java.util.List;
 public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHolder> {
 
     private final TileSetViewModel tileSetViewModel;
-    private List<TileSet> tileSetList;
+    private ImageView currentFocusedImageView;
+    private Drawable defaultImageViewBackground;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -34,7 +36,6 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
 
     public TileSetAdapter(TileSetViewModel tileSetViewModel) {
         this.tileSetViewModel = tileSetViewModel;
-        this.tileSetList = tileSetViewModel.getTileSetList();
     }
 
     @NonNull
@@ -42,27 +43,29 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_tile_set, parent, false);
+        defaultImageViewBackground = v.findViewById(R.id.cardView_tile_set_preview_imageView).getBackground();
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText("" + tileSetList.get(position).getIdAsTempPreview());
-        holder.imageView.setFocusable(true);
-        holder.imageView.setFocusableInTouchMode(true);
-        holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
+        holder.textView.setText("" + tileSetViewModel.getTileSet(position).getIdAsTempPreview());
+        if (tileSetViewModel.getCurrentIndex() == position){
+            holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
+            currentFocusedImageView = holder.imageView;
+        }
         holder.imageView.setOnClickListener(v -> {
-            //v.setActivated(true);
-            v.requestFocus();
+            currentFocusedImageView.setBackground(defaultImageViewBackground);
+            holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
+            currentFocusedImageView = holder.imageView;
             tileSetViewModel.setCurrentIndex(position);
-            System.out.println("id: " + tileSetList.get(position).getId());
+            System.out.println("id: " + tileSetViewModel.getTileSet(position).getId());
         });
     }
 
     @Override
     public int getItemCount() {
-        return tileSetList.size();
+        return tileSetViewModel.getTileSetListSize();
     }
-
 
 }

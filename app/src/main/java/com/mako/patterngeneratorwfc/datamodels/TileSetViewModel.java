@@ -49,4 +49,12 @@ public class TileSetViewModel extends ViewModel {
     public int getCurrentIndex() {
         return currentIndex;
     }
+
+    public int getTileSetListSize() {
+        return this.tileSetList.size();
+    }
+
+    public TileSet getTileSet(int position) {
+        return tileSetList.get(position);
+    }
 }
