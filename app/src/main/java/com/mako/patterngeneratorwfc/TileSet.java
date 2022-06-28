@@ -24,7 +24,7 @@ public class TileSet implements Parcelable {
     }
 
     @Deprecated
-    TileSet(){
+    public TileSet(){
         this.id = this.hashCode();
         idAsTempPreview = this.id;
         hardCodedValueGrid();

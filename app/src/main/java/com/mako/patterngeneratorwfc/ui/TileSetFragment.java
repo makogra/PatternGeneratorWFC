@@ -18,9 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mako.patterngeneratorwfc.R;
+import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.activities.AddTileSetActivity;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
+
+import java.util.Arrays;
 
 public class TileSetFragment extends Fragment {
 
@@ -36,6 +39,15 @@ public class TileSetFragment extends Fragment {
     ActivityResultLauncher<Intent> mGetContent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK){
             Intent intent = result.getData();
+            if (intent == null){
+                System.out.println("intent jest null, cos nie dziala w zapisie chyba");
+                return;
+            }
+            TileSet tileSetFromResult = intent.getParcelableExtra("TileSet");
+            System.out.println("tileSetFromResult.getId() = " + tileSetFromResult.getId());
+            System.out.println("tileSetFromResult.getValueGrid() = " + Arrays.deepToString(tileSetFromResult.getValueGrid()));
+            System.out.println("tileSetFromResult.getValueToChar() = " + tileSetFromResult.getValueToChar());
+            System.out.println("tileSetFromResult.getIdAsTempPreview() = " + tileSetFromResult.getIdAsTempPreview());
             System.out.println("result dziala");
         }
     });

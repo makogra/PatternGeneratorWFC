@@ -33,15 +33,25 @@ public class AddTileSetActivity extends AppCompatActivity {
         ImageButton saveBtn = findViewById(R.id.save_button);
         saveBtn.setOnClickListener(v -> {
             //TODO save and return
+            save();
         });
 
     }
 
+    private void save() {
+        Intent intent = new Intent();
+        intent.putExtra("TileSet", mAddTileSetViewModel.getTileSet());
+
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
+    }
+
     private void cancel() {
         setResult(RESULT_CANCELED);
-
-        AddTileSetActivity.super.onBackPressed();
+        super.onBackPressed();
     }
+
+
 
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
