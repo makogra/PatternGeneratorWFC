@@ -46,7 +46,7 @@ public class SettingsTileSetFragment extends Fragment {
         this.viewModelProvider = new ViewModelProvider(requireActivity());
         tileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
         System.out.println(tileSetViewModel.getCurrentId());
-        settingsTileSetViewModel = viewModelProvider.get(Integer.toString(tileSetViewModel.getCurrentId()), SettingsTileSetViewModel.class);
+        settingsTileSetViewModel = viewModelProvider.get(tileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
         if (settingsTileSetViewModel.isNewInstance()) {
             settingsTileSetViewModel.setNewInstance(false);
             SettingsTileSetViewModel.setSettingsArr(getResources().getStringArray(R.array.settings_tile_set_arr));
@@ -72,7 +72,7 @@ public class SettingsTileSetFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        settingsTileSetViewModel = viewModelProvider.get(Integer.toString(tileSetViewModel.getCurrentId()), SettingsTileSetViewModel.class);
+        settingsTileSetViewModel = viewModelProvider.get(tileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
         if (settingsTileSetViewModel.isNewInstance()) {
             settingsTileSetViewModel.setNewInstance(false);
             if (SettingsTileSetViewModel.isNotListAlreadyInitialized())
@@ -82,7 +82,7 @@ public class SettingsTileSetFragment extends Fragment {
         }
         this.recyclerView.setAdapter(new SettingsTileSetAdapter(settingsTileSetViewModel));
         TextView textView = this.requireView().findViewById(R.id.fragment_settings_tile_set_test_text_view);
-        textView.setText("" + tileSetViewModel.getCurrentId());
+        textView.setText(tileSetViewModel.getCurrentId());
     }
 
     private void initSettings() {
@@ -110,7 +110,7 @@ public class SettingsTileSetFragment extends Fragment {
                     break;
                 default:
                     throw new NotImplementedError("add modules in SettingsTileSetFragment");
-            };
+            }
             average = (min + max) / 2;
 
             settingsTileSetViewModel.setMin(min, i);

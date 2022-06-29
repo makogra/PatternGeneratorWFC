@@ -17,36 +17,31 @@ public class TileSet implements Parcelable {
     //TODO make this class to database
 
     @PrimaryKey
-    private int id;
+    private String id;
     private int[][] valueGrid;
     private List<String> valueToStringPath;
     //private image preview;
-    private int idAsTempPreview;
 
-    public TileSet(int id, int[][] valueGrid, List<String> valueToStringPath, int idAsTempPreview) {
+    public TileSet(String id, int[][] valueGrid, List<String> valueToStringPath) {
         this.id = id;
         this.valueGrid = valueGrid;
         this.valueToStringPath = valueToStringPath;
-        this.idAsTempPreview = idAsTempPreview;
     }
 
     @Deprecated
     public TileSet(){
-        this.id = this.hashCode();
-        idAsTempPreview = this.id;
+        this.id = "" + this.hashCode();
         hardCodedValueGrid();
     }
 
     @Deprecated
-    public TileSet(int id){
+    public TileSet(String id){
         this.id = id;
-        idAsTempPreview = this.id;
         hardCodedValueGrid();
     }
 
     protected TileSet(Parcel in) {
-        id = in.readInt();
-        idAsTempPreview = in.readInt();
+        id = in.readString();
         int arrLength = in.readInt();
         int arrDepth = in.readInt();
         valueGrid = new int[arrLength][arrDepth];
@@ -78,12 +73,8 @@ public class TileSet implements Parcelable {
         //TODO make valueGrid and valueToCharMap
     }
 
-    public int getTileId() {
+    public String getTileId() {
         return id;
-    }
-
-    public int getIdAsTempPreview() {
-        return idAsTempPreview;
     }
 
     public int getTileSetHeight() {
@@ -109,8 +100,7 @@ public class TileSet implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(idAsTempPreview);
+        dest.writeString(id);
         dest.writeInt(valueGrid.length);
         dest.writeInt(valueGrid[0].length);
         for (int[] ints : valueGrid) {
@@ -126,11 +116,10 @@ public class TileSet implements Parcelable {
                 "id=" + id +
                 ", valueGrid=" + Arrays.toString(valueGrid) +
                 ", valueToChar=" + valueToStringPath +
-                ", idAsTempPreview=" + idAsTempPreview +
                 '}';
     }
 
-    public void setTileId(int id) {
+    public void setTileId(String id) {
         this.id = id;
     }
 
@@ -140,9 +129,5 @@ public class TileSet implements Parcelable {
 
     public void setValueToStringPath(List<String> valueToStringPath) {
         this.valueToStringPath = valueToStringPath;
-    }
-
-    public void setIdAsTempPreview(int idAsTempPreview) {
-        this.idAsTempPreview = idAsTempPreview;
     }
 }

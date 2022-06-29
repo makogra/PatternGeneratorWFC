@@ -19,7 +19,7 @@ public class TileSetTest {
 
     @Test
     public void checkIfParcelCorrectly_isCorrect() {
-        int id = 0;
+        String id = "0";
         int[][] valueGrid = new int[][]{{0,1},{2,3}};
         List<String> valueToStringPath = new ArrayList<String>(){{
             add("A");
@@ -27,14 +27,12 @@ public class TileSetTest {
             add("C");
             add("D");
         }};
-        int idAsTempPreview = 0;
-        tileSet = new TileSet(id, valueGrid, valueToStringPath, idAsTempPreview);
+        tileSet = new TileSet(id, valueGrid, valueToStringPath);
         Parcel parcel = Parcel.obtain();
         tileSet.writeToParcel(parcel, tileSet.describeContents());
         parcel.setDataPosition(0);
         TileSet tileSetCopy = TileSet.CREATOR.createFromParcel(parcel);
         assertEquals(id, tileSetCopy.getTileId());
-        assertEquals(idAsTempPreview, tileSetCopy.getIdAsTempPreview());
         assertEquals(valueGrid.length, tileSetCopy.getTileSetHeight());
         int[][] valueGridCopy = tileSetCopy.getValueGrid();
         for (int i = 0; i < valueGrid.length; i++) {

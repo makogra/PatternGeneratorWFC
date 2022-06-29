@@ -46,7 +46,7 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText("" + tileSetViewModel.getTileSet(position).getIdAsTempPreview());
+        holder.textView.setText(tileSetViewModel.getTileSet(position).getTileId());
         if (tileSetViewModel.getCurrentIndex() == position){
             holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
             currentFocusedImageView = holder.imageView;

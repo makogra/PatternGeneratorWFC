@@ -12,12 +12,8 @@ public class AddTileSetViewModel extends ViewModel {
     private TileSet tileSet;
 
     //Getters
-    public int getTileId() {
+    public String getTileId() {
         return tileSet.getTileId();
-    }
-
-    public int getIdAsTempPreview() {
-        return tileSet.getIdAsTempPreview();
     }
 
     public int getTileSetHeight() {
@@ -38,12 +34,12 @@ public class AddTileSetViewModel extends ViewModel {
 
 
     public TileSet getTileSet() {
-        return new TileSet(1, new int[][]{{2,2},{3,3}}, new ArrayList<String>(){{add("B");add("C");}}, 2);
+        return new TileSet("1", new int[][]{{2,2},{3,3}}, new ArrayList<String>(){{add("B");add("C");}});
     }
 
 
     // Setters
-    public void setTileId(int id) {
+    public void setTileId(String id) {
         tileSet.setTileId(id);
     }
 
@@ -53,9 +49,5 @@ public class AddTileSetViewModel extends ViewModel {
 
     public void setValueToChar(List<String> valueToStringPath) {
         tileSet.setValueToStringPath(valueToStringPath);
-    }
-
-    public void setIdAsTempPreview(int idAsTempPreview) {
-        tileSet.setIdAsTempPreview(idAsTempPreview);
     }
 }

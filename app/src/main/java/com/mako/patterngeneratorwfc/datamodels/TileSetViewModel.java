@@ -11,7 +11,7 @@ import java.util.List;
 public class TileSetViewModel extends ViewModel {
 
     private List<TileSet> tileSetList;
-    private int currentId;
+    private String currentId;
     private int currentIndex;
 
     //TODO remove hard coded
@@ -28,20 +28,20 @@ public class TileSetViewModel extends ViewModel {
     @Deprecated
     private void hardCodedTileSetList() {
         this.tileSetList = new ArrayList<TileSet>() {{
-            add(new TileSet(1));
-            add(new TileSet(2));
-            add(new TileSet(3));
-            add(new TileSet(5));
-            add(new TileSet(8));
+            add(new TileSet("1"));
+            add(new TileSet("2"));
+            add(new TileSet("3"));
+            add(new TileSet("5"));
+            add(new TileSet("8"));
         }};
 
     }
 
-    public int getCurrentId() {
+    public String getCurrentId() {
         return currentId;
     }
 
-    public void setCurrentId(int currentId) {
+    public void setCurrentId(String currentId) {
         this.currentId = currentId;
     }
 
