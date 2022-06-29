@@ -3,6 +3,7 @@ package com.mako.patterngeneratorwfc.datamodels;
 import androidx.lifecycle.ViewModel;
 
 import com.mako.patterngeneratorwfc.TileSet;
+import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +16,16 @@ public class TileSetViewModel extends ViewModel {
 
     //TODO remove hard coded
 
+    public TileSetViewModel(){
+        hardCodedTileSetList();
+    }
+
 
     public List<TileSet> getTileSetList() {
-        if (tileSetList == null)
-            hardCodedTileSetList();
         return tileSetList;
     }
 
+    @Deprecated
     private void hardCodedTileSetList() {
         this.tileSetList = new ArrayList<TileSet>() {{
             add(new TileSet(1));
@@ -43,7 +47,7 @@ public class TileSetViewModel extends ViewModel {
 
     public void setCurrentIndex(int index){
         currentIndex = index;
-        currentId = tileSetList.get(index).getId();
+        currentId = tileSetList.get(index).getTileId();
     }
 
     public int getCurrentIndex() {

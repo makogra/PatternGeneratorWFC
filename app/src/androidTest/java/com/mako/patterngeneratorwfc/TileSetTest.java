@@ -1,6 +1,5 @@
 package com.mako.patterngeneratorwfc;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
@@ -34,7 +33,7 @@ public class TileSetTest {
         tileSet.writeToParcel(parcel, tileSet.describeContents());
         parcel.setDataPosition(0);
         TileSet tileSetCopy = TileSet.CREATOR.createFromParcel(parcel);
-        assertEquals(id, tileSetCopy.getId());
+        assertEquals(id, tileSetCopy.getTileId());
         assertEquals(idAsTempPreview, tileSetCopy.getIdAsTempPreview());
         assertEquals(valueGrid.length, tileSetCopy.getTileSetHeight());
         int[][] valueGridCopy = tileSetCopy.getValueGrid();

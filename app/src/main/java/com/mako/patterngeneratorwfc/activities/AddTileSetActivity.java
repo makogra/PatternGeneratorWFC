@@ -24,15 +24,11 @@ public class AddTileSetActivity extends AppCompatActivity {
 
         mAddTileSetViewModel = new ViewModelProvider(this).get(AddTileSetViewModel.class);
 
-        TextView testTextView = findViewById(R.id.test);
-        testTextView.setText(mAddTileSetViewModel.test());
-
         ImageButton cancelBtn = findViewById(R.id.cancel_button);
         cancelBtn.setOnClickListener(v -> cancel());
 
         ImageButton saveBtn = findViewById(R.id.save_button);
         saveBtn.setOnClickListener(v -> {
-            //TODO save and return
             save();
         });
 

@@ -11,10 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mako.patterngeneratorwfc.R;
-import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
-
-import java.util.List;
 
 public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHolder> {
 
@@ -59,7 +56,7 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
             holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
             currentFocusedImageView = holder.imageView;
             tileSetViewModel.setCurrentIndex(position);
-            System.out.println("id: " + tileSetViewModel.getTileSet(position).getId());
+            System.out.println("id: " + tileSetViewModel.getTileSet(position).getTileId());
         });
     }
 

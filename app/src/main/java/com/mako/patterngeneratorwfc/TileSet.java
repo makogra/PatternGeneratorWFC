@@ -74,7 +74,7 @@ public class TileSet implements Parcelable {
         //TODO make valueGrid and valueToCharMap
     }
 
-    public int getId() {
+    public int getTileId() {
         return id;
     }
 
@@ -124,5 +124,21 @@ public class TileSet implements Parcelable {
                 ", valueToChar=" + valueToChar +
                 ", idAsTempPreview=" + idAsTempPreview +
                 '}';
+    }
+
+    public void setTileId(int id) {
+        this.id = id;
+    }
+
+    public void setValueGrid(int[][] valueGrid) {
+        this.valueGrid = valueGrid;
+    }
+
+    public void setValueToChar(List<Character> valueToChar) {
+        this.valueToChar = valueToChar;
+    }
+
+    public void setIdAsTempPreview(int idAsTempPreview) {
+        this.idAsTempPreview = idAsTempPreview;
     }
 }
