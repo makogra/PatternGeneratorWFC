@@ -21,14 +21,14 @@ public class TileSetTest {
     public void checkIfParcelCorrectly_isCorrect() {
         int id = 0;
         int[][] valueGrid = new int[][]{{0,1},{2,3}};
-        List<Character> valueToChar = new ArrayList<Character>(){{
-            add('A');
-            add('B');
-            add('C');
-            add('D');
+        List<String> valueToStringPath = new ArrayList<String>(){{
+            add("A");
+            add("B");
+            add("C");
+            add("D");
         }};
         int idAsTempPreview = 0;
-        tileSet = new TileSet(id, valueGrid, valueToChar, idAsTempPreview);
+        tileSet = new TileSet(id, valueGrid, valueToStringPath, idAsTempPreview);
         Parcel parcel = Parcel.obtain();
         tileSet.writeToParcel(parcel, tileSet.describeContents());
         parcel.setDataPosition(0);
@@ -42,11 +42,11 @@ public class TileSetTest {
                 assertEquals(valueGrid[i][j], valueGridCopy[i][j]);
             }
         }
-        List<Character> valueToCharCopy = tileSetCopy.getValueToChar();
-        for (int i = 0; i < valueToChar.size(); i++) {
-            assertEquals(valueToChar.get(i), valueToCharCopy.get(i));
+        List<String> valueToStringPathCopy = tileSetCopy.getValueToStringPath();
+        for (int i = 0; i < valueToStringPath.size(); i++) {
+            assertEquals(valueToStringPath.get(i), valueToStringPathCopy.get(i));
         }
-        assertEquals(valueToChar, valueToCharCopy);
+        assertEquals(valueToStringPath, valueToStringPathCopy);
     }
 
 }

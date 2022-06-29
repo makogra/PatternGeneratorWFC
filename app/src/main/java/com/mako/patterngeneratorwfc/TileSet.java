@@ -4,25 +4,29 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Entity(tableName = "tileset_table")
 public class TileSet implements Parcelable {
 
     //TODO make this class to database
 
+    @PrimaryKey
     private int id;
     private int[][] valueGrid;
-    private List<Character> valueToChar;
+    private List<String> valueToStringPath;
     //private image preview;
     private int idAsTempPreview;
 
-    public TileSet(int id, int[][] valueGrid, List<Character> valueToChar, int idAsTempPreview) {
+    public TileSet(int id, int[][] valueGrid, List<String> valueToStringPath, int idAsTempPreview) {
         this.id = id;
         this.valueGrid = valueGrid;
-        this.valueToChar = valueToChar;
+        this.valueToStringPath = valueToStringPath;
         this.idAsTempPreview = idAsTempPreview;
     }
 
@@ -49,8 +53,8 @@ public class TileSet implements Parcelable {
         for (int[] ints : valueGrid) {
             in.readIntArray(ints);
         }
-        valueToChar = new ArrayList<>();
-        in.readList(valueToChar, Character.class.getClassLoader());
+        valueToStringPath = new ArrayList<>();
+        in.readList(valueToStringPath, Character.class.getClassLoader());
     }
 
     public static final Creator<TileSet> CREATOR = new Creator<TileSet>() {
@@ -94,8 +98,8 @@ public class TileSet implements Parcelable {
         return valueGrid;
     }
 
-    public List<Character> getValueToChar() {
-        return valueToChar;
+    public List<String> getValueToStringPath() {
+        return valueToStringPath;
     }
 
     @Override
@@ -112,7 +116,7 @@ public class TileSet implements Parcelable {
         for (int[] ints : valueGrid) {
             dest.writeIntArray(ints);
         }
-        dest.writeList(valueToChar);
+        dest.writeList(valueToStringPath);
     }
 
     @NonNull
@@ -121,7 +125,7 @@ public class TileSet implements Parcelable {
         return "TileSet{" +
                 "id=" + id +
                 ", valueGrid=" + Arrays.toString(valueGrid) +
-                ", valueToChar=" + valueToChar +
+                ", valueToChar=" + valueToStringPath +
                 ", idAsTempPreview=" + idAsTempPreview +
                 '}';
     }
@@ -134,8 +138,8 @@ public class TileSet implements Parcelable {
         this.valueGrid = valueGrid;
     }
 
-    public void setValueToChar(List<Character> valueToChar) {
-        this.valueToChar = valueToChar;
+    public void setValueToStringPath(List<String> valueToStringPath) {
+        this.valueToStringPath = valueToStringPath;
     }
 
     public void setIdAsTempPreview(int idAsTempPreview) {

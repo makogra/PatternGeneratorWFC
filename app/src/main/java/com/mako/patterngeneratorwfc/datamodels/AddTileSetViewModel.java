@@ -32,13 +32,13 @@ public class AddTileSetViewModel extends ViewModel {
         return tileSet.getValueGrid();
     }
 
-    public List<Character> getValueToChar() {
-        return tileSet.getValueToChar();
+    public List<String> getValueToStringPath() {
+        return tileSet.getValueToStringPath();
     }
 
 
     public TileSet getTileSet() {
-        return new TileSet(1, new int[][]{{2,2},{3,3}}, new ArrayList<Character>(){{add('B');add('C');}}, 2);
+        return new TileSet(1, new int[][]{{2,2},{3,3}}, new ArrayList<String>(){{add("B");add("C");}}, 2);
     }
 
 
@@ -51,8 +51,8 @@ public class AddTileSetViewModel extends ViewModel {
         tileSet.setValueGrid(valueGrid);
     }
 
-    public void setValueToChar(List<Character> valueToChar) {
-        tileSet.setValueToChar(valueToChar);
+    public void setValueToChar(List<String> valueToStringPath) {
+        tileSet.setValueToStringPath(valueToStringPath);
     }
 
     public void setIdAsTempPreview(int idAsTempPreview) {
