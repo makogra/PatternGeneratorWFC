@@ -31,4 +31,6 @@ public interface TileSetDao {
     @Query("DELETE FROM tileset_table")
     void deleteAll();
 
+    @Query("SELECT id FROM tileset_table LIMIT 1")
+    String getFirstTileSet();
 }
