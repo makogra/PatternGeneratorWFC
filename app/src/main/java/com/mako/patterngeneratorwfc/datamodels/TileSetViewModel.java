@@ -1,40 +1,57 @@
 package com.mako.patterngeneratorwfc.datamodels;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
 
 import com.mako.patterngeneratorwfc.TileSet;
-import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
+import com.mako.patterngeneratorwfc.database.TileSetRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileSetViewModel extends ViewModel {
+public class TileSetViewModel extends AndroidViewModel {
 
-    private List<TileSet> tileSetList;
+    //TODO remove curentPsoition and work only with current id(String), add method to shearch for the TileSet with secific id and return it.
+    //TODO Wrok on a callback in database class
+    private static final String TAG  = "TileSetViewModel";
+
+    private final TileSetRepository mTileSetRepository;
+    private LiveData<List<TileSet>> tileSetList;
+    private List<TileSet> list;
     private String currentId;
     private int currentIndex;
+    private int size = 0;
 
-    //TODO remove hard coded
 
-    public TileSetViewModel(){
-        hardCodedTileSetList();
+    public TileSetViewModel(Application application){
+        super(application);
+        if (application.getApplicationContext() == null)
+            Log.d(TAG, "Null jak nic");
+        mTileSetRepository = new TileSetRepository(application);
+        Log.d(TAG, "Constractor");
+        tileSetList = mTileSetRepository.getTileSetList();
+
+
+    }
+
+    public void initCurrentId() {
+        if (currentId == null){
+            currentId = mTileSetRepository.getFirstTileSet();
+        }
     }
 
 
-    public List<TileSet> getTileSetList() {
+    public LiveData<List<TileSet>> getTileSetList() {
         return tileSetList;
-    }
-
-    @Deprecated
-    private void hardCodedTileSetList() {
-        this.tileSetList = new ArrayList<TileSet>() {{
-            add(new TileSet("1"));
-            add(new TileSet("2"));
-            add(new TileSet("3"));
-            add(new TileSet("5"));
-            add(new TileSet("8"));
-        }};
-
     }
 
     public String getCurrentId() {
@@ -42,23 +59,35 @@ public class TileSetViewModel extends ViewModel {
     }
 
     public void setCurrentId(String currentId) {
+        Log.i(TAG, "Current TileSet Id has changed to = " + currentId);
         this.currentId = currentId;
     }
 
     public void setCurrentIndex(int index){
         currentIndex = index;
-        currentId = tileSetList.get(index).getTileId();
+        currentId = list.get(index).getTileId();
     }
 
     public int getCurrentIndex() {
         return currentIndex;
     }
 
-    public int getTileSetListSize() {
-        return this.tileSetList.size();
+    public TileSet getTileSet(int position) {
+        return list.get(position);
     }
 
-    public TileSet getTileSet(int position) {
-        return tileSetList.get(position);
+    public void insert(@NonNull TileSet tileSet){
+        mTileSetRepository.insert(tileSet);
     }
+
+    public TileSet getTilesetWithId(String id){
+        for (TileSet ts : list){
+            if (ts.getTileId().equals(id))
+                return ts;
+        }
+        return null;
+    }
+
+
+    //private List<>
 }
