@@ -1,8 +1,13 @@
 package com.mako.patterngeneratorwfc.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,12 +29,11 @@ import com.mako.patterngeneratorwfc.activities.AddTileSetActivity;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 
-import java.util.Arrays;
-
 public class TileSetFragment extends Fragment {
 
+    private static final String TAG = "TileSetFragment";
     private static final int SPAN_COUNT = 2;
-    private TileSetViewModel mViewModel;
+    private TileSetViewModel mTileSetViewModel;
 
 
 
@@ -40,12 +45,14 @@ public class TileSetFragment extends Fragment {
         if (result.getResultCode() == Activity.RESULT_OK){
             Intent intent = result.getData();
             if (intent == null){
-                System.out.println("intent jest null, cos nie dziala w zapisie chyba");
+                Log.d(TAG, "insert is null, something isn't working in write section maybe");
                 return;
             }
             TileSet tileSetFromResult = intent.getParcelableExtra("TileSet");
-            System.out.println(tileSetFromResult);
-            System.out.println("result dziala");
+            mTileSetViewModel.insert(tileSetFromResult);
+            mTileSetViewModel.setCurrentId(tileSetFromResult.getTileId());
+            Log.d(TAG, tileSetFromResult.toString());
+            Log.d(TAG, "result is working correctly");
         }
     });
 
@@ -59,17 +66,33 @@ public class TileSetFragment extends Fragment {
             mGetContent.launch(intent);
 
         });
-
+        RecyclerView recyclerView = view.findViewById(R.id.fragment_tile_set_recycler_view);
+        TileSetAdapter adapter = new TileSetAdapter(new TileSetAdapter.TileSetDiff(), mTileSetViewModel);
+        /*adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                // TODO add adapter.notifyItemInserted();
+            }
+        });*/
+        mTileSetViewModel.getTileSetList().observe(getViewLifecycleOwner(), adapter::submitList);
+        //TODO comment this
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                Log.d(TAG, "TileSetFragment.onChanged");
+            }
+        });
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), SPAN_COUNT));
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView recyclerView = view.findViewById(R.id.fragment_tile_set_recycler_view);
-        TileSetAdapter adapter = new TileSetAdapter(mViewModel);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), SPAN_COUNT));
+
         // TODO Implement responsive grid layout. Or sth like that :).
         //ArrayList<View> cardViewList = createTileSetCardViewList(viewGroup);
         //getLayoutInflater()
@@ -79,7 +102,16 @@ public class TileSetFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
+
+        Log.d(TAG, "TileSetFragment.onCreate");
+        mTileSetViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
+        AsyncTask.execute(() -> {
+            mTileSetViewModel.initCurrentId();
+            Log.d(TAG, "Ascync init currentId compleate");
+        });
+        //mTileSetViewModel.initCurrentId();
+        Log.d(TAG, "TileSetFragment.onCreate - koniec");
+
     }
 
     // TODO Implement responsive grid layout. 1st try.
@@ -101,4 +133,10 @@ public class TileSetFragment extends Fragment {
     }
 
      */
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //mTileSetViewModel.getTileSetList().observe(getViewLifecycleOwner(), adapter::submitList);
+    }
 }
