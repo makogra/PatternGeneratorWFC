@@ -1,6 +1,7 @@
 package com.mako.patterngeneratorwfc.adapters;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +9,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mako.patterngeneratorwfc.R;
+import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 
-public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHolder> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHolder> {
+
+    //RecyclerView.Adapter<TileSetAdapter.ViewHolder>
+    private static final String TAG = "TileSetAdapter";
 
     private final TileSetViewModel tileSetViewModel;
     private ImageView currentFocusedImageView;
@@ -31,7 +42,8 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
         }
     }
 
-    public TileSetAdapter(TileSetViewModel tileSetViewModel) {
+    public TileSetAdapter(@NonNull DiffUtil.ItemCallback<TileSet> diffCallback, TileSetViewModel tileSetViewModel) {
+        super(diffCallback);
         this.tileSetViewModel = tileSetViewModel;
     }
 
@@ -46,23 +58,41 @@ public class TileSetAdapter extends RecyclerView.Adapter<TileSetAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(tileSetViewModel.getTileSet(position).getTileId());
-        if (tileSetViewModel.getCurrentIndex() == position){
+        TileSet current = getItem(position);
+        holder.textView.setText(current.getTileId());
+        if (current.getTileId().equals(tileSetViewModel.getCurrentId())){
             holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
             currentFocusedImageView = holder.imageView;
         }
         holder.imageView.setOnClickListener(v -> {
-            currentFocusedImageView.setBackground(defaultImageViewBackground);
+            if (currentFocusedImageView != null)
+                currentFocusedImageView.setBackground(defaultImageViewBackground);
             holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
             currentFocusedImageView = holder.imageView;
-            tileSetViewModel.setCurrentIndex(position);
-            System.out.println("id: " + tileSetViewModel.getTileSet(position).getTileId());
+            tileSetViewModel.setCurrentId(current.getTileId());
+            Log.d(TAG, "id: " + current.getTileId());
         });
     }
 
+
+/*
     @Override
     public int getItemCount() {
-        return tileSetViewModel.getTileSetListSize();
+        return list.size();
+        // TODO check if calling this method is way less efficient than reference and updating it when it changes
+    }*/
+
+    public static class TileSetDiff extends DiffUtil.ItemCallback<TileSet> {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull TileSet oldItem, @NonNull TileSet newItem) {
+            return oldItem == newItem;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull TileSet oldItem, @NonNull TileSet newItem) {
+            return oldItem.getTileId().equals(newItem.getTileId());
+        }
     }
 
 }
