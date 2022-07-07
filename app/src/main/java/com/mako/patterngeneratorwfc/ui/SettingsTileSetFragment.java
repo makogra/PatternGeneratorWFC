@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class SettingsTileSetFragment extends Fragment {
 
     private static final int MAX_OUTPUT_HEIGHT = 512;
     private static final int MAX_OUTPUT_WIDTH = 512;
+    private static final String TAG = "SettingsTileSetFragment";
     private SettingsTileSetViewModel settingsTileSetViewModel;
     private TileSetViewModel tileSetViewModel;
     private ViewModelProvider viewModelProvider;
@@ -45,7 +47,7 @@ public class SettingsTileSetFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.viewModelProvider = new ViewModelProvider(requireActivity());
         tileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
-        System.out.println(tileSetViewModel.getCurrentId());
+        Log.d(TAG, tileSetViewModel.getCurrentId());
         settingsTileSetViewModel = viewModelProvider.get(tileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
         if (settingsTileSetViewModel.isNewInstance()) {
             settingsTileSetViewModel.setNewInstance(false);
@@ -87,7 +89,8 @@ public class SettingsTileSetFragment extends Fragment {
 
     private void initSettings() {
         int min, max, average;
-        TileSet currentTileSet = tileSetViewModel.getTileSetList().get(tileSetViewModel.getCurrentIndex());
+        // TODO add observer
+        TileSet currentTileSet = Objects.requireNonNull(tileSetViewModel.getTileSetList().getValue()).get(tileSetViewModel.getCurrentIndex());
 
         for (int i = 0; i < SettingsTileSetViewModel.getSettingsLength(); i++) {
             min = 0;

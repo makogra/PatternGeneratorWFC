@@ -1,5 +1,7 @@
 package com.mako.patterngeneratorwfc.datamodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.Arrays;
 
 public class SettingsTileSetViewModel extends ViewModel {
 
+    private static final String TAG = "SettingsTileSetViewModel";
     private static ArrayList<String> settingsList;
     private static String[] settingsArr;
     private static int settingsLength;
@@ -55,7 +58,7 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     // Setters
     public static void setSettingsArr(String[] arr){
-        System.out.println(Arrays.toString(arr));
+        Log.d(TAG, Arrays.toString(arr));
         settingsArr = arr;
         settingsLength = arr.length;
         setSettingsList();
@@ -77,11 +80,11 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public void setMin(int value, int position)  {
         if (outOfArr(position)) {
-            System.out.println("setMin, position: " + position);
+            Log.d(TAG, "setMin, position: " + position);
             return;
         }
         if (value < 0) {
-            System.out.println("setMin, value: " + value);
+            Log.d(TAG, "setMin, value: " + value);
             return;
         }
         this.settingsMin[position] = value;
@@ -89,7 +92,7 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public void setMax(int value, int position) {
         if (outOfArr(position)) {
-            System.out.println("setMax, position: " + position);
+            Log.d(TAG, "setMax, position: " + position);
             return;
         }
         this.settingsMax[position] = value;
@@ -97,11 +100,11 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public void setValue(int value, int position) {
         if (outOfArr(position)){
-            System.out.println("setValue, position: " + position);
+            Log.d(TAG, "setValue, position: " + position);
             return;
         }
         if (value < getMin(position) || value > getMax(position)) {
-            System.out.println("setValue, value: " + value);
+            Log.d(TAG, "setValue, value: " + value);
             return;
         }
         this.settingsValue[position] = value;
