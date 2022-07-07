@@ -6,17 +6,24 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
+
+import com.mako.patterngeneratorwfc.database.convertors.ListOfStringConverter;
+import com.mako.patterngeneratorwfc.database.convertors.NestedIntArrayConvertor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Entity(tableName = "tileset_table")
+@TypeConverters({NestedIntArrayConvertor.class, ListOfStringConverter.class})
 public class TileSet implements Parcelable {
 
     //TODO make this class to database
 
     @PrimaryKey
+    @NonNull
     private String id;
     private int[][] valueGrid;
     private List<String> valueToStringPath;
@@ -35,7 +42,7 @@ public class TileSet implements Parcelable {
     }
 
     @Deprecated
-    public TileSet(String id){
+    public TileSet(@NonNull String id){
         this.id = id;
         hardCodedValueGrid();
     }
@@ -129,5 +136,15 @@ public class TileSet implements Parcelable {
 
     public void setValueToStringPath(List<String> valueToStringPath) {
         this.valueToStringPath = valueToStringPath;
+    }
+
+    //TEMP
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 }
