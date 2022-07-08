@@ -1,6 +1,5 @@
 package com.mako.patterngeneratorwfc.adapters;
 
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     private static final String TAG = "TileSetAdapter";
 
     private final TileSetViewModel tileSetViewModel;
-    private ImageView currentFocusedImageView;
-    private Drawable defaultImageViewBackground;
+    private FrameLayout currentFocusedFrameLayout;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -53,7 +51,6 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_tile_set, parent, false);
-        defaultImageViewBackground = v.findViewById(R.id.cardView_tile_set_preview_imageView).getBackground();
         return new ViewHolder(v);
     }
 
@@ -62,17 +59,14 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
         TileSet current = getItem(position);
         holder.textView.setText(current.getTileId());
         if (current.getTileId().equals(tileSetViewModel.getCurrentId())){
-            holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
-            currentFocusedImageView = holder.imageView;
+            holder.frameLayout.setBackgroundResource(R.color.active);
+            currentFocusedFrameLayout = holder.frameLayout;
         }
         holder.cardView.setOnClickListener(v -> {
+            if (currentFocusedFrameLayout != null)
+                currentFocusedFrameLayout.setBackgroundResource(R.color.white);
             holder.frameLayout.setBackgroundResource(R.color.active);
-        });
-        holder.imageView.setOnClickListener(v -> {
-            if (currentFocusedImageView != null)
-                currentFocusedImageView.setBackground(defaultImageViewBackground);
-            holder.imageView.setBackgroundResource(R.drawable.card_view_tile_set_image_view);
-            currentFocusedImageView = holder.imageView;
+            currentFocusedFrameLayout = holder.frameLayout;
             tileSetViewModel.setCurrentId(current.getTileId());
         });
     }

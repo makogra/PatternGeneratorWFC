@@ -39,8 +39,7 @@
                         android:src="@mipmap/ic_launcher"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:focusable="true"
-                        android:clickable="true"/>
+                        />
 
                     <TextView
                         android:id="@+id/cardView_tile_set_idAsTempPreview_textView"
