@@ -33,10 +33,13 @@ public class AddTileSetViewModel extends ViewModel {
     }
 
 
-    public TileSet getTileSet() {
+    public TileSet getSampleTileSet() {
         return new TileSet("1", new int[][]{{2,2},{3,3}}, new ArrayList<String>(){{add("B");add("C");}});
     }
 
+    public TileSet getTileSet() {
+        return tileSet;
+    }
 
     // Setters
     public void setTileId(String id) {
@@ -49,5 +52,9 @@ public class AddTileSetViewModel extends ViewModel {
 
     public void setValueToChar(List<String> valueToStringPath) {
         tileSet.setValueToStringPath(valueToStringPath);
+    }
+
+    public void setTileSet(TileSet tileSet) {
+        this.tileSet = tileSet;
     }
 }
