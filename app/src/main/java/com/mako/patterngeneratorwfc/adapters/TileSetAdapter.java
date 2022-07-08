@@ -66,7 +66,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
             currentFocusedImageView = holder.imageView;
         }
         holder.cardView.setOnClickListener(v -> {
-            holder.frameLayout.setBackgroundResource(R.color.black);
+            holder.frameLayout.setBackgroundResource(R.color.active);
         });
         holder.imageView.setOnClickListener(v -> {
             if (currentFocusedImageView != null)
