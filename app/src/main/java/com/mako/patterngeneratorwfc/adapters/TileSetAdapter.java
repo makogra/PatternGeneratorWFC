@@ -1,7 +1,6 @@
 package com.mako.patterngeneratorwfc.adapters;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,9 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHolder> {
 
@@ -38,18 +32,14 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
         final TextView textView;
         final ImageView imageView;
         final CardView cardView;
-        final ConstraintLayout constraintLayout;
         final FrameLayout frameLayout;
-        final CardView innerCardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.cardView_tile_set_idAsTempPreview_textView);
             imageView = itemView.findViewById(R.id.cardView_tile_set_preview_imageView);
             cardView = itemView.findViewById(R.id.card_view_tile_set_card_view);
-            constraintLayout = itemView.findViewById(R.id.card_view_tile_set_constraint_layout);
             frameLayout = itemView.findViewById(R.id.card_view_tile_set_frame_layout);
-            innerCardView = itemView.findViewById(R.id.card_view_tile_set_inner_card_view);
         }
     }
 
@@ -86,14 +76,6 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
             tileSetViewModel.setCurrentId(current.getTileId());
         });
     }
-
-
-/*
-    @Override
-    public int getItemCount() {
-        return list.size();
-        // TODO check if calling this method is way less efficient than reference and updating it when it changes
-    }*/
 
     public static class TileSetDiff extends DiffUtil.ItemCallback<TileSet> {
 
