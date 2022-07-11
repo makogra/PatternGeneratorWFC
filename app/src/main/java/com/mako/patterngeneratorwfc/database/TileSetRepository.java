@@ -44,6 +44,7 @@ public class TileSetRepository {
     public void insert(TileSet tileSet){
         TileSetRoomDatabase.databaseWriteExecutor.execute(() -> {
             mTileSetDao.insert(tileSet);
+            Log.i(TAG, "inserted: " + tileSet);
         });
     }
 
