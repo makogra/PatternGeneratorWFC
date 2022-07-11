@@ -70,14 +70,6 @@ public class TileSetFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.fragment_tile_set_recycler_view);
         adapter = new TileSetAdapter(new TileSetAdapter.TileSetDiff(), mTileSetViewModel);
         mTileSetViewModel.getTileSetList().observe(getViewLifecycleOwner(), adapter::submitList);
-        //TODO comment this
-        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                Log.d(TAG, "TileSetFragment.onChanged");
-            }
-        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), SPAN_COUNT));
         return view;
