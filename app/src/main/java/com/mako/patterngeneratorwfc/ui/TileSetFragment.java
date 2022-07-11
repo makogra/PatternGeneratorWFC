@@ -47,14 +47,13 @@ public class TileSetFragment extends Fragment {
         if (result.getResultCode() == Activity.RESULT_OK){
             Intent intent = result.getData();
             if (intent == null){
-                Log.d(TAG, "insert is null, something isn't working in write section maybe");
+                Log.w(TAG, "insert is null, something isn't working in write section maybe");
                 return;
             }
             TileSet tileSetFromResult = intent.getParcelableExtra("TileSet");
             mTileSetViewModel.insert(tileSetFromResult);
             mTileSetViewModel.setCurrentId(tileSetFromResult.getTileId());
-            Log.d(TAG, tileSetFromResult.toString());
-            Log.d(TAG, "result is working correctly");
+            Log.d(TAG, "result is working correctly " + tileSetFromResult);
         }
     });
 
@@ -70,13 +69,6 @@ public class TileSetFragment extends Fragment {
         });
         RecyclerView recyclerView = view.findViewById(R.id.fragment_tile_set_recycler_view);
         adapter = new TileSetAdapter(new TileSetAdapter.TileSetDiff(), mTileSetViewModel);
-        /*adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                // TODO add adapter.notifyItemInserted();
-            }
-        });*/
         mTileSetViewModel.getTileSetList().observe(getViewLifecycleOwner(), adapter::submitList);
         //TODO comment this
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -92,54 +84,14 @@ public class TileSetFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // TODO Implement responsive grid layout. Or sth like that :).
-        //ArrayList<View> cardViewList = createTileSetCardViewList(viewGroup);
-        //getLayoutInflater()
-        //view.findViewById(R.id.fragment_tile_set_sliding_panel_layout).addChildrenForAccessibility(cardViewList);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d(TAG, "TileSetFragment.onCreate");
         mTileSetViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
         AsyncTask.execute(() -> {
             mTileSetViewModel.initCurrentId();
             Log.d(TAG, "Ascync init currentId compleate");
         });
-        //mTileSetViewModel.initCurrentId();
-        Log.d(TAG, "TileSetFragment.onCreate - koniec");
 
-    }
-
-    // TODO Implement responsive grid layout. 1st try.
-    /*
-    private ArrayList<View> createTileSetCardViewList(ViewGroup viewGroup){
-        ArrayList<View> viewList = new ArrayList<>();
-        List<TileSet> tileSetList = mViewModel.getTileSetList();
-        View cardView;
-        TextView textView;
-        LayoutInflater inflater = getLayoutInflater();// (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        for (TileSet tileSet : tileSetList){
-            cardView = inflater.inflate(R.layout.cardview_tile_set, viewGroup);
-            textView = cardView.findViewById(R.id.cardView_tile_set_idAsTempPreview_textView);
-            textView.setText("" + tileSet.getIdAsTempPreview());
-            viewList.add(cardView);
-        }
-
-        return viewList;
-    }
-
-     */
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //mTileSetViewModel.getTileSetList().observe(getViewLifecycleOwner(), adapter::submitList);
     }
 
     @Override
