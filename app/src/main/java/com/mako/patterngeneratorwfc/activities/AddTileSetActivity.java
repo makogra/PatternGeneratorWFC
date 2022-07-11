@@ -43,8 +43,11 @@ public class AddTileSetActivity extends AppCompatActivity {
         Intent intent = new Intent();
         EditText editText = findViewById(R.id.activity_add_tile_set_id_text_view);
         String id = editText.getText().toString();
+        if (id.equals(""))
+            id = mAddTileSetViewModel.getTileId();
+        else
+            mAddTileSetViewModel.setTileId(id);
         Log.i(TAG, "add new tile set of id : " + id);
-        mAddTileSetViewModel.setTileId(id);
         intent.putExtra("TileSet", mAddTileSetViewModel.getTileSet());
 
         setResult(RESULT_OK, intent);
@@ -56,7 +59,11 @@ public class AddTileSetActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
+    @Override
+    protected void onResume() {
+        mAddTileSetViewModel.setTileSet(mAddTileSetViewModel.getSampleTileSet());
+        super.onResume();
+    }
 
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {

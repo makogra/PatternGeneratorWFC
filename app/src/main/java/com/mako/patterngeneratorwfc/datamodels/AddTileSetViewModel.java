@@ -34,7 +34,20 @@ public class AddTileSetViewModel extends ViewModel {
 
 
     public TileSet getSampleTileSet() {
-        return new TileSet("1", new int[][]{{2,2},{3,3}}, new ArrayList<String>(){{add("B");add("C");}});
+        String id = "Sample Tile";
+        int[][] valueGrid = new int[][]{
+                {1,1,1,1,2,3,3,3},
+                {1,1,1,2,2,3,3,3},
+                {1,1,1,2,3,3,3,3},
+                {1,1,1,2,3,3,3,3},
+                {1,1,1,2,3,3,3,3},
+        };
+        List<String> valueToStringList = new ArrayList<String>(){{
+            add("G");
+            add("L");
+            add("S");
+        }};
+        return new TileSet(id, valueGrid, valueToStringList);
     }
 
     public TileSet getTileSet() {
@@ -50,7 +63,7 @@ public class AddTileSetViewModel extends ViewModel {
         tileSet.setValueGrid(valueGrid);
     }
 
-    public void setValueToChar(List<String> valueToStringPath) {
+    public void setValueToString(List<String> valueToStringPath) {
         tileSet.setValueToStringPath(valueToStringPath);
     }
 
