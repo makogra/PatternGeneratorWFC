@@ -12,25 +12,39 @@ import java.util.List;
 public class TileSetRepository {
 
     private static final String TAG = "TileSetRepository";
-    private TileSetDao mTileSetDao;
-    private LiveData<List<String>> mAllIds;
-    private LiveData<List<TileSet>> mTileSetList;
+    private static volatile TileSetRepository INSTANCE;
+    private final TileSetDao mTileSetDao;
 
-    //TODO make singleton
-    public TileSetRepository(Application application){
+    private TileSetRepository(Application application){
         TileSetRoomDatabase db = TileSetRoomDatabase.getDatabase(application);
         mTileSetDao = db.tileSetDao();
-        mAllIds = mTileSetDao.getAllIds();
+    }
 
-        mTileSetList = mTileSetDao.getTileSetList();
+    public static TileSetRepository getInstance(Application application){
+        if (INSTANCE == null){
+            synchronized (TileSetRepository.class){
+                if (INSTANCE == null){
+                    INSTANCE = new TileSetRepository(application);
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    public static TileSetRepository getInstance(){
+        return INSTANCE;
+    }
+
+    public static boolean canGetInstance(){
+        return INSTANCE != null;
     }
 
     public LiveData<List<String>> getAllIds() {
-        return mAllIds;
+        return mTileSetDao.getAllIds();
     }
 
     public LiveData<List<TileSet>> getTileSetList() {
-        return mTileSetList;
+        return mTileSetDao.getTileSetList();
     }
 
     public LiveData<TileSet> getTileSet(String id){
@@ -52,7 +66,6 @@ public class TileSetRepository {
         return mTileSetDao.getFirstTileSet();
     }
 
-    //Maybe add the same as in insert
     public void deleteId(String id){
         TileSetRoomDatabase.databaseWriteExecutor.execute(() -> {
             mTileSetDao.delete(id);

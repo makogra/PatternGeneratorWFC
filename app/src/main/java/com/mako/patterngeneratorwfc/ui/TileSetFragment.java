@@ -90,7 +90,7 @@ public class TileSetFragment extends Fragment {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         String tileId = adapter.getCurrentList().get(item.getGroupId()).getTileId();
         Log.d(TAG, "onContextItemSelected() called with: item = [" + item + " " + item.getGroupId() + " " + tileId + "]");
-        TileSetRepository repo = new TileSetRepository(requireActivity().getApplication());
+        TileSetRepository repo = TileSetRepository.getInstance(requireActivity().getApplication());
         repo.deleteId(tileId);
         return super.onContextItemSelected(item);
     }

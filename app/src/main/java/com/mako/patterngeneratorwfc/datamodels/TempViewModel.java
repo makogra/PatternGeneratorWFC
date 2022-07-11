@@ -19,7 +19,7 @@ public class TempViewModel extends AndroidViewModel {
 
     public TempViewModel(@NonNull Application application) {
         super(application);
-        mRepository = new TileSetRepository(application);
+        mRepository = TileSetRepository.getInstance(application);
         this.listLiveData = mRepository.getTileSetList();
         this.count = mRepository.count();
     }
