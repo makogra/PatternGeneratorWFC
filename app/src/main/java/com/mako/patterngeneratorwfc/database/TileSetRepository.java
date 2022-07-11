@@ -2,7 +2,6 @@ package com.mako.patterngeneratorwfc.database;
 
 import android.app.Application;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
 import com.mako.patterngeneratorwfc.TileSet;
@@ -15,19 +14,10 @@ public class TileSetRepository {
     private LiveData<List<String>> mAllIds;
     private LiveData<List<TileSet>> mTileSetList;
 
+    //TODO make singleton
     public TileSetRepository(Application application){
         TileSetRoomDatabase db = TileSetRoomDatabase.getDatabase(application);
         mTileSetDao = db.tileSetDao();
-
-        /*TileSet tileSet = new TileSet("4", new int[][]{{12,2},{3,4}}, new ArrayList<String>(){{
-            add("Q");
-            add("W");
-            add("E");
-            add("R");
-        }});
-        mTileSetDao.insert(tileSet);
-
-         */
         mAllIds = mTileSetDao.getAllIds();
 
         mTileSetList = mTileSetDao.getTileSetList();
@@ -58,4 +48,12 @@ public class TileSetRepository {
     public String getFirstTileSet() {
         return mTileSetDao.getFirstTileSet();
     }
+
+    //Maybe add the same as in insert
+    public void deleteId(String id){
+        TileSetRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mTileSetDao.delete(id);
+        });
+    }
+
 }

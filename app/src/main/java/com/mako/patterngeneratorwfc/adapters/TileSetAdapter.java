@@ -1,6 +1,8 @@
 package com.mako.patterngeneratorwfc.adapters;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -25,7 +27,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     private final TileSetViewModel tileSetViewModel;
     private FrameLayout currentFocusedFrameLayout;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         final TextView textView;
         final ImageView imageView;
@@ -38,6 +40,13 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
             imageView = itemView.findViewById(R.id.cardView_tile_set_preview_imageView);
             cardView = itemView.findViewById(R.id.card_view_tile_set_card_view);
             frameLayout = itemView.findViewById(R.id.card_view_tile_set_frame_layout);
+
+            cardView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(this.getAdapterPosition(), 121, 0, "Delete");
         }
     }
 

@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.activities.AddTileSetActivity;
+import com.mako.patterngeneratorwfc.database.TileSetRepository;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 
@@ -34,7 +36,7 @@ public class TileSetFragment extends Fragment {
     private static final String TAG = "TileSetFragment";
     private static final int SPAN_COUNT = 2;
     private TileSetViewModel mTileSetViewModel;
-
+    private TileSetAdapter adapter;
 
 
     public static TileSetFragment newInstance() {
@@ -67,7 +69,7 @@ public class TileSetFragment extends Fragment {
 
         });
         RecyclerView recyclerView = view.findViewById(R.id.fragment_tile_set_recycler_view);
-        TileSetAdapter adapter = new TileSetAdapter(new TileSetAdapter.TileSetDiff(), mTileSetViewModel);
+        adapter = new TileSetAdapter(new TileSetAdapter.TileSetDiff(), mTileSetViewModel);
         /*adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -138,5 +140,14 @@ public class TileSetFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //mTileSetViewModel.getTileSetList().observe(getViewLifecycleOwner(), adapter::submitList);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        String tileId = adapter.getCurrentList().get(item.getGroupId()).getTileId();
+        Log.d(TAG, "onContextItemSelected() called with: item = [" + item + " " + item.getGroupId() + " " + tileId + "]");
+        TileSetRepository repo = new TileSetRepository(requireActivity().getApplication());
+        repo.deleteId(tileId);
+        return super.onContextItemSelected(item);
     }
 }
