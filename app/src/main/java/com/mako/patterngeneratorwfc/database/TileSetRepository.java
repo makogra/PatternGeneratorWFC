@@ -1,6 +1,7 @@
 package com.mako.patterngeneratorwfc.database;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class TileSetRepository {
 
+    private static final String TAG = "TileSetRepository";
     private TileSetDao mTileSetDao;
     private LiveData<List<String>> mAllIds;
     private LiveData<List<TileSet>> mTileSetList;
@@ -53,6 +55,7 @@ public class TileSetRepository {
     public void deleteId(String id){
         TileSetRoomDatabase.databaseWriteExecutor.execute(() -> {
             mTileSetDao.delete(id);
+            Log.i(TAG, "TileSet with id: [" + id + "] has been DELETED");
         });
     }
 
