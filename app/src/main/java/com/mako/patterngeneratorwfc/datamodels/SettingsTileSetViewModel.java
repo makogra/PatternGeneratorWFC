@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.RecursiveTask;
 
 public class SettingsTileSetViewModel extends ViewModel {
 
@@ -98,16 +99,17 @@ public class SettingsTileSetViewModel extends ViewModel {
         this.settingsMax[position] = value;
     }
 
-    public void setValue(int value, int position) {
+    public boolean setValue(int value, int position) {
         if (outOfArr(position)){
             Log.d(TAG, "setValue, position: " + position);
-            return;
+            return false;
         }
         if (value < getMin(position) || value > getMax(position)) {
             Log.d(TAG, "setValue, value: " + value);
-            return;
+            return false;
         }
         this.settingsValue[position] = value;
+        return true;
     }
 
     public void increment(int position) throws IllegalAccessException {

@@ -2,7 +2,6 @@ package com.mako.patterngeneratorwfc.adapters;
 
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -69,15 +68,21 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
         holder.textView.setText(current.getTileId());
         if (current.getTileId().equals(tileSetViewModel.getCurrentId())){
             holder.frameLayout.setBackgroundResource(R.color.active);
+            defocusPastTileSet();
             currentFocusedFrameLayout = holder.frameLayout;
         }
         holder.cardView.setOnClickListener(v -> {
-            if (currentFocusedFrameLayout != null)
-                currentFocusedFrameLayout.setBackgroundResource(R.color.white);
+            defocusPastTileSet();
             holder.frameLayout.setBackgroundResource(R.color.active);
             currentFocusedFrameLayout = holder.frameLayout;
             tileSetViewModel.setCurrentId(current.getTileId());
         });
+    }
+
+    private void defocusPastTileSet() {
+        if (currentFocusedFrameLayout == null)
+            return;
+        currentFocusedFrameLayout.setBackgroundResource(R.color.white);
     }
 
     public static class TileSetDiff extends DiffUtil.ItemCallback<TileSet> {

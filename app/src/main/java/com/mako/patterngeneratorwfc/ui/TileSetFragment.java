@@ -88,10 +88,29 @@ public class TileSetFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() != 121){
+            Log.d(TAG, "onContextItemSelected: nwm co się stało że ma inny item id: " + item);
+            return super.onContextItemSelected(item);
+        }
         String tileId = adapter.getCurrentList().get(item.getGroupId()).getTileId();
         Log.d(TAG, "onContextItemSelected() called with: item = [" + item + " " + item.getGroupId() + " " + tileId + "]");
         TileSetRepository repo = TileSetRepository.getInstance(requireActivity().getApplication());
         repo.deleteId(tileId);
+        //TODO choose current id
+        if (mTileSetViewModel.getCurrentId().equals(tileId))
+            chooseCurrentId(repo);
+        adapter.notifyItemRemoved(item.getGroupId());
         return super.onContextItemSelected(item);
+    }
+
+    private void chooseCurrentId(TileSetRepository tileSetRepository){
+        tileSetRepository.getTileSetList().observe(this, tileSets -> {
+            if (tileSets.isEmpty()){
+                //TODO add sample TileSet
+                Log.d(TAG, "chooseCurrentId: tileSetList is empty (in DB)");
+            }
+            mTileSetViewModel.setCurrentId(tileSets.get(0).getTileId());
+            adapter.notifyItemChanged(0);
+        });
     }
 }

@@ -3,12 +3,14 @@ package com.mako.patterngeneratorwfc.datamodels;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.service.quicksettings.Tile;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 
@@ -61,11 +63,6 @@ public class TileSetViewModel extends AndroidViewModel {
     public void setCurrentId(String currentId) {
         Log.i(TAG, "Current TileSet Id has changed to = " + currentId);
         this.currentId = currentId;
-    }
-
-    public void setCurrentIndex(int index){
-        currentIndex = index;
-        currentId = list.get(index).getTileId();
     }
 
     public int getCurrentIndex() {
