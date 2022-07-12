@@ -2,19 +2,16 @@ package com.mako.patterngeneratorwfc.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.service.quicksettings.Tile;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.TileSet;
@@ -22,8 +19,6 @@ import com.mako.patterngeneratorwfc.adapters.SettingsTileSetAdapter;
 import com.mako.patterngeneratorwfc.database.TileSetRepository;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
-
-import java.util.Objects;
 
 import kotlin.NotImplementedError;
 
@@ -56,13 +51,9 @@ public class SettingsTileSetFragment extends Fragment {
         tileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
         Log.d(TAG, tileSetViewModel.getCurrentId());
         settingsTileSetViewModel = viewModelProvider.get(tileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
-        //TODO i thing this if statement is redundant, because it's in onCreate method, which is called only once, or maybe not
-        if (settingsTileSetViewModel.isNewInstance()) {
-            settingsTileSetViewModel.setNewInstance(false);
-            SettingsTileSetViewModel.setSettingsArr(getResources().getStringArray(R.array.settings_tile_set_arr));
-            settingsTileSetViewModel.initMinMaxValue();
-           // initSetting();
-        }
+        settingsTileSetViewModel.setNewInstance(false);
+        SettingsTileSetViewModel.setSettingsArr(getResources().getStringArray(R.array.settings_tile_set_arr));
+        settingsTileSetViewModel.initMinMaxValue();
 
         tileSetRepository.getTileSet(tileSetViewModel.getCurrentId()).observe(this, this::updateSettings);
 
@@ -71,7 +62,6 @@ public class SettingsTileSetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings_tile_set, container, false);
         this.recyclerView = view.findViewById(R.id.fragment_settings_tile_set_recycler_view);
         recyclerView.setAdapter(new SettingsTileSetAdapter(settingsTileSetViewModel));
@@ -103,19 +93,12 @@ public class SettingsTileSetFragment extends Fragment {
         textView.setText(tileSetViewModel.getCurrentId());
     }
 
-    private void initSetting(){
-        //TODO fix null pointer -> list is null
-        TileSet currentTileSet = tileSetViewModel.getTilesetWithId(tileSetViewModel.getCurrentId());
-        updateSettings(currentTileSet);
-    }
-
     private void updateSettings(TileSet currentTileSet) {
         if (currentTileSet == null)
             return;
         int min, max, average;
 
         Log.d(TAG, "updateSettings: length: " + currentTileSet.getTileSetLength() + " height: " + currentTileSet.getTileSetHeight());
-
 
         for (int i = 0; i < SettingsTileSetViewModel.getSettingsLength(); i++) {
             min = 1;
