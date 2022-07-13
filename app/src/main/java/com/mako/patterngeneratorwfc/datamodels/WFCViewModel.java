@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel;
 public class WFCViewModel extends ViewModel {
 
     //save output
-    private String string = "connection test";
 
     public WFCViewModel(){
+    }
+
+    public String getTestConnection() {
+        return "Connection test succeed";
     }
 }
