@@ -104,8 +104,10 @@ public class TileSetFragment extends Fragment {
         TileSetRepository repo = TileSetRepository.getInstance(requireActivity().getApplication());
         repo.deleteId(tileId);
         //TODO choose current id
-        if (mTileSetViewModel.getCurrentId().equals(tileId))
+        if (mTileSetViewModel.getCurrentId().equals(tileId)){
+            Log.d(TAG, "onContextItemSelected: ");
             chooseCurrentId(repo);
+        }
         adapter.notifyItemRemoved(item.getGroupId());
         return super.onContextItemSelected(item);
     }
