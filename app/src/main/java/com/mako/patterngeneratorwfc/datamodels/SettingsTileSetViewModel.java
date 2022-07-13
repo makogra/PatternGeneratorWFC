@@ -2,11 +2,11 @@ package com.mako.patterngeneratorwfc.datamodels;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.RecursiveTask;
 
 public class SettingsTileSetViewModel extends ViewModel {
 
