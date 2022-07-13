@@ -1,18 +1,23 @@
 package com.mako.patterngeneratorwfc.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.ui.SettingsTileSetFragment;
 import com.mako.patterngeneratorwfc.ui.TileSetFragment;
+import com.mako.patterngeneratorwfc.ui.WFCFragment;
 
 public class ScreenSlidePager extends FragmentActivity {
 
@@ -42,7 +47,7 @@ public class ScreenSlidePager extends FragmentActivity {
 
         // Instance a ViewPager and a PagerAdapter
         mPager = findViewById(R.id.pager);
-        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), getLifecycle());
+        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), getLifecycle(), this);
         mPager.setAdapter(pagerAdapter);
         // different page swap animation.
         //mPager.setPageTransformer(new DepthPageTransform());
@@ -67,8 +72,11 @@ public class ScreenSlidePager extends FragmentActivity {
      */
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter{
 
-        public ScreenSlidePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+        private ViewModelProvider viewModelProvider;
+
+        public ScreenSlidePagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, Activity activity) {
             super(fragmentManager, lifecycle);
+            this.viewModelProvider = new ViewModelProvider((ViewModelStoreOwner) activity);
         }
 
         @NonNull
@@ -76,10 +84,12 @@ public class ScreenSlidePager extends FragmentActivity {
         public Fragment createFragment(int position) {
             switch (position){
                 case 0:
-                    return TileSetFragment.newInstance();
+                    return TileSetFragment.newInstance(viewModelProvider);
                     //TODO Add next pages
                 case 1:
-                    return SettingsTileSetFragment.newInstance();
+                    return SettingsTileSetFragment.newInstance(viewModelProvider);
+                case 2:
+                    return WFCFragment.newInstance(viewModelProvider);
                 default:
                     return new Fragment();
             }
