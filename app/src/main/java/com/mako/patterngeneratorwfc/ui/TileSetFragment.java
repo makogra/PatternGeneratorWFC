@@ -31,6 +31,9 @@ import com.mako.patterngeneratorwfc.database.TileSetRepository;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class TileSetFragment extends Fragment {
 
     private static final String TAG = "TileSetFragment";
@@ -104,12 +107,18 @@ public class TileSetFragment extends Fragment {
     }
 
     private void chooseCurrentId(TileSetRepository tileSetRepository){
+        AtomicBoolean flag = new AtomicBoolean(false);
+
         tileSetRepository.getTileSetList().observe(this, tileSets -> {
+            if (flag.get())
+                return;
             if (tileSets.isEmpty()){
                 //TODO add sample TileSet
                 Log.d(TAG, "chooseCurrentId: tileSetList is empty (in DB)");
             }
+            flag.set(true);
             mTileSetViewModel.setCurrentId(tileSets.get(0).getTileId());
+            Log.d(TAG, "chooseCurrentId: choosed id: " + mTileSetViewModel.getCurrentId());
             adapter.notifyItemChanged(0);
         });
     }
