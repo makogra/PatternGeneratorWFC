@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
-        app:layout_constraintTop_toTopOf="@id/fragment_wfc_tile_set_id_text_view"
+        app:layout_constraintTop_toBottomOf="@id/fragment_wfc_tile_set_id_text_view"
         app:layout_constraintStart_toStartOf="parent"
         />
 
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Result"
-        app:layout_constraintTop_toTopOf="@id/fragment_wfc_settings_text_view"
+        app:layout_constraintTop_toBottomOf="@id/fragment_wfc_settings_text_view"
         app:layout_constraintStart_toStartOf="parent"
         />
 
