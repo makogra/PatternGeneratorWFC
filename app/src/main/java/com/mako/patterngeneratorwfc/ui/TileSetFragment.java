@@ -38,11 +38,14 @@ public class TileSetFragment extends Fragment {
 
     private static final String TAG = "TileSetFragment";
     private static final int SPAN_COUNT = 2;
+    private static ViewModelProvider sViewModelProvider;
+    private ViewModelProvider mViewModelProvider;
     private TileSetViewModel mTileSetViewModel;
     private TileSetAdapter adapter;
 
 
-    public static TileSetFragment newInstance() {
+    public static TileSetFragment newInstance(ViewModelProvider viewModelProvider) {
+        TileSetFragment.sViewModelProvider = viewModelProvider;
         return new TileSetFragment();
     }
 
@@ -81,11 +84,12 @@ public class TileSetFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTileSetViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
-        AsyncTask.execute(() -> {
+        this.mViewModelProvider = new ViewModelProvider(requireActivity());
+        mTileSetViewModel = mViewModelProvider.get(TileSetViewModel.class);
+        new Thread(() -> {
             mTileSetViewModel.initCurrentId();
             Log.d(TAG, "Ascync init currentId compleate");
-        });
+        }).start();
 
     }
 
