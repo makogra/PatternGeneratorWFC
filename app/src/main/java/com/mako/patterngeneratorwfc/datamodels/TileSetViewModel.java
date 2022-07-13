@@ -77,6 +77,7 @@ public class TileSetViewModel extends AndroidViewModel {
         mTileSetRepository.insert(tileSet);
     }
 
+    //TODO delete
     public TileSet getTilesetWithId(String id){
         for (TileSet ts : list){
             if (ts.getTileId().equals(id))
