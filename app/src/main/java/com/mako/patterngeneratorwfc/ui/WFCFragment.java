@@ -16,11 +16,19 @@ import com.mako.patterngeneratorwfc.datamodels.WFCViewModel;
 
 public class WFCFragment extends Fragment {
 
+    private static final String TAG = "WFCFragment";
+    private static ViewModelProvider sViewModelProvider;
+    private ViewModelProvider mViewModelProvider;
     private TileSetViewModel mTileSetViewModel;
     private SettingsTileSetViewModel mSettingsTileSetViewModel;
     private WFCViewModel mWFCViewModel;
 
     public WFCFragment() {
+    }
+
+    public static WFCFragment newInstance(ViewModelProvider viewModelProvider) {
+        WFCFragment.sViewModelProvider = viewModelProvider;
+        return new WFCFragment();
     }
 
 

@@ -29,9 +29,11 @@ public class SettingsTileSetFragment extends Fragment {
     private static final int MIN_OUTPUT_HEIGHT = 12;
     private static final int MIN_OUTPUT_WIDTH = 12;
     private static final String TAG = "SettingsTileSetFragment";
+    private static ViewModelProvider sViewModelProvider;
+    private static TileSetRepository sTileSetRepository;
+    private ViewModelProvider mViewModelProvider;
     private SettingsTileSetViewModel settingsTileSetViewModel;
     private TileSetViewModel tileSetViewModel;
-    private ViewModelProvider viewModelProvider;
     private RecyclerView recyclerView;
     private TileSetRepository tileSetRepository;
 
@@ -39,7 +41,8 @@ public class SettingsTileSetFragment extends Fragment {
     public SettingsTileSetFragment() {
     }
 
-    public static SettingsTileSetFragment newInstance() {
+    public static SettingsTileSetFragment newInstance(ViewModelProvider viewModelProvider) {
+        SettingsTileSetFragment.sViewModelProvider = viewModelProvider;
         return new SettingsTileSetFragment();
     }
 
