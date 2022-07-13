@@ -134,4 +134,22 @@ public class SettingsTileSetViewModel extends ViewModel {
         this.newInstance = newInstance;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "SettingsTileSetViewModel{" +
+                "settingsMin=" + Arrays.toString(settingsMin) +
+                ", settingsMax=" + Arrays.toString(settingsMax) +
+                ", settingsValue=" + Arrays.toString(settingsValue) +
+                '}';
+    }
+
+    public boolean isNotValueInited() {
+        return settingsValue == null;
+    }
+
+
+    public boolean isNotMinMaxInnited() {
+        return settingsMin == null || settingsMax == null;
+    }
 }
