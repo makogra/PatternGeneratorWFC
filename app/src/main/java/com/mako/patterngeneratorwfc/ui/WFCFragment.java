@@ -5,9 +5,11 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
@@ -35,11 +37,14 @@ public class WFCFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ViewModelProvider viewModelProvider = new ViewModelProvider(this);
-        mTileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
-        mSettingsTileSetViewModel = viewModelProvider.get(mTileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
-        mWFCViewModel = viewModelProvider.get(mTileSetViewModel.getCurrentId(), WFCViewModel.class);
+        Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+        initViewModels();
     }
 
     @Override
@@ -47,7 +52,54 @@ public class WFCFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_w_f_c, container, false);
-
+        //updateUI(view);
+        Log.d(TAG, "onCreateView() called with: inflater = [" + inflater + "], container = [" + container + "], savedInstanceState = [" + savedInstanceState + "]");
+        //testMSettingsViewModel();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateViewModels();
+        updateUI(requireView());
+        Log.d(TAG, "onResume() called");
+        testMSettingsViewModel();
+
+    }
+
+    private void updateUI(View view){
+        TextView idTextView = view.findViewById(R.id.fragment_wfc_tile_set_id_text_view);
+        TextView settingsTextView = view.findViewById(R.id.fragment_wfc_settings_text_view);
+        TextView resultTextView = view.findViewById(R.id.fragment_wfc_result_text_view);
+
+        testMSettingsViewModel();
+        idTextView.setText(mTileSetViewModel.getCurrentId());
+        settingsTextView.setText(mSettingsTileSetViewModel.toString());
+        resultTextView.setText(mWFCViewModel.getTestConnection());
+    }
+
+    private void initViewModels() {
+        this.mViewModelProvider = new ViewModelProvider(requireActivity());
+        updateViewModels();
+    }
+
+    private void updateViewModels(){
+        mTileSetViewModel = mViewModelProvider.get(TileSetViewModel.class);
+        mSettingsTileSetViewModel = mViewModelProvider.get(SettingsTileSetViewModel.class);
+        mWFCViewModel = mViewModelProvider.get(WFCViewModel.class);
+    }
+
+    private void testMSettingsViewModel(){
+        if (mSettingsTileSetViewModel == null){
+            Log.d(TAG, "testMSettingsViewModel: is null");
+            return;
+        }
+        Log.d(TAG, "testMSettingsViewModel: isn't null");
+
+        if (mSettingsTileSetViewModel.isNotValueInited())
+            Log.d(TAG, "testMSettingsViewModel: isNotValueInited");
+        if (mSettingsTileSetViewModel.isNotMinMaxInnited())
+            Log.d(TAG, "testMSettingsViewModel: isNotMinMaxInnited");
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +36,7 @@ public class SettingsTileSetFragment extends Fragment {
     private SettingsTileSetViewModel settingsTileSetViewModel;
     private TileSetViewModel tileSetViewModel;
     private RecyclerView recyclerView;
-    private TileSetRepository tileSetRepository;
+    private SettingsTileSetAdapter adapter;
 
 
     public SettingsTileSetFragment() {
@@ -49,16 +50,20 @@ public class SettingsTileSetFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.viewModelProvider = new ViewModelProvider(requireActivity());
-        this.tileSetRepository = TileSetRepository.getInstance(requireActivity().getApplication());
-        tileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
+        this.mViewModelProvider = new ViewModelProvider(requireActivity());
+        sTileSetRepository = TileSetRepository.getInstance(requireActivity().getApplication());
+        tileSetViewModel = mViewModelProvider.get(TileSetViewModel.class);
         Log.d(TAG, tileSetViewModel.getCurrentId());
-        settingsTileSetViewModel = viewModelProvider.get(tileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
+        initSettingsTileSetViewModel();
+        /*
+        settingsTileSetViewModel = sViewModelProvider.get(tileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
         settingsTileSetViewModel.setNewInstance(false);
         SettingsTileSetViewModel.setSettingsArr(getResources().getStringArray(R.array.settings_tile_set_arr));
-        settingsTileSetViewModel.initMinMaxValue();
+        settingsTileSetViewModel.initMinMax();
 
-        tileSetRepository.getTileSet(tileSetViewModel.getCurrentId()).observe(this, this::updateSettings);
+         */
+
+        observe();
 
     }
 
@@ -67,33 +72,67 @@ public class SettingsTileSetFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings_tile_set, container, false);
         this.recyclerView = view.findViewById(R.id.fragment_settings_tile_set_recycler_view);
-        recyclerView.setAdapter(new SettingsTileSetAdapter(settingsTileSetViewModel));
+        this.adapter = new SettingsTileSetAdapter(settingsTileSetViewModel);
+        Log.d(TAG, "onCreateView: adapter created");
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter.notifyDataSetChanged();
         return view;
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onResume() {
         super.onResume();
-        settingsTileSetViewModel = viewModelProvider.get(tileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
-        if (settingsTileSetViewModel.isNewInstance()) {
-            settingsTileSetViewModel.setNewInstance(false);
-            if (SettingsTileSetViewModel.isNotListAlreadyInitialized())
-                SettingsTileSetViewModel.setSettingsArr(getResources().getStringArray(R.array.settings_tile_set_arr));
-            settingsTileSetViewModel.initMinMaxValue();
-        }
-        SettingsTileSetAdapter adapter = new SettingsTileSetAdapter(settingsTileSetViewModel);
-        this.recyclerView.setAdapter(adapter);
-        tileSetRepository.getTileSet(tileSetViewModel.getCurrentId()).observe(this, tileSet -> {
-            if (tileSet == null)
-                return;
-            updateSettings(tileSet);
-            adapter.notifyDataSetChanged();
-        });
+        initSettingsTileSetViewModel();
+        adapter = new SettingsTileSetAdapter(settingsTileSetViewModel);
+        this.recyclerView.swapAdapter(adapter, true);
+        //adapter.notifyDataSetChanged();
+
         TextView textView = this.requireView().findViewById(R.id.fragment_settings_tile_set_test_text_view);
         textView.setText(tileSetViewModel.getCurrentId());
+
+        observe();
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void observe() {
+        sTileSetRepository.getTileSet(tileSetViewModel.getCurrentId()).observe(this, tileSet -> {
+            if (tileSet == null)
+                return;
+            Log.d(TAG, "onCreate: tileSet info : " + tileSet);
+            Log.d(TAG, "onCreate: updating");
+            updateSettings(tileSet);
+
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+                Log.d(TAG, "onCreate: updating UI");
+            }
+        });
+    }
+
+    private void initSettingsTileSetViewModel() {
+        settingsTileSetViewModel = mViewModelProvider.get(SettingsTileSetViewModel.class);
+        if (SettingsTileSetViewModel.isNotListAlreadyInitialized()){
+            SettingsTileSetViewModel.setSettingsArr(getResources().getStringArray(R.array.settings_tile_set_arr));
+            Log.d(TAG, "initSettingsTileSetViewModel: setSettingsArr");
+        }
+        if (settingsTileSetViewModel.isNotMinMaxInnited()){
+            settingsTileSetViewModel.initMinMax();
+            Log.d(TAG, "initSettingsTileSetViewModel: initMinMax");
+        }
+        if (settingsTileSetViewModel.isNotValueInited()){
+            settingsTileSetViewModel.initValue();
+            Log.d(TAG, "initSettingsTileSetViewModel: initValue");
+        }
     }
 
     private void updateSettings(TileSet currentTileSet) {
