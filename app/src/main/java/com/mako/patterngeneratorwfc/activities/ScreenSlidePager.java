@@ -19,7 +19,8 @@ public class ScreenSlidePager extends FragmentActivity {
     /**
      * The number of pages (wizard steps) to show
      */
-    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 3;
+    private static final String TAG = "ScreenSlidePager";
 
     /**
      * The pager widget, which handles animation and allows swapping
@@ -88,5 +89,11 @@ public class ScreenSlidePager extends FragmentActivity {
         public int getItemCount() {
             return NUM_PAGES;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() called");
     }
 }
