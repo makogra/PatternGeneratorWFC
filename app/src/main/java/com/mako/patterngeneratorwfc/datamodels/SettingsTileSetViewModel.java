@@ -103,15 +103,17 @@ public class SettingsTileSetViewModel extends ViewModel {
     }
 
     public boolean setValue(int value, int position) {
+        String info = "min: " + getMin(position) + " max: " + getMax(position) + " value: " + value + " at position: " + position;
         if (outOfArr(position)){
-            Log.d(TAG, "setValue, position: " + position);
+            Log.w(TAG, "setValue, FAILED (illegal position): " + info);
             return false;
         }
         if (value < getMin(position) || value > getMax(position)) {
-            Log.d(TAG, "setValue, value: " + value);
+            Log.d(TAG, "setValue: FAILED (illegal value): " + info);
             return false;
         }
         this.settingsValue[position] = value;
+        Log.d(TAG, "setValue: SUCCESS " + info);
         return true;
     }
 
