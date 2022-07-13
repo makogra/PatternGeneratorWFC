@@ -1,11 +1,7 @@
 package com.mako.patterngeneratorwfc.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.nfc.Tag;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +14,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,11 +22,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.activities.AddTileSetActivity;
+import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 import com.mako.patterngeneratorwfc.database.TileSetRepository;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
-import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TileSetFragment extends Fragment {
