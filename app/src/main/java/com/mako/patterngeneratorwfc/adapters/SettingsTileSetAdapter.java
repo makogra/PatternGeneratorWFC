@@ -17,7 +17,7 @@ public class SettingsTileSetAdapter extends RecyclerView.Adapter<SettingsTileSet
     protected final SettingsTileSetViewModel settingsTileSetViewModel;
     private final int ITEM_COUNT = SettingsTileSetViewModel.getSettingsLength();
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         Button decrementButton;
         Button incrementButton;
         TextView name;
@@ -48,6 +48,7 @@ public class SettingsTileSetAdapter extends RecyclerView.Adapter<SettingsTileSet
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.name.setText(settingsTileSetViewModel.getHumanName(position));
+        holder.value.setText("" + settingsTileSetViewModel.getValue(position));
         holder.incrementButton.setOnClickListener(v -> {
             try {
                 settingsTileSetViewModel.increment(position);
@@ -64,7 +65,7 @@ public class SettingsTileSetAdapter extends RecyclerView.Adapter<SettingsTileSet
                 e.printStackTrace();
             }
         });
-        holder.value.setText("" + settingsTileSetViewModel.getValue(position));
+
     }
 
 
