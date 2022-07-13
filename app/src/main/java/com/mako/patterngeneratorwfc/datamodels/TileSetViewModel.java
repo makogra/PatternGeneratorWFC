@@ -39,7 +39,7 @@ public class TileSetViewModel extends AndroidViewModel {
         if (application.getApplicationContext() == null)
             Log.d(TAG, "Null jak nic");
         mTileSetRepository = TileSetRepository.getInstance(application);
-        Log.d(TAG, "Constractor");
+        Log.d(TAG, "TileSetViewModel() called with: application = [" + application + "]");
         tileSetList = mTileSetRepository.getTileSetList();
 
 
@@ -47,7 +47,8 @@ public class TileSetViewModel extends AndroidViewModel {
 
     public void initCurrentId() {
         if (currentId == null){
-            currentId = mTileSetRepository.getFirstTileSet();
+            Log.d(TAG, "initCurrentId() called");
+            setCurrentId(mTileSetRepository.getFirstTileSet());
         }
     }
 
