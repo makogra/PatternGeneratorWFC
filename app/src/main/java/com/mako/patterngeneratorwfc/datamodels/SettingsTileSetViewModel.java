@@ -73,9 +73,12 @@ public class SettingsTileSetViewModel extends ViewModel {
         settingsList.addAll(Arrays.asList(settingsArr));
     }
 
-    public void initMinMaxValue(){
+    public void initMinMax(){
         this.settingsMin = new int[settingsLength];
         this.settingsMax = new int[settingsLength];
+    }
+
+    public void initValue() {
         this.settingsValue = new int[settingsLength];
     }
 
