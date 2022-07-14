@@ -8,6 +8,7 @@ public class WFC {
     private final int tilesOverLap;
     private final int outputHeight;
     private final int outputWidth;
+    private final Propagator propagator;
 
     public WFC(int[][] valueGrid, int patternSize, int tilesOverLap, int outputHeight, int outputWidth) {
         this.valueGrid = valueGrid;
@@ -15,6 +16,8 @@ public class WFC {
         this.tilesOverLap = tilesOverLap;
         this.outputHeight = outputHeight;
         this.outputWidth = outputWidth;
+        //TODO fill propagator constructor
+        this.propagator = new Propagator();
     }
 
     //Getters
