@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class Wave {
 
@@ -51,6 +52,7 @@ public class Wave {
     private boolean isCollapsed;
     private Cell[][] wave;
     private int[][] outputGrid;
+    private PriorityQueue<EntropyEntry> lowestEntropyQueue;
 
     Wave(int outputHeight, int outputWidth, int patternSize){
         this.outputPatternGridHeight = (int) Math.ceil((outputHeight-1)/(double)(patternSize-1));
@@ -103,6 +105,10 @@ public class Wave {
         if (numberOfCellsLeftToObserve < 0){
             Log.w(TAG, "checkIfCollapsed: numberOfCellsLeftToObserve is lover than 0: " + numberOfCellsLeftToObserve );
         }
+    }
+
+    void addToLowestEntropyQueue(int row, int col){
+        lowestEntropyQueue.add(new EntropyEntry(row, col, wave[row][col].getEntropy()));
     }
 
     @NonNull
