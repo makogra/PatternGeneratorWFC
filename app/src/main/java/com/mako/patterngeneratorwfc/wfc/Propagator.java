@@ -1,5 +1,8 @@
 package com.mako.patterngeneratorwfc.wfc;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Propagator {
 
     private static class EntryPattern{
@@ -18,6 +21,14 @@ public class Propagator {
         }
 
 
+    }
+
+    private Queue<EntryPattern> propagateQueue;
+    private final Wave wave;
+
+    Propagator(Wave wave){
+        this.wave = wave;
+        propagateQueue = new LinkedList<>();
     }
 
     public void addToPropagate(int row, int col, int patternId, boolean b) {
