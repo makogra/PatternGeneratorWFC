@@ -63,20 +63,28 @@ public class Wave {
     }
 
     //Getters
-    boolean isCellObserved(int row, int col){
+    public boolean isCellObserved(int row, int col){
         return wave[row][col].isObserved();
     }
 
-    Cell getCell(int row, int col){
+    public Cell getCell(int row, int col){
         return wave[row][col];
     }
 
-    int getOutputValue(int row, int col){
+    public int getOutputValue(int row, int col){
         return outputGrid[row][col];
     }
 
     public int[][] getOutputGrid() {
         return outputGrid;
+    }
+
+    public int getHeight() {
+        return outputPatternGridHeight;
+    }
+
+    public int getWidth() {
+        return outputPatternGridWidth;
     }
 
     boolean isCollapsed(){
