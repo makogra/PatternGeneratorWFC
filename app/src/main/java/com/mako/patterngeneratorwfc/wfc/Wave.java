@@ -9,16 +9,21 @@ import java.util.Arrays;
 public class Wave {
 
     private static final String TAG = "Wave";
+    private final int outputPatternGridWidth;
+    private final int outputPatternGridHeight;
     private int numberOfCellsLeftToObserve;
     private boolean isCollapsed;
     private Cell[][] wave;
     private int[][] outputGrid;
 
-    Wave(int rows, int cols){
-        this.wave = new Cell[rows][cols];
-        this.outputGrid = new int[rows][cols];
-        this.numberOfCellsLeftToObserve = rows * cols;
+    Wave(int outputHeight, int outputWidth, int patternSize){
+        this.outputPatternGridHeight = (int) Math.ceil((outputHeight-1)/(double)(patternSize-1));
+        this.outputPatternGridWidth = (int) Math.ceil((outputWidth-1)/(double)(patternSize-1));
+        this.wave = new Cell[outputPatternGridHeight][outputPatternGridWidth];
+        this.outputGrid = new int[outputPatternGridHeight][outputPatternGridWidth];
+        this.numberOfCellsLeftToObserve = outputPatternGridHeight * outputPatternGridWidth;
         this.isCollapsed = false;
+
     }
 
     //Getters
