@@ -47,6 +47,27 @@ public class Cell {
         updateEntropy();
     }
 
+    //Getters
+    public double getEntropy() {
+        return entropy;
+    }
+
+    public int getNumberOfPossiblePatterns() {
+        return numberOfPossiblePatterns;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public boolean isObserved() {
+        return isObserved;
+    }
+
     private List<List<List<Integer>>> clonePatternEnables(List<List<List<Integer>>> defaultPatternEnablers) {
         List<List<List<Integer>>> copy = new ArrayList<>(defaultPatternEnablers.size());
         for (int patternId = 0; patternId < defaultPatternEnablers.size(); patternId++) {
@@ -75,10 +96,6 @@ public class Cell {
         }
 
         entropy = Math.log(totalWeight) - (sumOfWeightLogWeight / totalWeight) + entropyNoise;
-    }
-
-    public boolean isObserved() {
-        return false;
     }
 
     private void updatePossiblePatterns() {
