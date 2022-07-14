@@ -112,4 +112,57 @@ public class Cell {
         if (numberOfPossiblePatterns == 0)
             isObserved = true;
     }
+
+    public void removePatternFromPatternEnablers(int directionIndex, int patternIndex) {
+        List<Integer> helperList;
+        for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
+            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null)
+                continue;
+            helperList = patternEnablers.get(patternId).get(directionIndex);
+            if (helperList.remove((Integer) patternIndex)) {
+                if (helperList.isEmpty()) {
+                    possiblePatterns[patternId] = false;
+                    numberOfPossiblePatterns--;
+                    patternEnablers.set(patternId, null);
+                    propagator.addToPropagate(row, col, patternId, true);
+                }
+            }
+        }
+        update();
+    }
+
+    void removePatternEnablesExceptPattern(int directionIndex, int patternIndex) {
+        List<Integer> listOfPatternEnables;
+        List<Integer> listOfPatternsToRemove;
+        for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
+            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null)
+                continue;
+
+            listOfPatternsToRemove = new ArrayList<>();
+            listOfPatternEnables = patternEnablers.get(patternId).get(directionIndex);
+
+            for (Integer pattern : listOfPatternEnables) {
+                if (pattern == patternIndex) {
+                    continue;
+                }
+                listOfPatternsToRemove.add(pattern);
+
+
+            }
+
+            for (Integer p : listOfPatternsToRemove) {
+                patternEnablers.get(patternId).get(directionIndex).remove(p);
+            }
+
+            if (listOfPatternEnables.isEmpty()) {
+                possiblePatterns[patternId] = false;
+                numberOfPossiblePatterns--;
+                patternEnablers.set(patternId, null);
+                propagator.addToPropagate(row, col, patternId, true);
+            }
+
+        }
+
+        update();
+    }
 }
