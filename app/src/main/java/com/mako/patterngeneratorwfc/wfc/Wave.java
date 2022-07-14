@@ -8,6 +8,42 @@ import java.util.Arrays;
 
 public class Wave {
 
+    private static class EntropyEntry implements Comparable<EntropyEntry>{
+        int row;
+        int col;
+        double entropy;
+
+        public EntropyEntry(int row, int col, double entropy) {
+            this.row = row;
+            this.col = col;
+            this.entropy = entropy;
+        }
+
+        @Override
+        public int compareTo(EntropyEntry o) {
+            return Double.compare(this.entropy, o.entropy);
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "EntropyEntry{" +
+                    "row=" + row +
+                    ", col=" + col +
+                    ", entropy=" + entropy +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof EntropyEntry)){
+                return false;
+            }
+            EntropyEntry e = (EntropyEntry) obj;
+            return e.row == this.row && e.col == this.col;
+        }
+    }
+
     private static final String TAG = "Wave";
     private final int outputPatternGridWidth;
     private final int outputPatternGridHeight;
