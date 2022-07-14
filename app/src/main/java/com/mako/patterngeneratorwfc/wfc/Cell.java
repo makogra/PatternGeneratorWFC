@@ -2,6 +2,7 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import kotlin.random.Random;
@@ -164,5 +165,50 @@ public class Cell {
         }
 
         update();
+    }
+
+    public int observe() {
+        if (isObserved) {
+            // Cell is already observed
+            return -2;
+        }
+        if (numberOfPossiblePatterns == 0) {
+            // Contradiction. Any pattern can't be placed
+            return -1;
+        }
+
+
+        int patternIndex = getPatternIndex();
+
+
+
+        if (patternIndex < 0 || patternIndex >= totalNumberOfPatterns) {
+            //Error
+            return -3;
+        }
+        // success
+        setAllPossiblePatternsToFalse();
+        isObserved = true;
+        return patternIndex;
+    }
+
+    private void setAllPossiblePatternsToFalse() {
+        Arrays.fill(possiblePatterns, false);
+        Collections.fill(patternEnablers, null);
+    }
+
+    private int getPatternIndex() {
+        Random random = Random.Default;
+        updatePossiblePatterns();
+        updateNumberOfPossiblePatterns();
+        int randomIndex = random.nextInt(numberOfPossiblePatterns);
+
+        for (int patternIndex = 0; patternIndex < possiblePatterns.length; patternIndex++) {
+            if (!possiblePatterns[patternIndex])
+                continue;
+            if (randomIndex-- <= 0)
+                return patternIndex;
+        }
+        return possiblePatterns.length;
     }
 }
