@@ -9,6 +9,7 @@ public class WFC {
     private final int outputHeight;
     private final int outputWidth;
     private final Propagator propagator;
+    private final Wave wave;
 
     public WFC(int[][] valueGrid, int patternSize, int tilesOverLap, int outputHeight, int outputWidth) {
         this.valueGrid = valueGrid;
@@ -16,8 +17,10 @@ public class WFC {
         this.tilesOverLap = tilesOverLap;
         this.outputHeight = outputHeight;
         this.outputWidth = outputWidth;
+        this.wave = new Wave(outputHeight, outputWidth, patternSize);
         //TODO fill propagator constructor
-        this.propagator = new Propagator();
+
+        this.propagator = new Propagator(wave);
     }
 
     //Getters
