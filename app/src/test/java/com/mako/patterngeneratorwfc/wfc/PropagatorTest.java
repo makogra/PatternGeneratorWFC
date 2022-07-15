@@ -10,17 +10,24 @@ public class PropagatorTest {
 
     @Before
     public void setUp() throws Exception {
-        int[][] inputValueGrid = new int[][]{
+        String[][] inputGrid = new String[][]{
+                {"G","G","G","G","L","S","S","S"},
+                {"G","G","G","L","L","S","S","S"},
+                {"G","G","G","L","S","S","S","S"},
+                {"G","G","G","L","S","S","S","S"},
+                {"G","G","G","L","S","S","S","S"},
+        };
+        int[][] valueGrid = new int[][]{
                 {1,1,1,1,2,3,3,3},
                 {1,1,1,2,2,3,3,3},
                 {1,1,1,2,3,3,3,3},
                 {1,1,1,2,3,3,3,3},
                 {1,1,1,2,3,3,3,3},
-        };;
+        };
         int outputHeight = 64;
         int outputWidth = 64;
         int patternSize = 3;
         int tilesOverLap = 1;
-        wfc = new WFC(inputValueGrid, patternSize, tilesOverLap, outputHeight, outputWidth);
+        wfc = new WFC(inputGrid, patternSize, tilesOverLap, outputHeight, outputWidth);
     }
 }
