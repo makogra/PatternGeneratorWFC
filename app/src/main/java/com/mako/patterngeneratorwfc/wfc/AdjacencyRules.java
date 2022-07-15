@@ -6,6 +6,8 @@ import java.util.List;
 public class AdjacencyRules {
 
     private final int totalNumberOfPatterns;
+    // defaultPatternEnablers.get(patternIndex).get(directionIndex).get(patternEnabler)
+    // List that contains possible PatternEnablers for each direction for each pattern
     private List<List<List<Integer>>> defaultPatternEnablers;
     private final List<Integer[][]> patternList;
     private final int patternSize;
