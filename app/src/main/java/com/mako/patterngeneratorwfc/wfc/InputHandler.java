@@ -52,7 +52,9 @@ public class InputHandler {
             }
         };
         for (String[] row : INPUT_GRID){
-            list.addAll(Arrays.asList(row));
+            for (String item : row){
+                list.add(item);
+            }
         }
         return list;
     }
