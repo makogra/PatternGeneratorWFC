@@ -11,11 +11,11 @@ public class PropagatorTest {
     @Before
     public void setUp() throws Exception {
         String[][] inputGrid = new String[][]{
-                {"G","G","G","G","L","S","S","S"},
-                {"G","G","G","L","L","S","S","S"},
-                {"G","G","G","L","S","S","S","S"},
-                {"G","G","G","L","S","S","S","S"},
-                {"G","G","G","L","S","S","S","S"},
+                {"G","G","G","G","C","S","S","S"},
+                {"G","G","G","C","C","S","S","S"},
+                {"G","G","G","C","S","S","S","S"},
+                {"G","G","G","C","S","S","S","S"},
+                {"G","G","G","C","S","S","S","S"},
         };
         int[][] valueGrid = new int[][]{
                 {1,1,1,1,2,3,3,3},
