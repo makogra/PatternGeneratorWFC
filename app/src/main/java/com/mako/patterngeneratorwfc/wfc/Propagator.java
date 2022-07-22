@@ -1,5 +1,7 @@
 package com.mako.patterngeneratorwfc.wfc;
 
+import android.util.Log;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -25,6 +27,7 @@ public class Propagator {
 
     private Queue<EntryPattern> propagateQueue;
     private final Wave wave;
+    private final String TAG = "Propagator";
 
     Propagator(Wave wave){
         this.wave = wave;
@@ -33,10 +36,13 @@ public class Propagator {
 
     void propagate(){
         EntryPattern entryPattern;
+        int propagationCount = 0;
         while (!propagateQueue.isEmpty()) {
             entryPattern = propagateQueue.poll();
             propagateAt(entryPattern);
+            propagationCount++;
         }
+        Log.d(TAG, "propagate: count = " + propagationCount);
     }
 
     void propagateAt(EntryPattern entry){
