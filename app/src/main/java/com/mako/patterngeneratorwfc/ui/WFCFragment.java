@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.WFCViewModel;
+import com.mako.patterngeneratorwfc.wfc.WFC;
 
 public class WFCFragment extends Fragment {
 
@@ -55,6 +57,22 @@ public class WFCFragment extends Fragment {
         //updateUI(view);
         Log.d(TAG, "onCreateView() called with: inflater = [" + inflater + "], container = [" + container + "], savedInstanceState = [" + savedInstanceState + "]");
         //testMSettingsViewModel();
+        Button startButton = view.findViewById(R.id.fragment_wfc_start_button);
+        startButton.setOnClickListener(v -> {
+            new Thread(() -> {
+                String[][] tempInputGrid =  new String[][]{
+                        {"G","G","G","G","C","S","S","S"},
+                        {"G","G","G","C","C","S","S","S"},
+                        {"G","G","G","C","S","S","S","S"},
+                        {"G","G","G","C","S","S","S","S"},
+                        {"G","G","G","C","S","S","S","S"}
+                };
+                Log.d(TAG, "onCreateView: started wfc");
+                WFC wfc = new WFC(tempInputGrid, 3, 1, 16, 16);
+                wfc.run(30);
+            }).start();
+
+        });
         return view;
     }
 
