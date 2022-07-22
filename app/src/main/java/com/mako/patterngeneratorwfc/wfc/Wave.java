@@ -109,18 +109,18 @@ public class Wave {
         return isCollapsed;
     }
 
+    private EntropyEntry getLowestEntropyEntry() {
+        if( lowestEntropyQueue.size() == 0){
+            checkIfIsCollapse();
+            if (isCollapsed)
+                return null;
+        }
+        return lowestEntropyQueue.poll();
+    }
+
     void decreaseNumberOfCellsLeftToObserve(){
         numberOfCellsLeftToObserve--;
 
-    }
-
-    private void checkIfCollapsed(){
-        if (numberOfCellsLeftToObserve == 0){
-            isCollapsed = true;
-        }
-        if (numberOfCellsLeftToObserve < 0){
-            Log.w(TAG, "checkIfCollapsed: numberOfCellsLeftToObserve is lover than 0: " + numberOfCellsLeftToObserve );
-        }
     }
 
     void addToLowestEntropyQueue(int row, int col){
@@ -163,10 +163,13 @@ public class Wave {
                 return false;
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.N)
+
             @Override
             public boolean add(EntropyEntry entropyEntry) {
-                this.removeIf(entry -> entry.equals(entropyEntry) && entry.entropy > entropyEntry.entropy);
+                for (EntropyEntry entry : this){
+                    if (entry.equals(entropyEntry) && entry.entropy > entropyEntry.entropy)
+                        this.remove(entry);
+                }
 
                 return super.add(entropyEntry);
             }
@@ -177,6 +180,59 @@ public class Wave {
             }
         }
     }
+
+    public void collapse() {
+        EntropyEntry lowestEntropyEntry;
+        int row;
+        int col;
+        int patternValue;
+
+        do {
+            lowestEntropyEntry = getLowestEntropyEntry();
+            if (lowestEntropyEntry == null)
+                return;
+            row = lowestEntropyEntry.row;
+            col = lowestEntropyEntry.col;
+        } while (wave[row][col].isObserved());
+
+        patternValue = wave[row][col].observe();
+
+        switch (patternValue) {
+            case -1 :
+                throw new IllegalStateException("Contradiction");
+            case -2 :
+                wave[row][col].update();
+                if ((wave[row][col].isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !wave[row][col].isObserved()))
+                    throw new IllegalStateException("Contradiction");
+                return;
+            case -3 :
+                throw new IllegalStateException("ERROR IDK WTF");
+        }
+
+
+        this.outputPatternGrid[row][col] = patternValue;
+        propagator.addToPropagate(row, col, patternValue, false);
+    }
+
+    private void checkIfIsCollapse() {
+        boolean collapsed = true;
+        for (Cell[] row : wave){
+            for (Cell item : row)
+                if (!item.isObserved()){
+                    collapsed = false;
+                    if (item.getNumberOfPossiblePatterns() == 0)
+                        throw new IllegalStateException("Contradiction");
+                    else
+                        lowestEntropyQueue.add(new EntropyEntry(item.getRow(), item.getCol(), item.getEntropy()));
+                }
+        }
+        isCollapsed = collapsed;
+    }
+
+    void propagate(){
+        propagator.propagate();
+    }
+
 
     @NonNull
     @Override
