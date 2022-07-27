@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -37,6 +38,16 @@ public class AddTileSetActivity extends AppCompatActivity {
             save();
         });
 
+
+        NumberPicker numberPicker1 = findViewById(R.id.numberPicker1);
+        NumberPicker numberPicker2 = findViewById(R.id.numberPicker2);
+
+        numberPicker1.setMinValue(1);
+        numberPicker1.setMaxValue(7);
+        numberPicker1.setOnValueChangedListener((picker, oldVal, newVal) -> Log.d(TAG, "onCreate: number picker 1: new value: " + newVal));
+        numberPicker2.setMinValue(1);
+        numberPicker2.setMaxValue(7);
+        numberPicker2.setOnValueChangedListener((picker, oldVal, newVal) -> Log.d(TAG, "onCreate: number picker 2: new value: " + newVal));
     }
 
     private void save() {

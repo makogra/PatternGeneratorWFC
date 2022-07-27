@@ -11,7 +11,7 @@
         <entry key="app/src/main/res/layout/cardview_settings_tile_set.xml" value="0.67" />
         <entry key="app/src/main/res/layout/cardview_tile_set.xml" value="0.375" />
         <entry key="app/src/main/res/layout/content_add_tile_set.xml" value="0.19479166666666667" />
-        <entry key="app/src/main/res/layout/content_add_tile_set_activity.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/content_add_tile_set_activity.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/fragment_settings_tile_set.xml" value="0.23539823008849559" />
         <entry key="app/src/main/res/layout/fragment_tile_set.xml" value="0.37604166666666666" />
