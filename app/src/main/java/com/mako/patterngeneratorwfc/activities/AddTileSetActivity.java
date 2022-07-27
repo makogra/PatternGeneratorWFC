@@ -6,14 +6,12 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.datamodels.AddTileSetViewModel;
 
@@ -39,22 +37,22 @@ public class AddTileSetActivity extends AppCompatActivity {
         });
 
 
-        NumberPicker numberPicker1 = findViewById(R.id.numberPicker1);
-        NumberPicker numberPicker2 = findViewById(R.id.numberPicker2);
+        NumberPicker numberPickerRow = findViewById(R.id.number_picker_row);
+        NumberPicker numberPickerCol = findViewById(R.id.number_picker_col);
 
-        numberPicker1.setMinValue(1);
-        numberPicker1.setMaxValue(7);
-        numberPicker1.setOnValueChangedListener((picker, oldVal, newVal) -> {
+        numberPickerRow.setMinValue(1);
+        numberPickerRow.setMaxValue(7);
+        numberPickerRow.setOnValueChangedListener((picker, oldVal, newVal) -> {
             Log.d(TAG, "onCreate: number picker 1: new value: " + newVal);
             //synchronize numberPickers, so both have the same value
-            numberPicker2.setValue(newVal);
+            numberPickerCol.setValue(newVal);
         });
-        numberPicker2.setMinValue(1);
-        numberPicker2.setMaxValue(7);
-        numberPicker2.setOnValueChangedListener((picker, oldVal, newVal) -> {
+        numberPickerCol.setMinValue(1);
+        numberPickerCol.setMaxValue(7);
+        numberPickerCol.setOnValueChangedListener((picker, oldVal, newVal) -> {
             Log.d(TAG, "onCreate: number picker 2: new value: " + newVal);
             //synchronize numberPickers, so both have the same value
-            numberPicker1.setValue(newVal);
+            numberPickerRow.setValue(newVal);
         });
     }
 
