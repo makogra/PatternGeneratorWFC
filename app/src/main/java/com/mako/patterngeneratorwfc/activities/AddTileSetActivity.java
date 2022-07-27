@@ -44,10 +44,18 @@ public class AddTileSetActivity extends AppCompatActivity {
 
         numberPicker1.setMinValue(1);
         numberPicker1.setMaxValue(7);
-        numberPicker1.setOnValueChangedListener((picker, oldVal, newVal) -> Log.d(TAG, "onCreate: number picker 1: new value: " + newVal));
+        numberPicker1.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            Log.d(TAG, "onCreate: number picker 1: new value: " + newVal);
+            //synchronize numberPickers, so both have the same value
+            numberPicker2.setValue(newVal);
+        });
         numberPicker2.setMinValue(1);
         numberPicker2.setMaxValue(7);
-        numberPicker2.setOnValueChangedListener((picker, oldVal, newVal) -> Log.d(TAG, "onCreate: number picker 2: new value: " + newVal));
+        numberPicker2.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            Log.d(TAG, "onCreate: number picker 2: new value: " + newVal);
+            //synchronize numberPickers, so both have the same value
+            numberPicker1.setValue(newVal);
+        });
     }
 
     private void save() {
