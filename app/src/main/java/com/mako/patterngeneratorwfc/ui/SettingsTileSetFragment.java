@@ -25,10 +25,10 @@ import kotlin.NotImplementedError;
 
 public class SettingsTileSetFragment extends Fragment {
 
-    private static final int MAX_OUTPUT_HEIGHT = 512;
-    private static final int MAX_OUTPUT_WIDTH = 512;
-    private static final int MIN_OUTPUT_HEIGHT = 12;
-    private static final int MIN_OUTPUT_WIDTH = 12;
+    private static final int MAX_OUTPUT_HEIGHT = 30;
+    private static final int MAX_OUTPUT_WIDTH = 30;
+    private static final int MIN_OUTPUT_HEIGHT = 3;
+    private static final int MIN_OUTPUT_WIDTH = 3;
     private static final String TAG = "SettingsTileSetFragment";
     private static ViewModelProvider sViewModelProvider;
     private static TileSetRepository sTileSetRepository;
