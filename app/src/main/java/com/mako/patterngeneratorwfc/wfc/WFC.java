@@ -204,4 +204,12 @@ public class WFC {
         return inputValueMap.get(valueId);
     }
 
+    public int[][] getOutputGrid(){
+        return wave.getOutputPatternGrid();
+    }
+
+    public boolean isCollapsed(){
+        return wave.isCollapsed();
+    }
+
 }
