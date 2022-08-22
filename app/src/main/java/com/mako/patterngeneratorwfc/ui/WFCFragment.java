@@ -4,7 +4,10 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mako.patterngeneratorwfc.R;
+import com.mako.patterngeneratorwfc.adapters.ResultAdapter;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.WFCViewModel;
 import com.mako.patterngeneratorwfc.wfc.WFC;
-
-import java.util.Objects;
 
 public class WFCFragment extends Fragment {
 
@@ -74,14 +76,33 @@ public class WFCFragment extends Fragment {
 
                 WFC wfc = new WFC(tempInputGrid, 3, 1, 16, 16);
                 wfc.run(30);
+                if (wfc.isCollapsed()){
+                    int[][] outputGrid = wfc.getOutputGrid();
+                    int patternSize = wfc.getPatternSize();
+                    int height = wfc.getOutputHeight();
+                    int width = wfc.getOutputWidth();
+                    Log.d(TAG, "onCreateView: outputGrid.length= " + outputGrid.length + " outputGrid[0].length = " + outputGrid[0].length + " width = " + width + " height = " + height );
+                    ResultFragment resultFragment = new ResultFragment(outputGrid, patternSize, height, width);
+
+                    new Handler(requireContext().getMainLooper()).post(() -> showResultFragment(resultFragment));
+                }
             }).start();
 
         });
         return view;
     }
 
+    private void showResultFragment(ResultFragment resultFragment) {
+        RecyclerView recyclerView = requireView().findViewById(R.id.fragment_wfc_recycler_view);
+        ResultAdapter resultAdapter = new ResultAdapter(resultFragment.getOutputGrid(), resultFragment.getWidth(), resultFragment.getHeight(), resultFragment.getPatternSize());
+        recyclerView.setAdapter(resultAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), resultFragment.getWidth()));
+
+        //new Handler(requireContext().getMainLooper()).post(() -> layout.addView(gridView));
+    }
+
     private void displayWFCStarted() {
-        Log.d(TAG, "displayWFCStarted: started wfc");
+        Log.d(TAG, "displayWFCStarted: started wfc " + Thread.currentThread().getName());
         Toast.makeText(requireActivity().getApplicationContext(), "WFC started...", Toast.LENGTH_SHORT).show();
 
     }
@@ -91,7 +112,7 @@ public class WFCFragment extends Fragment {
         super.onResume();
         updateViewModels();
         updateUI(requireView());
-        Log.d(TAG, "onResume() called");
+        Log.d(TAG, "onResume() called ");
         testMSettingsViewModel();
 
     }
