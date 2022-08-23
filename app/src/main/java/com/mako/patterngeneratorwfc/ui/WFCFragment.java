@@ -81,8 +81,9 @@ public class WFCFragment extends Fragment {
                     int patternSize = wfc.getPatternSize();
                     int height = wfc.getOutputHeight();
                     int width = wfc.getOutputWidth();
+                    int overlap = wfc.getTilesOverLap();
                     Log.d(TAG, "onCreateView: outputGrid.length= " + outputGrid.length + " outputGrid[0].length = " + outputGrid[0].length + " width = " + width + " height = " + height );
-                    ResultFragment resultFragment = new ResultFragment(outputGrid, patternSize, height, width);
+                    ResultFragment resultFragment = new ResultFragment(outputGrid, patternSize, height, width, overlap, wfc.getPatternList());
 
                     new Handler(requireContext().getMainLooper()).post(() -> showResultFragment(resultFragment));
                 }
@@ -94,7 +95,7 @@ public class WFCFragment extends Fragment {
 
     private void showResultFragment(ResultFragment resultFragment) {
         RecyclerView recyclerView = requireView().findViewById(R.id.fragment_wfc_recycler_view);
-        ResultAdapter resultAdapter = new ResultAdapter(resultFragment.getOutputGrid(), resultFragment.getWidth(), resultFragment.getHeight(), resultFragment.getPatternSize());
+        ResultAdapter resultAdapter = new ResultAdapter(resultFragment);
         recyclerView.setAdapter(resultAdapter);
         // recyclerView act like a grid with output resolution (resultFragment.getWidth()) number of columns
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), resultFragment.getWidth()));
