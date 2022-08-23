@@ -14,26 +14,27 @@ import androidx.lifecycle.ViewModelProvider;
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 
+import java.util.List;
+
 public class ResultFragment {
 
     private static final String TAG = "ResultFragment";
+    private final List<Integer[][]> patternList;
 
-
+    private int overlap;
     private int[][] outputGrid;
     private int patternSize;
     private int height;
     private int width;
 
-    public ResultFragment() {
-        Log.d(TAG, "ResultFragment: " + Thread.currentThread().getName());
 
-    }
-
-    public ResultFragment(int[][] outputGrid, int patternSize, int height, int width) {
+    public ResultFragment(int[][] outputGrid, int patternSize, int height, int width, int overlap, List<Integer[][]> patternList) {
         this.outputGrid = outputGrid;
         this.patternSize = patternSize;
         this.height = height;
         this.width = width;
+        this.overlap = overlap;
+        this.patternList = patternList;
     }
 
     public int getWidth() {
@@ -50,5 +51,13 @@ public class ResultFragment {
 
     public int getPatternSize() {
         return patternSize;
+    }
+
+    public int getOverlap() {
+        return overlap;
+    }
+
+    public List<Integer[][]> getPatternList() {
+        return patternList;
     }
 }
