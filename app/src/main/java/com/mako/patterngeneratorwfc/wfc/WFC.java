@@ -56,6 +56,10 @@ public class WFC {
         return outputWidth;
     }
 
+    public List<Integer[][]> getPatternList() {
+        return patternList;
+    }
+
     private void initWave(){
         wave = new Wave(outputHeight, outputWidth, patternSize, defaultPatternEnablers, inputHandler.getTotalNumberOfPatterns(), inputHandler.getRelativeFrequency());
     }
@@ -116,17 +120,24 @@ public class WFC {
         Integer[][] pattern;
         StringBuilder stringBuilder;
 
+        // For each row of patterns
         for (int patternRow = 0; patternRow < patternGrid.length; patternRow++) {
+            //for each row in pattern - overlap
             for (int i = 0; i < patternSize-1; i++) {
                 stringBuilder = new StringBuilder();
+                // Horizontal (rows) out of bound check
                 if (patternRow * (patternSize-1) + i > outputHeight)
                     break;
+                // for each col of patterns
                 for (int patternCol = 0; patternCol < patternGrid[0].length; patternCol++) {
                     patternId = patternGrid[patternRow][patternCol];
                     pattern = patternList.get(patternId);
+                    // for each col in pattern
                     for (int j = 0; j < patternSize-1; j++) {
-                        if (patternCol * (patternSize-1) + j > outputWidth)
+                        // Vertical (columns) Out of bound check
+                        if (patternCol * (patternSize-1) + j > outputWidth) {
                             break;
+                        }
                         valueId = pattern[i][j];
                         //stringBuilder.append(stringWithColor(valueId));
                         stringBuilder.append(valueToString(valueId));
