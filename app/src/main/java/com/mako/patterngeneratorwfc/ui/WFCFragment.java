@@ -1,27 +1,29 @@
 package com.mako.patterngeneratorwfc.ui;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.mako.patterngeneratorwfc.R;
-import com.mako.patterngeneratorwfc.adapters.ResultAdapter;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.WFCViewModel;
 import com.mako.patterngeneratorwfc.wfc.WFC;
+
+import java.util.List;
 
 public class WFCFragment extends Fragment {
 
@@ -85,7 +87,8 @@ public class WFCFragment extends Fragment {
                     Log.d(TAG, "onCreateView: outputGrid.length= " + outputGrid.length + " outputGrid[0].length = " + outputGrid[0].length + " width = " + width + " height = " + height );
                     ResultFragment resultFragment = new ResultFragment(outputGrid, patternSize, height, width, overlap, wfc.getPatternList());
 
-                    new Handler(requireContext().getMainLooper()).post(() -> showResultFragment(resultFragment));
+                    //new Handler(requireContext().getMainLooper()).post(() -> showResultFragment(resultFragment));
+                    showResultFragment(resultFragment, wfc.getInputValueMap());
                 }
             }).start();
 
@@ -93,14 +96,110 @@ public class WFCFragment extends Fragment {
         return view;
     }
 
-    private void showResultFragment(ResultFragment resultFragment) {
+    private void showResultFragment(ResultFragment resultFragment, List<String> inputValueMap) {
+        /*
         RecyclerView recyclerView = requireView().findViewById(R.id.fragment_wfc_recycler_view);
         ResultAdapter resultAdapter = new ResultAdapter(resultFragment);
         recyclerView.setAdapter(resultAdapter);
         // recyclerView act like a grid with output resolution (resultFragment.getWidth()) number of columns
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), resultFragment.getWidth()));
 
+         */
+
         //new Handler(requireContext().getMainLooper()).post(() -> layout.addView(gridView));
+        Log.d(TAG, "showResultFragment: started");
+
+
+
+        // For each row of patterns
+        ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
+        int[][] patternGrid = resultFragment.getOutputGrid();
+        int     patternSize = resultFragment.getPatternSize(),
+                outputHeight = resultFragment.getHeight(),
+                outputWidth = resultFragment.getWidth(),
+                overlap = resultFragment.getOverlap(),
+                x,
+                y,
+                patternId,
+                color,
+                height = 500,
+                width = 500;
+        List<Integer[][]> patternList = resultFragment.getPatternList();
+        Integer[][] pattern;
+        Integer valueId;
+
+
+        Bitmap outputBitmap = Bitmap.createBitmap(resultFragment.getWidth(), resultFragment.getHeight(), Bitmap.Config.ARGB_8888);
+        for (int patternRow = 0; patternRow < patternGrid.length; patternRow++) {
+            //for each row in pattern - overlap
+            for (int i = 0; i < patternSize - overlap; i++) {
+                // Horizontal (rows) out of bound check
+                x = patternRow * (patternSize - overlap) + i;
+                if (x > outputHeight)
+                    break;
+                // for each col of patterns
+                for (int patternCol = 0; patternCol < patternGrid[0].length; patternCol++) {
+                    patternId = patternGrid[patternRow][patternCol];
+                    pattern = patternList.get(patternId);
+                    // for each col in pattern
+                    for (int j = 0; j < patternSize - overlap; j++) {
+                        // Vertical (columns) Out of bound check
+                        y = patternCol * (patternSize - overlap) + j;
+                        if (y > outputWidth) {
+                            break;
+                        }
+                        valueId = pattern[i][j];
+                        color = getColorOfAPixel(valueId, inputValueMap);
+                        outputBitmap.setPixel(x,y,color);
+                    }
+                }
+            }
+        }
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(outputBitmap, width, height, false);
+
+        FrameLayout frameLayout = requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
+        new Handler(requireContext().getMainLooper()).post(() -> {
+            Log.d(TAG, "showResultFragment: width = " + frameLayout.getWidth() + " height = " + frameLayout.getHeight());
+            Log.d(TAG, "showResultFragment: width = " + frameLayout.getLayoutParams().width + " height = " + frameLayout.getLayoutParams().width);
+            ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
+            params.height = height;
+            params.width = width;
+            frameLayout.setLayoutParams(params);
+
+            imageView.setImageBitmap(scaledBitmap);
+
+
+            Log.d(TAG, "showResultFragment: width = " + frameLayout.getLayoutParams().width + " height = " + frameLayout.getLayoutParams().width);
+            imageView.post(() -> {
+                Log.d(TAG, "showResultFragment: POST width = " + imageView.getWidth() + " height = " + imageView.getHeight());
+            });
+            Log.d(TAG, "showResultFragment: ended");
+        });
+        Log.d(TAG, "showResultFragment: finished");
+
+    }
+
+    private int getColorOfAPixel(Integer valueId, List<String> inputValueMap) {
+        int color;
+        String value = inputValueMap.get(valueId);
+        switch (value){
+            case "G":
+                color = Color.GREEN;
+                break;
+            case "C":
+                color = Color.YELLOW;
+                break;
+            case "S":
+                color = Color.BLUE;
+                break;
+            case "M":
+                color = Color.GRAY;
+                break;
+            default:
+                color = Color.BLACK;
+        }
+        return color;
     }
 
     private void displayWFCStarted() {
