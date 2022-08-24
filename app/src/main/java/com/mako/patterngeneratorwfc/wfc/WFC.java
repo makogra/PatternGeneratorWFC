@@ -223,4 +223,7 @@ public class WFC {
         return wave.isCollapsed();
     }
 
+    public List<String> getInputValueMap() {
+        return inputValueMap;
+    }
 }
