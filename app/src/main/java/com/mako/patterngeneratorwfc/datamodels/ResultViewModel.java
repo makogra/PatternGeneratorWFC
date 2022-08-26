@@ -1,21 +1,30 @@
 package com.mako.patterngeneratorwfc.datamodels;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.ViewModel;
 
 public class ResultViewModel extends ViewModel {
 
 
-    private int[][] outputGrid;
-    private int patternSize;
+    private Bitmap bitmap;
     private int height;
     private int width;
 
-    public void setOutputGrid(int[][] outputGrid) {
-        this.outputGrid = outputGrid;
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 
-    public void setPatternSize(int patternSize) {
-        this.patternSize = patternSize;
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     public void setHeight(int height) {
@@ -24,9 +33,5 @@ public class ResultViewModel extends ViewModel {
 
     public void setWidth(int width) {
         this.width = width;
-    }
-
-    public int getPatternSize() {
-        return patternSize;
     }
 }

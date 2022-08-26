@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mako.patterngeneratorwfc.R;
+import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.WFCViewModel;
@@ -33,6 +35,7 @@ public class WFCFragment extends Fragment {
     private TileSetViewModel mTileSetViewModel;
     private SettingsTileSetViewModel mSettingsTileSetViewModel;
     private WFCViewModel mWFCViewModel;
+    private ResultViewModel resultViewModel;
 
     public WFCFragment() {
     }
@@ -47,6 +50,7 @@ public class WFCFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
+        resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
     }
 
     @Override
@@ -54,6 +58,7 @@ public class WFCFragment extends Fragment {
         super.onStart();
         Log.d(TAG, "onStart() called");
         initViewModels();
+        displayResult();
     }
 
     @Override
@@ -91,12 +96,30 @@ public class WFCFragment extends Fragment {
                     showResultFragment(resultFragment, wfc.getInputValueMap());
                 }
             }).start();
-
+            displayResult();
         });
         return view;
     }
 
+
+
+    private void displayResult() {
+        if (resultViewModel.getBitmap() == null)
+            return;
+        Bitmap bitmap = createScaledBitmap(resultViewModel.getBitmap());
+        attacheScaledBitmap(bitmap);
+    }
+
+    private Bitmap createScaledBitmap(Bitmap bitmap) {
+        return createScaledBitmap(bitmap, 400, 400);
+    }
+
+    private Bitmap createScaledBitmap(Bitmap bitmap, int width, int height) {
+        return Bitmap.createScaledBitmap(bitmap, width, height, false);
+    }
+
     private void showResultFragment(ResultFragment resultFragment, List<String> inputValueMap) {
+        // TODO delete recycler view and adapter and all related to that
         /*
         RecyclerView recyclerView = requireView().findViewById(R.id.fragment_wfc_recycler_view);
         ResultAdapter resultAdapter = new ResultAdapter(resultFragment);
@@ -112,59 +135,44 @@ public class WFCFragment extends Fragment {
 
 
         // For each row of patterns
-        ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
+        if (resultViewModel.getHeight() == 0)
+            resultViewModel.setHeight(500);
+        if (resultViewModel.getWidth() == 0)
+            resultViewModel.setWidth(500);
         int[][] patternGrid = resultFragment.getOutputGrid();
         int     patternSize = resultFragment.getPatternSize(),
                 outputHeight = resultFragment.getHeight(),
                 outputWidth = resultFragment.getWidth(),
                 overlap = resultFragment.getOverlap(),
-                x,
-                y,
-                patternId,
-                color,
-                height = 500,
-                width = 500;
+                height = resultViewModel.getHeight(),
+                width = resultViewModel.getWidth();
         List<Integer[][]> patternList = resultFragment.getPatternList();
-        Integer[][] pattern;
-        Integer valueId;
+        Bitmap outputBitmap;
+        if (resultViewModel.getBitmap() == null){
+            resultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
+            outputBitmap = resultViewModel.getBitmap();
+            makeBitmap(inputValueMap, patternGrid, patternSize, overlap, patternList, outputBitmap);
+            resultViewModel.setBitmap(outputBitmap);
+        } else
+            outputBitmap = resultViewModel.getBitmap();
 
 
-        Bitmap outputBitmap = Bitmap.createBitmap(resultFragment.getWidth(), resultFragment.getHeight(), Bitmap.Config.ARGB_8888);
-        for (int patternRow = 0; patternRow < patternGrid.length; patternRow++) {
-            //for each row in pattern - overlap
-            for (int i = 0; i < patternSize - overlap; i++) {
-                // Horizontal (rows) out of bound check
-                x = patternRow * (patternSize - overlap) + i;
-                if (x > outputHeight)
-                    break;
-                // for each col of patterns
-                for (int patternCol = 0; patternCol < patternGrid[0].length; patternCol++) {
-                    patternId = patternGrid[patternRow][patternCol];
-                    pattern = patternList.get(patternId);
-                    // for each col in pattern
-                    for (int j = 0; j < patternSize - overlap; j++) {
-                        // Vertical (columns) Out of bound check
-                        y = patternCol * (patternSize - overlap) + j;
-                        if (y > outputWidth) {
-                            break;
-                        }
-                        valueId = pattern[i][j];
-                        color = getColorOfAPixel(valueId, inputValueMap);
-                        outputBitmap.setPixel(x,y,color);
-                    }
-                }
-            }
-        }
+        Bitmap scaledBitmap = createScaledBitmap(outputBitmap, width, height);
 
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(outputBitmap, width, height, false);
+        attacheScaledBitmap(scaledBitmap);
+        Log.d(TAG, "showResultFragment: finished");
 
-        FrameLayout frameLayout = requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
-        new Handler(requireContext().getMainLooper()).post(() -> {
+    }
+
+    private void attacheScaledBitmap(Bitmap scaledBitmap) {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            FrameLayout frameLayout = requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
+            ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
             Log.d(TAG, "showResultFragment: width = " + frameLayout.getWidth() + " height = " + frameLayout.getHeight());
             Log.d(TAG, "showResultFragment: width = " + frameLayout.getLayoutParams().width + " height = " + frameLayout.getLayoutParams().width);
             ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
-            params.height = height;
-            params.width = width;
+            params.height = scaledBitmap.getHeight();
+            params.width = scaledBitmap.getWidth();
             frameLayout.setLayoutParams(params);
 
             imageView.setImageBitmap(scaledBitmap);
@@ -176,8 +184,41 @@ public class WFCFragment extends Fragment {
             });
             Log.d(TAG, "showResultFragment: ended");
         });
-        Log.d(TAG, "showResultFragment: finished");
+    }
 
+    private void makeBitmap(List<String> inputValueMap, int[][] patternGrid, int patternSize, int overlap, List<Integer[][]> patternList, Bitmap outputBitmap) {
+        //
+        int patternId;
+        int x;
+        int y;
+        Integer valueId;
+        int color;
+        Integer[][] pattern;
+        for (int patternRow = 0; patternRow < patternGrid.length; patternRow++) {
+            //for each row in pattern - overlap
+            for (int i = 0; i < patternSize - overlap; i++) {
+                // Horizontal (rows) out of bound check
+                x = patternRow * (patternSize - overlap) + i;
+                if (x > outputBitmap.getHeight())
+                    break;
+                // for each col of patterns
+                for (int patternCol = 0; patternCol < patternGrid[0].length; patternCol++) {
+                    patternId = patternGrid[patternRow][patternCol];
+                    pattern = patternList.get(patternId);
+                    // for each col in pattern
+                    for (int j = 0; j < patternSize - overlap; j++) {
+                        // Vertical (columns) Out of bound check
+                        y = patternCol * (patternSize - overlap) + j;
+                        if (y > outputBitmap.getWidth()) {
+                            break;
+                        }
+                        valueId = pattern[i][j];
+                        color = getColorOfAPixel(valueId, inputValueMap);
+                        outputBitmap.setPixel(x,y,color);
+                    }
+                }
+            }
+        }
     }
 
     private int getColorOfAPixel(Integer valueId, List<String> inputValueMap) {
