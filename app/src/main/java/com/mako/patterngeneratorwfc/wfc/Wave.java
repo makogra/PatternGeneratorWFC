@@ -1,10 +1,6 @@
 package com.mako.patterngeneratorwfc.wfc;
 
-import android.os.Build;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import java.util.Arrays;
 import java.util.List;

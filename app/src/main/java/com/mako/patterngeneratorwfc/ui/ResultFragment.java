@@ -1,19 +1,5 @@
 package com.mako.patterngeneratorwfc.ui;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.mako.patterngeneratorwfc.R;
-import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
-
 import java.util.List;
 
 public class ResultFragment {
@@ -60,4 +46,6 @@ public class ResultFragment {
     public List<Integer[][]> getPatternList() {
         return patternList;
     }
+
+
 }

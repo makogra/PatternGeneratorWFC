@@ -1,16 +1,13 @@
 package com.mako.patterngeneratorwfc.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.service.quicksettings.Tile;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.TileSet;
