@@ -1,9 +1,7 @@
 package com.mako.patterngeneratorwfc.ui;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,7 +35,7 @@ public class WFCFragment extends Fragment {
     private TileSetViewModel mTileSetViewModel;
     private SettingsTileSetViewModel mSettingsTileSetViewModel;
     private WFCViewModel mWFCViewModel;
-    private ResultViewModel resultViewModel;
+    private ResultViewModel mResultViewModel;
 
     public WFCFragment() {
     }
@@ -52,36 +50,21 @@ public class WFCFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
-        resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
+        mResultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart() called");
         initViewModels();
-        FrameLayout frameLayout = requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
-        frameLayout.post(() -> {
-            Log.d(TAG, "onStart: frame width = " + frameLayout.getWidth() + " or params = " + frameLayout.getLayoutParams().width);
-            Log.d(TAG, "onStart: frame height = " + frameLayout.getHeight() + " or params = " + frameLayout.getLayoutParams().height);
-        });
-        ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
-        imageView.post(() -> {
-            Log.d(TAG, "onStart: image width = " + imageView.getWidth() + " or measure = " + imageView.getMeasuredWidth());
-            Log.d(TAG, "onStart: image height = " + imageView.getHeight() + " or measure = " + imageView.getMeasuredHeight());
-        });
-        Log.d(TAG, "onStart: frame width = " + frameLayout);
         displayResult();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_w_f_c, container, false);
-        //updateUI(view);
         Log.d(TAG, "onCreateView() called with: inflater = [" + inflater + "], container = [" + container + "], savedInstanceState = [" + savedInstanceState + "]");
-        //testMSettingsViewModel();
         Button startButton = view.findViewById(R.id.fragment_wfc_start_button);
         startButton.setOnClickListener(v -> {
             displayWFCStarted();
@@ -103,15 +86,11 @@ public class WFCFragment extends Fragment {
                     int height = wfc.getOutputHeight();
                     int width = wfc.getOutputWidth();
                     int overlap = wfc.getTilesOverLap();
-                    Log.d(TAG, "onCreateView: outputGrid.length= " + outputGrid.length + " outputGrid[0].length = " + outputGrid[0].length + " width = " + width + " height = " + height );
                     Result result = new Result(outputGrid, patternSize, height, width, overlap, wfc.getPatternList());
-
-                    //new Handler(requireContext().getMainLooper()).post(() -> showResultFragment(resultFragment));
 
                     showResult(result, wfc.getInputValueMap());
                 }
             }).start();
-            //displayResult();
         });
         return view;
     }
@@ -123,58 +102,25 @@ public class WFCFragment extends Fragment {
 
 
     private void displayResult() {
-        if (resultViewModel.getBitmap() == null)
+        if (mResultViewModel.getBitmap() == null)
             return;
-        //Bitmap bitmap = createScaledBitmap(resultViewModel.getBitmap());
-        attacheScaledBitmap(resultViewModel.getBitmap());
-    }
-
-    private Bitmap createScaledBitmap(Bitmap bitmap) {
-        int[] size = maxAvailableSizeForBitmap();
-        return createScaledBitmap(bitmap,  size[0], size[1]);
-    }
-
-    private int[] maxAvailableSizeForBitmap() {
-        int height = resultViewModel.getHeight();
-        int width = resultViewModel.getWidth();
-        //TODO w , h
-        return new int[]{width, height};
-    }
-
-    private Bitmap createScaledBitmap(Bitmap bitmap, int width, int height) {
-        //TODO delete
-        return Bitmap.createScaledBitmap(bitmap, width, height, false);
+        attacheScaledBitmap(mResultViewModel.getBitmap());
     }
 
     private void showResult(Result result, List<String> inputValueMap) {
-        Log.d(TAG, "showResultFragment: started");
-
-
-
-        /*if (resultViewModel.getHeight() == 0){
-            resultViewModel.setHeight();
-        }
-        if (resultViewModel.getWidth() == 0)
-            resultViewModel.setWidth(500);*/
         int[][] patternGrid = result.getOutputGrid();
         int     patternSize = result.getPatternSize(),
                 outputHeight = result.getHeight(),
                 outputWidth = result.getWidth(),
-                overlap = result.getOverlap(),
-                height = resultViewModel.getHeight(),
-                width = resultViewModel.getWidth();
+                overlap = result.getOverlap();
         List<Integer[][]> patternList = result.getPatternList();
         Bitmap outputBitmap;
-        resultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
-        outputBitmap = resultViewModel.getBitmap();
+        mResultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
+        outputBitmap = mResultViewModel.getBitmap();
         makeBitmap(inputValueMap, patternGrid, patternSize, overlap, patternList, outputBitmap);
-        resultViewModel.setBitmap(outputBitmap);
-
-
-       // Bitmap scaledBitmap = createScaledBitmap(outputBitmap, width, height);
+        mResultViewModel.setBitmap(outputBitmap);
 
         attacheScaledBitmap(outputBitmap);
-        Log.d(TAG, "showResult: finished");
 
     }
 
@@ -186,8 +132,6 @@ public class WFCFragment extends Fragment {
                     ratio;
             FrameLayout frameLayout = requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
             ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
-            Log.d(TAG, "showResultFragment: width = " + frameLayout.getWidth() + " height = " + frameLayout.getHeight());
-            Log.d(TAG, "showResultFragment: width = " + frameLayout.getLayoutParams().width + " height = " + frameLayout.getLayoutParams().width);
             ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
             ratio = Math.min(frameLayout.getHeight() / scaledBitmap.getHeight(), frameLayout.getWidth() / scaledBitmap.getWidth());
             height = scaledBitmap.getHeight() * ratio;
@@ -197,13 +141,6 @@ public class WFCFragment extends Fragment {
             frameLayout.setLayoutParams(params);
 
             imageView.setImageBitmap(Bitmap.createScaledBitmap(scaledBitmap, width, height, false));
-
-
-            Log.d(TAG, "showResultFragment: width = " + frameLayout.getLayoutParams().width + " height = " + frameLayout.getLayoutParams().width);
-            imageView.post(() -> {
-                Log.d(TAG, "showResultFragment: POST width = " + imageView.getWidth() + " height = " + imageView.getHeight());
-            });
-            Log.d(TAG, "showResultFragment: ended");
         });
     }
 
