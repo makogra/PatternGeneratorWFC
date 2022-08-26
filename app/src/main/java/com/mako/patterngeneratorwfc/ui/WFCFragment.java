@@ -118,18 +118,7 @@ public class WFCFragment extends Fragment {
         return Bitmap.createScaledBitmap(bitmap, width, height, false);
     }
 
-    private void showResultFragment(ResultFragment resultFragment, List<String> inputValueMap) {
-        // TODO delete recycler view and adapter and all related to that
-        /*
-        RecyclerView recyclerView = requireView().findViewById(R.id.fragment_wfc_recycler_view);
-        ResultAdapter resultAdapter = new ResultAdapter(resultFragment);
-        recyclerView.setAdapter(resultAdapter);
-        // recyclerView act like a grid with output resolution (resultFragment.getWidth()) number of columns
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), resultFragment.getWidth()));
-
-         */
-
-        //new Handler(requireContext().getMainLooper()).post(() -> layout.addView(gridView));
+    private void showResultFragment(Result result, List<String> inputValueMap) {
         Log.d(TAG, "showResultFragment: started");
 
 
