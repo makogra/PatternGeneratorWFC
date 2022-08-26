@@ -90,10 +90,10 @@ public class WFCFragment extends Fragment {
                     int width = wfc.getOutputWidth();
                     int overlap = wfc.getTilesOverLap();
                     Log.d(TAG, "onCreateView: outputGrid.length= " + outputGrid.length + " outputGrid[0].length = " + outputGrid[0].length + " width = " + width + " height = " + height );
-                    ResultFragment resultFragment = new ResultFragment(outputGrid, patternSize, height, width, overlap, wfc.getPatternList());
+                    Result result = new Result(outputGrid, patternSize, height, width, overlap, wfc.getPatternList());
 
                     //new Handler(requireContext().getMainLooper()).post(() -> showResultFragment(resultFragment));
-                    showResultFragment(resultFragment, wfc.getInputValueMap());
+                    showResultFragment(result, wfc.getInputValueMap());
                 }
             }).start();
             displayResult();
@@ -122,20 +122,18 @@ public class WFCFragment extends Fragment {
         Log.d(TAG, "showResultFragment: started");
 
 
-
-        // For each row of patterns
         if (resultViewModel.getHeight() == 0)
             resultViewModel.setHeight(500);
         if (resultViewModel.getWidth() == 0)
             resultViewModel.setWidth(500);
-        int[][] patternGrid = resultFragment.getOutputGrid();
-        int     patternSize = resultFragment.getPatternSize(),
-                outputHeight = resultFragment.getHeight(),
-                outputWidth = resultFragment.getWidth(),
-                overlap = resultFragment.getOverlap(),
+        int[][] patternGrid = result.getOutputGrid();
+        int     patternSize = result.getPatternSize(),
+                outputHeight = result.getHeight(),
+                outputWidth = result.getWidth(),
+                overlap = result.getOverlap(),
                 height = resultViewModel.getHeight(),
                 width = resultViewModel.getWidth();
-        List<Integer[][]> patternList = resultFragment.getPatternList();
+        List<Integer[][]> patternList = result.getPatternList();
         Bitmap outputBitmap;
         if (resultViewModel.getBitmap() == null){
             resultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
@@ -175,14 +173,21 @@ public class WFCFragment extends Fragment {
         });
     }
 
+    /**
+     * Fill bitmap accordingly to result of WFC
+     * @param patternGrid - result of a WFC
+     * @param patternList - list of all patterns
+     * @param outputBitmap - bitmap that will be filled accordingly to patternGrid
+     */
     private void makeBitmap(List<String> inputValueMap, int[][] patternGrid, int patternSize, int overlap, List<Integer[][]> patternList, Bitmap outputBitmap) {
-        //
+
         int patternId;
         int x;
         int y;
         Integer valueId;
         int color;
         Integer[][] pattern;
+        // For each row of patterns
         for (int patternRow = 0; patternRow < patternGrid.length; patternRow++) {
             //for each row in pattern - overlap
             for (int i = 0; i < patternSize - overlap; i++) {

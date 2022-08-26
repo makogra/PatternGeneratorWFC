@@ -2,9 +2,9 @@ package com.mako.patterngeneratorwfc.ui;
 
 import java.util.List;
 
-public class ResultFragment {
+public class Result {
 
-    private static final String TAG = "ResultFragment";
+    private static final String TAG = "Result";
     private final List<Integer[][]> patternList;
 
     private int overlap;
@@ -14,7 +14,7 @@ public class ResultFragment {
     private int width;
 
 
-    public ResultFragment(int[][] outputGrid, int patternSize, int height, int width, int overlap, List<Integer[][]> patternList) {
+    public Result(int[][] outputGrid, int patternSize, int height, int width, int overlap, List<Integer[][]> patternList) {
         this.outputGrid = outputGrid;
         this.patternSize = patternSize;
         this.height = height;
