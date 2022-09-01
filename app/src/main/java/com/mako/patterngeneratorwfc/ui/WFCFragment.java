@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mako.patterngeneratorwfc.R;
+import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
@@ -57,8 +58,10 @@ public class WFCFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initViewModels();
-        displayResult();
+        //displayResult();
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +73,12 @@ public class WFCFragment extends Fragment {
             displayWFCStarted();
             new Thread(() -> {
                 clearPreviousBitmap();
+                int patternSize = mSettingsTileSetViewModel.getValue(0);
+                int outputHeight = mSettingsTileSetViewModel.getValue(1);
+                int outputWidth = mSettingsTileSetViewModel.getValue(2);
+                int tilesOverlap = mSettingsTileSetViewModel.getValue(3);
+                TileSet input = mTileSetViewModel.getCurrentTileSet();
+                Log.d(TAG, "onCreateView: tileSet = " + input);
                 String[][] tempInputGrid =  new String[][]{
                         {"G","G","G","G","C","S","S","S"},
                         {"G","G","G","C","C","S","S","S"},
@@ -78,15 +87,11 @@ public class WFCFragment extends Fragment {
                         {"G","G","G","C","S","S","S","S"}
                 };
 
-                WFC wfc = new WFC(tempInputGrid, 3, 1, 16, 16);
+                WFC wfc = new WFC(tempInputGrid, patternSize, tilesOverlap, outputHeight, outputWidth);
                 wfc.run(30);
                 if (wfc.isCollapsed()){
                     int[][] outputGrid = wfc.getOutputGrid();
-                    int patternSize = wfc.getPatternSize();
-                    int height = wfc.getOutputHeight();
-                    int width = wfc.getOutputWidth();
-                    int overlap = wfc.getTilesOverLap();
-                    Result result = new Result(outputGrid, patternSize, height, width, overlap, wfc.getPatternList());
+                    Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, tilesOverlap, wfc.getPatternList());
 
                     showResult(result, wfc.getInputValueMap());
                 }
@@ -125,7 +130,7 @@ public class WFCFragment extends Fragment {
     }
 
     private void attacheScaledBitmap(Bitmap scaledBitmap) {
-
+        waitForView();
         new Handler(Looper.getMainLooper()).post(() -> {
             int     height,
                     width,
@@ -142,6 +147,11 @@ public class WFCFragment extends Fragment {
 
             imageView.setImageBitmap(Bitmap.createScaledBitmap(scaledBitmap, width, height, false));
         });
+    }
+
+    private void waitForView() {
+        while (getView() == null){
+        }
     }
 
     /**
@@ -161,20 +171,20 @@ public class WFCFragment extends Fragment {
         // For each row of patterns
         for (int patternRow = 0; patternRow < patternGrid.length; patternRow++) {
             //for each row in pattern - overlap
-            for (int i = 0; i < patternSize - overlap; i++) {
+            for (int i = 0; i < patternSize - 1; i++) {
                 // Horizontal (rows) out of bound check
-                x = patternRow * (patternSize - overlap) + i;
-                if (x > outputBitmap.getHeight())
+                y = patternRow * (patternSize - 1) + i;
+                if (y >= outputBitmap.getHeight())
                     break;
                 // for each col of patterns
                 for (int patternCol = 0; patternCol < patternGrid[0].length; patternCol++) {
                     patternId = patternGrid[patternRow][patternCol];
                     pattern = patternList.get(patternId);
                     // for each col in pattern
-                    for (int j = 0; j < patternSize - overlap; j++) {
+                    for (int j = 0; j < patternSize - 1; j++) {
                         // Vertical (columns) Out of bound check
-                        y = patternCol * (patternSize - overlap) + j;
-                        if (y > outputBitmap.getWidth()) {
+                        x = patternCol * (patternSize - 1) + j;
+                        if (x >= outputBitmap.getWidth()) {
                             break;
                         }
                         valueId = pattern[i][j];
@@ -221,6 +231,7 @@ public class WFCFragment extends Fragment {
         updateUI(requireView());
         Log.d(TAG, "onResume() called ");
         testMSettingsViewModel();
+        displayResult();
 
     }
 
