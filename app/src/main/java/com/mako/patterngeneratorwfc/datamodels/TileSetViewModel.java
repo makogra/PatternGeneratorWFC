@@ -74,6 +74,10 @@ public class TileSetViewModel extends AndroidViewModel {
         return list.get(position);
     }
 
+    public TileSet getCurrentTileSet(){
+        return mTileSetRepository.getTileSetValue(currentId);
+    }
+
     public void insert(@NonNull TileSet tileSet){
         mTileSetRepository.insert(tileSet);
     }

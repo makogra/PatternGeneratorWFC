@@ -51,6 +51,10 @@ public class TileSetRepository {
         return mTileSetDao.getTileSet(id);
     }
 
+    public TileSet getTileSetValue(String id){
+        return mTileSetDao.getTileSetValue(id);
+    }
+
     public LiveData<Integer> count(){
         return mTileSetDao.count();
     }

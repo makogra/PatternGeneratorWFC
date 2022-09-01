@@ -37,4 +37,7 @@ public interface TileSetDao {
 
     @Query("DELETE FROM tileset_table WHERE id = :id")
     void delete(String id);
+
+    @Query("SELECT * FROM tileset_table WHERE id = :id")
+    TileSet getTileSetValue(String id);
 }
