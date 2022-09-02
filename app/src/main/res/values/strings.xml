@@ -26,4 +26,8 @@
     <string name="title_activity_add_tile_set">AddTileSetActivity</string>
     <string name="add_tile_set">Add tile set</string>
     <string name="save_button">save</string>
+    <string name="add_col">Add col</string>
+    <string name="subtract_col">Subtract col</string>
+    <string name="add_row">Add row</string>
+    <string name="subtract_row">Subtract row</string>
 </resources>

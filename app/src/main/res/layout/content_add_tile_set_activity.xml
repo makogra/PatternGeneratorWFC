@@ -13,22 +13,86 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tools">
 
-        <TextView
+        <GridLayout
             android:id="@+id/main_content"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Main Content"
+            android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@id/config_row"
+            app:layout_constraintBottom_toTopOf="@id/config_col"
+            >
+
+        </GridLayout>
+        <LinearLayout
+            android:id="@+id/config_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <ImageButton
+                android:id="@+id/subtract_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="15dp"
+                android:src="@android:drawable/arrow_up_float"
+                android:contentDescription="@string/subtract_row" />
+
+            <ImageButton
+                android:id="@+id/add_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="15dp"
+                android:src="@android:drawable/arrow_down_float"
+                android:contentDescription="@string/add_row" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/config_col"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <ImageButton
+                android:id="@+id/subtract_col"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:padding="15dp"
+                android:rotation="90"
+                android:src="@android:drawable/arrow_down_float"
+                android:contentDescription="@string/subtract_col" />
+
+            <ImageButton
+                android:id="@+id/add_col"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:padding="15dp"
+                android:rotation="90"
+                android:src="@android:drawable/arrow_up_float"
+                android:contentDescription="@string/add_col" />
+        </LinearLayout>
 
         <NumberPicker
             android:id="@+id/number_picker_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
         <NumberPicker
             android:id="@+id/number_picker_col"
             android:layout_width="wrap_content"
@@ -37,6 +101,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
