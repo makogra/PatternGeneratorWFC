@@ -13,6 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tools">
 
+
         <GridLayout
             android:id="@+id/main_content"
             android:layout_width="0dp"
@@ -21,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/config_row"
             app:layout_constraintBottom_toTopOf="@id/config_col"
-            >
+            android:orientation="horizontal">
 
         </GridLayout>
         <LinearLayout
