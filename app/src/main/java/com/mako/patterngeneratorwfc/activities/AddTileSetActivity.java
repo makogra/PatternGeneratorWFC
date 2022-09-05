@@ -22,8 +22,6 @@ public class AddTileSetActivity extends AppCompatActivity {
 
     private AddTileSetViewModel mAddTileSetViewModel;
     private static final String TAG = "AddTileSetActivity";
-    private NumberPicker mNumberPickerRow;
-    private NumberPicker mNumberPickerCol;
     private GridLayout mMainContent;
     private int rows,
                 cols;
@@ -40,9 +38,7 @@ public class AddTileSetActivity extends AppCompatActivity {
         cancelBtn.setOnClickListener(v -> cancel());
 
         ImageButton saveBtn = findViewById(R.id.save_button);
-        saveBtn.setOnClickListener(v -> {
-            save();
-        });
+        saveBtn.setOnClickListener(v -> save());
 
         initAddAndSubtractButtonsOnClick();
     }
