@@ -32,7 +32,6 @@ public class AddTileSetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_tile_set);
 
         mAddTileSetViewModel = new ViewModelProvider(this).get(AddTileSetViewModel.class);
-        mAddTileSetViewModel.setTileSet(mAddTileSetViewModel.getSampleTileSet());
 
         ImageButton cancelBtn = findViewById(R.id.cancel_button);
         cancelBtn.setOnClickListener(v -> cancel());
@@ -41,6 +40,54 @@ public class AddTileSetActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(v -> save());
 
         initAddAndSubtractButtonsOnClick();
+        initAddTileSetViewModel();
+        restoreValueGrid();
+
+    }
+
+    private void initAddTileSetViewModel() {
+        if (mAddTileSetViewModel.getTileSet() == null){
+            mAddTileSetViewModel.setTileSet(mAddTileSetViewModel.getSampleTileSet());
+        }
+    }
+
+    private void restoreValueGrid() {
+        int[][] valueGrid = mAddTileSetViewModel.getValueGrid();
+        rows = valueGrid.length;
+        cols = valueGrid[0].length;
+        
+        if (cols != mMainContent.getColumnCount()){
+            mMainContent.setColumnCount(cols);
+        }
+
+        TextView textView;
+        for (int i = mMainContent.getChildCount(); i < rows * cols; i++) {
+            textView = templateView();
+            mMainContent.addView(textView);
+        }
+
+        updateTags();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveValueGrid();
+    }
+
+    private void saveValueGrid() {
+        int[][] valueGrid = new int[rows][cols];
+        int index;
+        TextView textView;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                index = i * cols + j;
+                textView = (TextView) mMainContent.getChildAt(index);
+                valueGrid[i][j] = (int) textView.getTag();
+            }
+        }
+
+        mAddTileSetViewModel.setValueGrid(valueGrid);
     }
 
     private void save() {
@@ -131,10 +178,6 @@ public class AddTileSetActivity extends AppCompatActivity {
         TextView textView;
         for (int i = 0; i < cols; i++) {
             textView = templateView();
-            textView.setOnClickListener((view) -> {
-                // TODO Add On click listener
-                view.setBackgroundColor(Color.RED);
-            });
             mMainContent.addView(textView);
         }
         rows++;
@@ -150,10 +193,7 @@ public class AddTileSetActivity extends AppCompatActivity {
         for (int i = 0; i < rows; i++) {
             textView = templateView();
             index = (i + 1) * cols - 1;
-            textView.setOnClickListener((view) -> {
-                //TODO Add onclicklistener
-                view.setBackgroundColor(Color.RED);
-            });
+
             mMainContent.addView(textView, index);
         }
 
@@ -217,6 +257,10 @@ public class AddTileSetActivity extends AppCompatActivity {
         TextView textView = new TextView(this);
         textView.setBackgroundResource(R.drawable.ic_launcher_background);
         textView.setLayoutParams(params);
+        textView.setOnClickListener((view) -> {
+            //TODO Add onclicklistener
+            view.setBackgroundColor(Color.RED);
+        });
 
         return textView;
     }
