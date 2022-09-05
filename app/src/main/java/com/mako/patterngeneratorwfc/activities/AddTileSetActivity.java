@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -47,6 +46,7 @@ public class AddTileSetActivity extends AppCompatActivity {
 
     private void initAddTileSetViewModel() {
         if (mAddTileSetViewModel.getTileSet() == null){
+            Log.d(TAG, "initAddTileSetViewModel: ");
             mAddTileSetViewModel.setTileSet(mAddTileSetViewModel.getSampleTileSet());
         }
     }
@@ -61,12 +61,24 @@ public class AddTileSetActivity extends AppCompatActivity {
         }
 
         TextView textView;
-        for (int i = mMainContent.getChildCount(); i < rows * cols; i++) {
-            textView = templateView();
-            mMainContent.addView(textView);
+        int row,col;
+        Log.d(TAG, "restoreValueGrid: RED = " + (int)Color.RED + " Green = " + Color.GREEN + " Gray = " + Color.GRAY);
+        for (int i = 0; i < rows * cols; i++) {
+            row = i / cols;
+            col = i % cols;
+            Log.d(TAG, "restoreValueGrid: row = " + row + " col = " + col + " value = " + valueGrid[row][col]);
+            if (i < mMainContent.getChildCount()){
+                textView = (TextView) mMainContent.getChildAt(i);
+                textView.setTag(valueGrid[row][col]);
+                textView.setBackgroundColor((Integer) textView.getTag());
+            } else {
+                textView = templateView();
+                textView.setTag(valueGrid[row][col]);
+                textView.setBackgroundColor((Integer) textView.getTag());
+                mMainContent.addView(textView);
+            }
         }
-
-        updateTags();
+        updateText();
     }
 
     @Override
@@ -162,7 +174,7 @@ public class AddTileSetActivity extends AppCompatActivity {
         mMainContent.setColumnCount(mMainContent.getColumnCount() - 1);
         cols--;
 
-        updateTags();
+        updateText();
     }
 
     private void subtractRow() {
@@ -182,7 +194,7 @@ public class AddTileSetActivity extends AppCompatActivity {
         }
         rows++;
 
-        updateTags();
+        updateText();
     }
 
     private void addCol() {
@@ -193,18 +205,16 @@ public class AddTileSetActivity extends AppCompatActivity {
         for (int i = 0; i < rows; i++) {
             textView = templateView();
             index = (i + 1) * cols - 1;
-
             mMainContent.addView(textView, index);
         }
 
-        updateTags();
+        updateText();
     }
 
-    private void updateTags(){
+    private void updateText(){
         TextView textView;
         for (int i = 0; i < cols * rows; i++) {
             textView = (TextView) mMainContent.getChildAt(i);
-            textView.setTag(i);
             textView.setText("" + i);
         }
     }
@@ -255,11 +265,13 @@ public class AddTileSetActivity extends AppCompatActivity {
         params.height = 100;
         params.width = 100;
         TextView textView = new TextView(this);
-        textView.setBackgroundResource(R.drawable.ic_launcher_background);
+        textView.setTag(Color.GREEN);
+        textView.setBackgroundColor((Integer) textView.getTag());
         textView.setLayoutParams(params);
         textView.setOnClickListener((view) -> {
             //TODO Add onclicklistener
-            view.setBackgroundColor(Color.RED);
+            view.setTag(Color.RED);
+            view.setBackgroundColor((Integer) view.getTag());
         });
 
         return textView;
