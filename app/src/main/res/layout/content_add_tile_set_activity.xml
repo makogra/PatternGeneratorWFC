@@ -84,26 +84,6 @@
                 android:src="@android:drawable/arrow_up_float"
                 android:contentDescription="@string/add_col" />
         </LinearLayout>
-
-        <NumberPicker
-            android:id="@+id/number_picker_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"/>
-        <NumberPicker
-            android:id="@+id/number_picker_col"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

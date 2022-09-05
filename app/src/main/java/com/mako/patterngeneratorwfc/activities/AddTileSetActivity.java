@@ -3,7 +3,6 @@ package com.mako.patterngeneratorwfc.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.style.UpdateAppearance;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -18,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.datamodels.AddTileSetViewModel;
-import com.mako.patterngeneratorwfc.layout.CustomGridLayout;
 
 public class AddTileSetActivity extends AppCompatActivity {
 
@@ -44,25 +42,6 @@ public class AddTileSetActivity extends AppCompatActivity {
         ImageButton saveBtn = findViewById(R.id.save_button);
         saveBtn.setOnClickListener(v -> {
             save();
-        });
-
-
-         mNumberPickerRow = findViewById(R.id.number_picker_row);
-         mNumberPickerCol = findViewById(R.id.number_picker_col);
-
-        mNumberPickerRow.setMinValue(1);
-        mNumberPickerRow.setMaxValue(7);
-        mNumberPickerRow.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            Log.d(TAG, "onCreate: number picker 1: new value: " + newVal);
-            //synchronize numberPickers, so both have the same value
-            //numberPickerCol.setValue(newVal);
-        });
-        mNumberPickerCol.setMinValue(1);
-        mNumberPickerCol.setMaxValue(7);
-        mNumberPickerCol.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            Log.d(TAG, "onCreate: number picker 2: new value: " + newVal);
-            //synchronize numberPickers, so both have the same value
-            //numberPickerRow.setValue(newVal);
         });
 
         initAddAndSubtractButtonsOnClick();
