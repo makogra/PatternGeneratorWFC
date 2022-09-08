@@ -2,6 +2,8 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import android.util.Log;
 
+import com.mako.patterngeneratorwfc.TileSet;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,17 +21,17 @@ public class WFC {
     private final InputHandler inputHandler;
     private final List<List<List<Integer>>> defaultPatternEnablers;
 
-    public WFC(String[][] inputGrid, int patternSize, int tilesOverLap, int outputHeight, int outputWidth) {
+    public WFC(TileSet tileSet, int patternSize, int tilesOverLap, int outputHeight, int outputWidth) {
         this.patternSize = patternSize;
         this.tilesOverLap = tilesOverLap;
         this.outputHeight = outputHeight;
         this.outputWidth = outputWidth;
         this.wave = new Wave(outputHeight, outputWidth, patternSize);
-        this.inputHandler = new InputHandler(inputGrid, patternSize);
+        this.inputHandler = new InputHandler(tileSet.getValueGrid(), patternSize);
         AdjacencyRules adjacencyRules = new AdjacencyRules(inputHandler.getPatternList(), inputHandler.getTotalNumberOfPatterns());
         this.defaultPatternEnablers = adjacencyRules.getDefaultPatternEnablers();
         patternList = inputHandler.getPatternList();
-        inputValueMap = inputHandler.getInputToValueMap();
+        inputValueMap = tileSet.getValueToStringPath();
         //TODO fill propagator constructor
 
         this.propagator = new Propagator(wave);
@@ -184,7 +186,7 @@ public class WFC {
             stringBuilder = new StringBuilder();
             for (int j = 0; j < patternList.size(); j++) {
                 if (i == 0)
-                    stringBuilder.append(" " + j + " |");
+                    stringBuilder.append(" ").append(j).append(" |");
                 else {
                     stringBuilder.append(" ");
                     pattern = patternList.get(j);
