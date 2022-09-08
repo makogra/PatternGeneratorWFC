@@ -50,8 +50,9 @@ public class AddTileSetViewModel extends ViewModel {
                 {1,1,1,2,3,3,3,3}
         };
         List<String> valueToStringList = new ArrayList<String>(){{
+            add("_");
             add("G");
-            add("L");
+            add("C");
             add("S");
         }};
         return new TileSet(id, valueGrid, valueToStringList);
