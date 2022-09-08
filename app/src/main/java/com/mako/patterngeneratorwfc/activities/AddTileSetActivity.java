@@ -2,6 +2,7 @@ package com.mako.patterngeneratorwfc.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
@@ -25,14 +26,40 @@ import java.util.List;
 
 public class AddTileSetActivity extends AppCompatActivity {
 
+    private class CurrentColor {
+
+        private int tag;
+
+        CurrentColor(int tag){
+            this.tag = tag;
+        }
+
+        private void setColor(int color){
+            String key = Colors.getKey(color);
+
+            if (!mValueToStringMap.contains(key)){
+                mValueToStringMap.add(key);
+            }
+            tag = mValueToStringMap.indexOf(key);
+        }
+
+        private void setTag(int tag){
+            this.tag = tag;
+        }
+    }
+
     private AddTileSetViewModel mAddTileSetViewModel;
     private static final String TAG = "AddTileSetActivity";
+    private static final int TAG_COLOR = 0;
+    private static final int TAG_ROW = 1;
+    private static final int TAG_COLUMN = 2;
+
     private GridLayout mMainContent;
     private int rows,
                 cols;
-    private int currentTag;
     private int[][] mValueGrid;
     private List<String> mValueToStringMap;
+    private CurrentColor currentColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +77,19 @@ public class AddTileSetActivity extends AppCompatActivity {
         initAddAndSubtractButtonsOnClick();
         initTileSet();
         restoreValueGrid();
+        initCurrentColor();
 
+    }
+
+    private void initCurrentColor() {
+        if (mValueGrid.length > 0 && mValueGrid[0].length > 0){
+            currentColor = new CurrentColor(mValueGrid[0][0]);
+            return;
+        }
+        if (mValueToStringMap.isEmpty()){
+            mValueToStringMap.add(Colors.getKey(Color.GREEN));
+        }
+        currentColor = new CurrentColor(1);
     }
 
     private void initTileSet() {
@@ -78,12 +117,16 @@ public class AddTileSetActivity extends AppCompatActivity {
             Log.d(TAG, "restoreValueGrid: row = " + row + " col = " + col + " value = " + mValueGrid[row][col]);
             if (i < mMainContent.getChildCount()){
                 textView = (TextView) mMainContent.getChildAt(i);
-                textView.setTag(mValueGrid[row][col]);
-                textView.setBackgroundColor(getColorWithTag(textView.getTag()));
+                textView.setTag(R.integer.tag_color, mValueGrid[row][col]);
+                textView.setTag(R.integer.tag_row, row);
+                textView.setTag(R.integer.tag_col, col);
+                textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
             } else {
                 textView = templateView();
-                textView.setTag(mValueGrid[row][col]);
-                textView.setBackgroundColor(getColorWithTag(textView.getTag()));
+                textView.setTag(R.integer.tag_color, mValueGrid[row][col]);
+                textView.setTag(R.integer.tag_row, row);
+                textView.setTag(R.integer.tag_col, col);
+                textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
                 mMainContent.addView(textView);
             }
         }
@@ -117,7 +160,7 @@ public class AddTileSetActivity extends AppCompatActivity {
             for (int j = 0; j < cols; j++) {
                 index = i * cols + j;
                 textView = (TextView) mMainContent.getChildAt(index);
-                mValueGrid[i][j] = (int) textView.getTag();
+                mValueGrid[i][j] = (int) textView.getTag(R.integer.tag_color);
             }
         }
 
@@ -214,8 +257,10 @@ public class AddTileSetActivity extends AppCompatActivity {
         updateValueGrid();
         for (int i = 0; i < cols; i++) {
             textView = templateView();
-            textView.setTag(mValueGrid[rows - 1][i]);
-            textView.setBackgroundColor(getColorWithTag(textView.getTag()));
+            textView.setTag(R.integer.tag_color, mValueGrid[rows - 1][i]);
+            textView.setTag(R.integer.tag_row, rows - 1);
+            textView.setTag(R.integer.tag_col, i);
+            textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
             mMainContent.addView(textView);
         }
 
@@ -227,8 +272,8 @@ public class AddTileSetActivity extends AppCompatActivity {
         int[][] newValueGrid = new int[rows][cols];
         int[][] oldValueGrid = mValueGrid;
 
-        boolean addInRow = false;
-        boolean addInCol = false;
+        boolean addInRow;
+        boolean addInCol;
         for (int i = 0; i < rows; i++) {
             addInRow = oldValueGrid.length <= i;
             for (int j = 0; j < cols; j++) {
@@ -257,8 +302,10 @@ public class AddTileSetActivity extends AppCompatActivity {
         for (int i = 0; i < rows; i++) {
             textView = templateView();
             index = (i + 1) * cols - 1;
-            textView.setTag(mValueGrid[i][cols - 1]);
-            textView.setBackgroundColor(getColorWithTag(textView.getTag()));
+            textView.setTag(R.integer.tag_color, mValueGrid[i][cols - 1]);
+            textView.setTag(R.integer.tag_row, i);
+            textView.setTag(R.integer.tag_col, cols - 1);
+            textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
             mMainContent.addView(textView, index);
         }
 
@@ -273,60 +320,22 @@ public class AddTileSetActivity extends AppCompatActivity {
         }
     }
 
-    private void initGridLayout(){
-        //GridLayout mainContent = findViewById(R.id.main_content);
-    }
-
-    private void updateMainContent(GridLayout mainContent){
-        if (mainContent.getRowCount() * mainContent.getColumnCount() > mainContent.getChildCount()){
-            fillMainContent(mainContent);
-        } else {
-            deleteOverFlow(mainContent);
-        }
-    }
-
-    private void deleteOverFlow(GridLayout mainContent) {
-        while (isOverFlow(mainContent)){
-            mainContent.removeViewAt(mainContent.getChildCount() - 1);
-        }
-    }
-
-    private void deleteOverFlowTo(GridLayout mainContent, int newChildCount){
-        while (mainContent.getChildCount() > newChildCount){
-            mainContent.removeViewAt(newChildCount);
-        }
-    }
-
-    private void fillMainContent(GridLayout mainContent) {
-        TextView textView;
-        while (!isFull(mainContent)){
-            textView = new TextView(this);
-
-            mainContent.addView(findViewById(R.id.add_col));
-        }
-    }
-
-    private boolean isOverFlow(GridLayout mainContent){
-        return mainContent.getChildCount() > mainContent.getRowCount() * mainContent.getColumnCount();
-    }
-
-    private boolean isFull(GridLayout mainContent){
-        return mainContent.getChildCount() == mainContent.getRowCount() * mainContent.getColumnCount();
-    }
-
     private TextView templateView(){
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.height = 100;
         params.width = 100;
         TextView textView = new TextView(this);
-        textView.setTag(mValueGrid[rows - 1][cols - 1]);
-        textView.setBackgroundColor(getColorWithTag(textView.getTag()));
+        textView.setTag(R.integer.tag_color, mValueGrid[rows - 1][cols - 1]);
+        textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
         textView.setLayoutParams(params);
         textView.setOnClickListener((view) -> {
-            //TODO set Color to currentColor/Tag
-            view.setTag(Color.RED);
-            //TODO change to textView.setBackgroundColor(getColorWithTag(textView.getTag()));
-            view.setBackgroundColor((Integer) view.getTag());
+            int row = (int) view.getTag(R.integer.tag_row);
+            int col = (int) view.getTag(R.integer.tag_col);
+            Log.d(TAG, "templateView: row = " + row + " col = " + col);
+            mValueGrid[row][col] = currentColor.tag;
+            view.setTag(R.integer.tag_color, currentColor.tag);
+
+            view.setBackgroundColor(getColorWithTag(view.getTag(R.integer.tag_color)));
         });
         // TODO add drag over
 

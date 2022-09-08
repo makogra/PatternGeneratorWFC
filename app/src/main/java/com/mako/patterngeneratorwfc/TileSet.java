@@ -121,7 +121,7 @@ public class TileSet implements Parcelable {
     public String toString() {
         return "TileSet{" +
                 "id=" + id +
-                ", valueGrid=" + Arrays.toString(valueGrid) +
+                ", valueGrid=" + Arrays.deepToString(valueGrid) +
                 ", valueToChar=" + valueToStringPath +
                 '}';
     }

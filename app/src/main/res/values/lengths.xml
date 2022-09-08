@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="screenLength">500dp</dimen>
+    <integer name="tag_color">0</integer>
+    <integer name="tag_row">1</integer>
+    <integer name="tag_col">2</integer>
 </resources>
