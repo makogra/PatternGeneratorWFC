@@ -5,28 +5,20 @@ import java.util.List;
 
 public class InputHandler {
 
-    private final String[][] INPUT_GRID;
 
     private final int[][] valueGrid;
     private final int patternSize;
-    private final List<String> inputToValueMap;
     private List<Integer[][]> patternList;
     private double[] relativeFrequency;
 
-    public InputHandler(String[][] inputGrid, int patternSize){
-        this.INPUT_GRID = inputGrid;
+    public InputHandler(int[][] valueGrid, int patternSize){
+        this.valueGrid = valueGrid;
         this.patternSize = patternSize;
-        this.inputToValueMap = mapInputToValue();
-        this.valueGrid = makeValueGrid();
         makePatternGridAndPatternList();
     }
 
     public int[][] getValueGrid() {
         return valueGrid;
-    }
-
-    public List<String> getInputToValueMap() {
-        return inputToValueMap;
     }
 
     public List<Integer[][]> getPatternList() {
@@ -41,37 +33,9 @@ public class InputHandler {
         return patternList.size();
     }
 
-    private List<String> mapInputToValue(){
-        List<String> list = new ArrayList<String>(){
-            @Override
-            public boolean add(String str) {
-                if (this.contains(str))
-                    return false;
-                return super.add(str);
-            }
-        };
-        for (String[] row : INPUT_GRID){
-            for (String item : row){
-                list.add(item);
-            }
-        }
-        return list;
-    }
-
-    private int[][] makeValueGrid(){
-        int[][] values = new int[INPUT_GRID.length][INPUT_GRID[0].length];
-        for (int row = 0; row < INPUT_GRID.length; row++) {
-            for (int col = 0; col < INPUT_GRID[0].length; col++) {
-                values[row][col] = inputToValueMap.indexOf(INPUT_GRID[row][col]);
-            }
-        }
-
-        return values;
-    }
-
     private void makePatternGridAndPatternList(){
-        int patternGridHeight = INPUT_GRID.length + 1 - patternSize;
-        int patternGridWidth = INPUT_GRID[0].length + 1 - patternSize;
+        int patternGridHeight = valueGrid.length + 1 - patternSize;
+        int patternGridWidth = valueGrid[0].length + 1 - patternSize;
         this.patternList = new ArrayList<Integer[][]>(){
             @Override
             public boolean add(Integer[][] integers) {
