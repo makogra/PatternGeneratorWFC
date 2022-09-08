@@ -14,6 +14,7 @@ import java.util.List;
 public class InputHandlerTest {
 
     String[][] inputGrid;
+    int[][] inputGridValue;
     int patternSize;
     InputHandler inputHandler;
 
@@ -24,9 +25,14 @@ public class InputHandlerTest {
                 {"G", "G", "C", "C", "S", "S"},
                 {"G", "G", "C", "S", "S", "S"}
         };
+        inputGridValue = new int[][]{
+                {0,0,0,1,1,2},
+                {0,0,1,1,2,2},
+                {0,0,1,2,2,2},
+        };
         patternSize = 2;
 
-        inputHandler = new InputHandler(inputGrid, patternSize);
+        inputHandler = new InputHandler(inputGridValue, patternSize);
     }
 
     @Test
@@ -40,7 +46,7 @@ public class InputHandlerTest {
         assertArrayEquals(shouldBe, inputHandler.getValueGrid());
     }
 
-    @Test
+    /*@Test
     public void getInputToValueMap() {
         List<String> shouldBe = new ArrayList<>();
         shouldBe.add("G");
@@ -50,6 +56,8 @@ public class InputHandlerTest {
         assertEquals(shouldBe, inputHandler.getInputToValueMap());
         //assertIterableEquals(shouldBe, inputHandler.getInputToValueMap());
     }
+
+     */
 
     @Test
     public void getPatternList() {
