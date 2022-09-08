@@ -168,6 +168,7 @@ public class AddTileSetActivity extends AppCompatActivity {
     }
 
     private void save() {
+        saveValueGrid();
         Intent intent = new Intent();
         EditText editText = findViewById(R.id.activity_add_tile_set_id_text_view);
         String id = editText.getText().toString();
