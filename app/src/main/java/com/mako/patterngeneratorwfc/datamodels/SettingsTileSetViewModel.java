@@ -15,6 +15,7 @@ public class SettingsTileSetViewModel extends ViewModel {
     private static String[] settingsArr;
     private static int settingsLength;
     private static boolean listInitialized;
+    //TODO add contants for describing position fo secifick settings
 
     private boolean newInstance = true;
     private int[] settingsMin;
