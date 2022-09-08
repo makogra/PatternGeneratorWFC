@@ -87,7 +87,7 @@ public class WFCFragment extends Fragment {
                         {"G","G","G","C","S","S","S","S"}
                 };
 
-                WFC wfc = new WFC(tempInputGrid, patternSize, tilesOverlap, outputHeight, outputWidth);
+                WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth);
                 wfc.run(30);
                 if (wfc.isCollapsed()){
                     int[][] outputGrid = wfc.getOutputGrid();
@@ -150,7 +150,9 @@ public class WFCFragment extends Fragment {
     }
 
     private void waitForView() {
-        while (getView() == null){
+        while (true){
+            if (getView() != null)
+                return;
         }
     }
 

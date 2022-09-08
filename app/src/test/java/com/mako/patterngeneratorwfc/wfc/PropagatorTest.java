@@ -2,14 +2,19 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import static org.junit.Assert.*;
 
+import com.mako.patterngeneratorwfc.TileSet;
+
 import org.junit.Before;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PropagatorTest {
 
     private WFC wfc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         String[][] inputGrid = new String[][]{
                 {"G","G","G","G","C","S","S","S"},
                 {"G","G","G","C","C","S","S","S"},
@@ -28,6 +33,14 @@ public class PropagatorTest {
         int outputWidth = 64;
         int patternSize = 3;
         int tilesOverLap = 1;
-        wfc = new WFC(inputGrid, patternSize, tilesOverLap, outputHeight, outputWidth);
+        List<String> map = new ArrayList<String>(){{
+            add("_");
+            add("G");
+            add("C");
+            add("S");
+        }};
+        TileSet tileSet = new TileSet("Test", valueGrid, map);
+
+        wfc = new WFC(tileSet, patternSize, tilesOverLap, outputHeight, outputWidth);
     }
 }

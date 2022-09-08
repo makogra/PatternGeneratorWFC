@@ -4,12 +4,18 @@ import static org.junit.Assert.*;
 
 import android.util.Log;
 
+import com.mako.patterngeneratorwfc.TileSet;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WFCTest {
 
     String[][] tempInputGrid;
+    int[][] tempInputGridValue;
     WFC wfc;
 
     @Before
@@ -21,7 +27,22 @@ public class WFCTest {
                 {"G","G","G","C","S","S","S","S"},
                 {"G","G","G","C","S","S","S","S"}
         };
-        wfc = new WFC(tempInputGrid, 3, 1, 64, 32);
+        tempInputGridValue =  new int[][]{
+                {1,1,1,1,2,3,3,3},
+                {1,1,1,2,2,3,3,3},
+                {1,1,1,2,3,3,3,3},
+                {1,1,1,2,3,3,3,3},
+                {1,1,1,2,3,3,3,3}
+        };
+        List<String> map = new ArrayList<String>(){{
+            add("_");
+            add("G");
+            add("C");
+            add("S");
+        }};
+        TileSet tileSet = new TileSet("Test", tempInputGridValue, map);
+        
+        wfc = new WFC(tileSet, 3, 1, 64, 32);
     }
 
     @Test
