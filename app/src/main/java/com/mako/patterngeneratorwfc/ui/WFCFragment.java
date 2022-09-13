@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mako.patterngeneratorwfc.R;
+import com.mako.patterngeneratorwfc.Result;
 import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
