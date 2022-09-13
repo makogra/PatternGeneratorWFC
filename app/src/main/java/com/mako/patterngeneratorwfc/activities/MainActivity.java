@@ -50,11 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void popiulateAndObserve(TextView textView) {
         String id = "Main Theread TileSet";
-        TileSet tileSet = new TileSet(id, new int[][]{{1,2},{8,9}}, new ArrayList<String>(){{
-            add("W");
+        TileSet tileSet = new TileSet(id, new int[][]{{1,2},{3,4}}, new ArrayList<String>(){{
+            add("_");
+            add("G");
+            add("C");
             add("S");
-            add("X");
-            add("R");
+            add("M");
         }});
 
         tempViewModel.insert(tileSet);
@@ -73,11 +74,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         String id2 = "Main Theread TileSet second";
-        TileSet tileSet2 = new TileSet(id2, new int[][]{{1,2},{8,9}}, new ArrayList<String>(){{
-            add("W");
+        TileSet tileSet2 = new TileSet(id2, new int[][]{{1,2},{3,4}}, new ArrayList<String>(){{
+            add("_");
+            add("G");
+            add("C");
             add("S");
-            add("X");
-            add("R");
+            add("M");
         }});
         tempViewModel.insert(tileSet2);
 
