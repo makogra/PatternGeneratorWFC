@@ -24,6 +24,7 @@ import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.activities.AddTileSetActivity;
 import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 import com.mako.patterngeneratorwfc.database.TileSetRepository;
+import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,7 +34,6 @@ public class TileSetFragment extends Fragment {
     private static final String TAG = "TileSetFragment";
     private static final int SPAN_COUNT = 2;
     private static ViewModelProvider sViewModelProvider;
-    private ViewModelProvider mViewModelProvider;
     private TileSetViewModel mTileSetViewModel;
     private TileSetAdapter adapter;
 
@@ -47,7 +47,7 @@ public class TileSetFragment extends Fragment {
         if (result.getResultCode() == Activity.RESULT_OK){
             Intent intent = result.getData();
             if (intent == null){
-                Log.w(TAG, "insert is null, something isn't working in write section maybe");
+                Log.wtf(TAG, "insert is null, something isn't working in write section maybe");
                 return;
             }
             TileSet tileSetFromResult = intent.getParcelableExtra("TileSet");
@@ -78,13 +78,11 @@ public class TileSetFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mViewModelProvider = new ViewModelProvider(requireActivity());
-        mTileSetViewModel = mViewModelProvider.get(TileSetViewModel.class);
+        mTileSetViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
         new Thread(() -> {
             mTileSetViewModel.initCurrentId();
             Log.d(TAG, "Ascync init currentId compleate");
         }).start();
-
     }
 
     @Override
