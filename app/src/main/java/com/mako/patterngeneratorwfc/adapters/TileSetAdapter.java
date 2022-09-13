@@ -91,7 +91,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     }
 
     private void createThumbnail(@NonNull ViewHolder holder, TileSet current) {
-        Log.d(TAG, "createThumbnail: " + current);
+        Log.d(TAG, "createThumbnail: " + current.getTileId());
         new Thread(new Runnable() {
 
             @Override
@@ -110,7 +110,6 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
                         bitmap.setPixel(j, i, getColor(valueGrid[i][j], tileSet));
                     }
                 }
-                //return bitmap;
                 return Bitmap.createScaledBitmap(bitmap, width, height, false);
             }
 
