@@ -28,6 +28,7 @@ public class SettingsTileSetFragment extends Fragment {
     private static final int MAX_OUTPUT_WIDTH = 30;
     private static final int MIN_OUTPUT_HEIGHT = 3;
     private static final int MIN_OUTPUT_WIDTH = 3;
+    private static final int MIN_PATTERN_SIZE = 2;
     private static final String TAG = "SettingsTileSetFragment";
     private static ViewModelProvider sViewModelProvider;
     private static TileSetRepository sTileSetRepository;
@@ -139,13 +140,14 @@ public class SettingsTileSetFragment extends Fragment {
             return;
         int min, max, average;
 
-        Log.d(TAG, "updateSettings: length: " + currentTileSet.getTileSetLength() + " height: " + currentTileSet.getTileSetHeight());
+        Log.d(TAG, "updateSettings: length: " + currentTileSet.getTileSetWidth() + " height: " + currentTileSet.getTileSetHeight());
 
         for (int i = 0; i < SettingsTileSetViewModel.getSettingsLength(); i++) {
             min = 1;
             switch (i){
                 case 0: // pattern size
-                    max = Math.min(currentTileSet.getTileSetLength(), currentTileSet.getTileSetHeight());
+                    min = MIN_PATTERN_SIZE;
+                    max = Math.min(currentTileSet.getTileSetWidth(), currentTileSet.getTileSetHeight());
                     break;
                 case 1: // output height
                     max = MAX_OUTPUT_HEIGHT;
