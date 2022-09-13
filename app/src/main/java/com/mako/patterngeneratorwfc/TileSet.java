@@ -88,7 +88,7 @@ public class TileSet implements Parcelable {
         return valueGrid.length;
     }
 
-    public int getTileSetLength() {
+    public int getTileSetWidth() {
         return valueGrid[0].length;
     }
 

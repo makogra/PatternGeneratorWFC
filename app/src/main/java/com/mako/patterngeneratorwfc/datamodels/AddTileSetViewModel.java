@@ -20,8 +20,8 @@ public class AddTileSetViewModel extends ViewModel {
         return tileSet.getTileSetHeight();
     }
 
-    public int getTileSetLength() {
-        return tileSet.getTileSetLength();
+    public int getTileSetWidth() {
+        return tileSet.getTileSetWidth();
     }
 
     public int[][] getValueGrid() {
