@@ -2,15 +2,13 @@ package com.mako.patterngeneratorwfc.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorSpace;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.DragEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -74,6 +72,25 @@ public class AddTileSetActivity extends AppCompatActivity {
         initTileSet();
         restoreValueGrid();
         initCurrentColor();
+        initChangeTileSet();
+    }
+
+    private void initChangeTileSet() {
+        ImageView currentTileSetView = findViewById(R.id.current_tile_set);
+        currentTileSetView.setImageDrawable(new ColorDrawable(Colors.getValue(mValueToStringMap.get(currentColor.tag))));
+        //add tag?
+        currentTileSetView.setOnClickListener((view) -> {
+            //TODO add onClick listener, as popup menu to chose color.
+            //temp change to another color
+            //cyrcle throuw all curently colors in map
+            currentColor.tag++;
+            if (currentColor.tag == mValueToStringMap.size())
+                currentColor.tag = 1;
+
+            currentTileSetView.setImageDrawable(new ColorDrawable(Colors.getValue(mValueToStringMap.get(currentColor.tag))));
+        });
+
+    }
 
     private void saveOnClick() {
         ImageButton saveBtn = findViewById(R.id.save_button);

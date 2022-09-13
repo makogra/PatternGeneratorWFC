@@ -30,4 +30,5 @@
     <string name="subtract_col">Subtract col</string>
     <string name="add_row">Add row</string>
     <string name="subtract_row">Subtract row</string>
+    <string name="current_tile_set">Current Tile Set</string>
 </resources>
