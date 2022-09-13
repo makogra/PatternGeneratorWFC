@@ -28,17 +28,19 @@
 
                     android:id="@+id/card_view_tile_set_constraint_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     >
 
                     <ImageView
                         android:id="@+id/cardView_tile_set_preview_imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:contentDescription="cardView_tile_set_preview"
                         android:src="@mipmap/ic_launcher"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/cardView_tile_set_idAsTempPreview_textView"
+                        app:layout_constraintEnd_toEndOf="parent"
                         />
 
                     <TextView
@@ -46,9 +48,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Temp preview"
-                        app:layout_constraintBottom_toBottomOf="@+id/cardView_tile_set_preview_imageView"
-                        app:layout_constraintStart_toEndOf="@+id/cardView_tile_set_preview_imageView"
-                        app:layout_constraintTop_toTopOf="@+id/cardView_tile_set_preview_imageView" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardView_tile_set_preview_imageView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
