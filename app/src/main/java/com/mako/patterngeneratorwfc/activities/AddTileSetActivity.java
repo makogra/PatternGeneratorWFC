@@ -68,17 +68,21 @@ public class AddTileSetActivity extends AppCompatActivity {
 
         mAddTileSetViewModel = new ViewModelProvider(this).get(AddTileSetViewModel.class);
 
-        ImageButton cancelBtn = findViewById(R.id.cancel_button);
-        cancelBtn.setOnClickListener(v -> cancel());
-
-        ImageButton saveBtn = findViewById(R.id.save_button);
-        saveBtn.setOnClickListener(v -> save());
-
+        cancelOnClick();
+        saveOnClick();
         initAddAndSubtractButtonsOnClick();
         initTileSet();
         restoreValueGrid();
         initCurrentColor();
 
+    private void saveOnClick() {
+        ImageButton saveBtn = findViewById(R.id.save_button);
+        saveBtn.setOnClickListener(v -> save());
+    }
+
+    private void cancelOnClick() {
+        ImageButton cancelBtn = findViewById(R.id.cancel_button);
+        cancelBtn.setOnClickListener(v -> cancel());
     }
 
     private void initCurrentColor() {
