@@ -48,9 +48,6 @@ public class AddTileSetActivity extends AppCompatActivity {
 
     private AddTileSetViewModel mAddTileSetViewModel;
     private static final String TAG = "AddTileSetActivity";
-    private static final int TAG_COLOR = 0;
-    private static final int TAG_ROW = 1;
-    private static final int TAG_COLUMN = 2;
 
     private GridLayout mMainContent;
     private int rows,
@@ -226,7 +223,6 @@ public class AddTileSetActivity extends AppCompatActivity {
         ImageButton addCol = findViewById(R.id.add_col);
         ImageButton subtractCol = findViewById(R.id.subtract_col);
 
-        //CustomGridLayout mainContent = new CustomGridLayout(this, findViewById(R.id.main_content));
         mMainContent = findViewById(R.id.main_content);
         rows = mMainContent.getRowCount();
         cols = mMainContent.getColumnCount();
