@@ -1,8 +1,10 @@
-package com.mako.patterngeneratorwfc.ui;
+package com.mako.patterngeneratorwfc;
 
 import java.util.List;
 
 public class Result {
+
+    //TODO change to viewModel
 
     private static final String TAG = "Result";
     private final List<Integer[][]> patternList;
