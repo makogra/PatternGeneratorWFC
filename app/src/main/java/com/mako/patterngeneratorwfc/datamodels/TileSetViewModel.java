@@ -37,7 +37,7 @@ public class TileSetViewModel extends AndroidViewModel {
     public TileSetViewModel(Application application){
         super(application);
         if (application.getApplicationContext() == null)
-            Log.d(TAG, "Null jak nic");
+            Log.wtf(TAG, "Null jak nic");
         mTileSetRepository = TileSetRepository.getInstance(application);
         Log.d(TAG, "TileSetViewModel() called with: application = [" + application + "]");
         tileSetList = mTileSetRepository.getTileSetList();
