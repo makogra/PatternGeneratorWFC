@@ -40,7 +40,7 @@ public class TileSetViewModel extends AndroidViewModel {
             Log.wtf(TAG, "Null jak nic");
         mTileSetRepository = TileSetRepository.getInstance(application);
         Log.d(TAG, "TileSetViewModel() called with: application = [" + application + "]");
-        tileSetList = mTileSetRepository.getTileSetList();
+        //tileSetList = mTileSetRepository.getTileSetList();
 
 
     }
@@ -54,6 +54,9 @@ public class TileSetViewModel extends AndroidViewModel {
 
 
     public LiveData<List<TileSet>> getTileSetList() {
+        if (tileSetList == null){
+            tileSetList = mTileSetRepository.getTileSetList();
+        }
         return tileSetList;
     }
 
