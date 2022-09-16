@@ -27,6 +27,7 @@ import com.mako.patterngeneratorwfc.database.TileSetRepository;
 import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TileSetFragment extends Fragment {
@@ -80,6 +81,7 @@ public class TileSetFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mTileSetViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
         new Thread(() -> {
+
             mTileSetViewModel.initCurrentId();
             Log.d(TAG, "Ascync init currentId compleate");
         }).start();
@@ -106,16 +108,27 @@ public class TileSetFragment extends Fragment {
 
     private void chooseCurrentId(TileSetRepository tileSetRepository){
         AtomicBoolean flag = new AtomicBoolean(false);
+        //TODO check if flag can be deleted
 
         tileSetRepository.getTileSetList().observe(this, tileSets -> {
-            if (flag.get())
-                return;
+            /*if (flag.get())
+                return;*/
             if (tileSets.isEmpty()){
-                //TODO add sample TileSet
                 Log.d(TAG, "chooseCurrentId: tileSetList is empty (in DB)");
+                TileSet tileSet = new TileSet("new Tile set", new int[][]{{1,2,3},{2,3,4},{3,4,4}}, new ArrayList<String>(){{
+                    add("_");
+                    add("G");
+                    add("C");
+                    add("S");
+                    add("M");
+                }});
+                mTileSetViewModel.insert(tileSet);
+                mTileSetViewModel.setCurrentId(tileSet.getTileId());
+            } else {
+
+                mTileSetViewModel.setCurrentId(tileSets.get(0).getTileId());
             }
             flag.set(true);
-            mTileSetViewModel.setCurrentId(tileSets.get(0).getTileId());
             Log.d(TAG, "chooseCurrentId: choosed id: " + mTileSetViewModel.getCurrentId());
             adapter.notifyItemChanged(0);
         });
