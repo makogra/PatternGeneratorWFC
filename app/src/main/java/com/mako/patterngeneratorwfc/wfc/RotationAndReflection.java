@@ -7,10 +7,49 @@ public class RotationAndReflection {
 
     private final Integer[][] inputPattern;
     private final int patternSize;
+    private final boolean enableRotation;
+    private final boolean enableReflection;
 
-    public RotationAndReflection(Integer[][] inputPattern){
+    public RotationAndReflection(Integer[][] inputPattern, boolean enableRotation, boolean enableReflection){
+        if (inputPattern == null)
+            throw new IllegalArgumentException("InputPattern is null");
+        if (inputPattern.length == 0)
+            throw new IllegalArgumentException("InputPattern is empty");
+        if (inputPattern.length != inputPattern[0].length)
+            throw new IllegalArgumentException("InputPattern is NxM instead of NxN");
         this.inputPattern = inputPattern;
         this.patternSize = inputPattern.length;
+        this.enableRotation = enableRotation;
+        this.enableReflection = enableReflection;
+    }
+
+    public List<Integer[][]> getAll(){
+        List<Integer[][]> allPatterns = new ArrayList<>();
+        int size;
+
+        allPatterns.add(inputPattern);
+
+        if (enableRotation){
+            size = allPatterns.size();
+            int numberOfRotations = 4;
+            Integer[][] previousPattern;
+            for (int i = 0; i < size; i++) {
+                previousPattern = allPatterns.get(i);
+                for (int j = 0; j < numberOfRotations; j++) {
+                    previousPattern = rightRotate(previousPattern);
+                    allPatterns.add(previousPattern);
+                }
+            }
+        }
+
+        if (enableReflection){
+            size = allPatterns.size();
+            for (int i = 0; i < size; i++) {
+                allPatterns.add(horizontalMirror(allPatterns.get(i)));
+                allPatterns.add(verticalMirror(allPatterns.get(i)));
+            }
+        }
+        return allPatterns;
     }
 
     public List<Integer[][]> getAllRotationsAndReflections(){
@@ -60,5 +99,34 @@ public class RotationAndReflection {
             }
         }
         return rotated;
+    }
+
+    //function to rotate the matrix by 90 degrees clockwise
+    private Integer[][] rightRotate(Integer[][] matrix) {
+        Integer[][] outputMatrix = new Integer[patternSize][patternSize];
+        //determines the transpose of the matrix
+        for(int i=0;i<patternSize;i++)
+        {
+            for(int j=i;j<patternSize;j++)
+            {
+                outputMatrix[i][j] = matrix[j][i];
+                outputMatrix[j][i] = matrix[i][j];
+            }
+        }
+
+        //then we reverse the elements of each row
+        for(int i=0;i<patternSize;i++)
+        {
+            //logic to reverse each row i.e 1D Array.
+            int low = 0, high = patternSize-1;
+            while(low < high)
+            {
+                outputMatrix[i][low] = matrix[i][high];
+                outputMatrix[i][high] = matrix[i][low];
+                low++;
+                high--;
+            }
+        }
+        return outputMatrix;
     }
 }

@@ -21,6 +21,8 @@ public class SettingsTileSetViewModel extends ViewModel {
     private int[] settingsMin;
     private int[] settingsMax;
     private int[] settingsValue;
+    private boolean rotation = false;
+    private boolean reflection = false;
 
 
     // Getters
@@ -103,6 +105,14 @@ public class SettingsTileSetViewModel extends ViewModel {
         this.settingsMax[position] = value;
     }
 
+    public void setRotation(boolean rotation) {
+        this.rotation = rotation;
+    }
+
+    public void setReflection(boolean reflection) {
+        this.reflection = reflection;
+    }
+
     public boolean setValue(int value, int position) {
         String info = "min: " + getMin(position) + " max: " + getMax(position) + " value: " + value + " at position: " + position;
         if (outOfArr(position)){
@@ -157,5 +167,13 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public boolean isNotMinMaxInnited() {
         return settingsMin == null || settingsMax == null;
+    }
+
+    public boolean getRotation() {
+        return rotation;
+    }
+
+    public boolean getReflection() {
+        return reflection;
     }
 }

@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,7 +79,24 @@ public class SettingsTileSetFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.notifyDataSetChanged();
+        initSwitches(view);
         return view;
+    }
+
+
+
+    private void initSwitches(View view) {
+        SwitchCompat rotation = view.findViewById(R.id.rotation_switch);
+        SwitchCompat reflection = view.findViewById(R.id.reflection_switch);
+
+        rotation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            settingsTileSetViewModel.setRotation(isChecked);
+            Log.d(TAG, "initSwitches: rotation = " + isChecked);
+        });
+        reflection.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            settingsTileSetViewModel.setReflection(isChecked);
+            Log.d(TAG, "initSwitches: reflection = " + isChecked);
+        }));
     }
 
 

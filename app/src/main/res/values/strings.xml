@@ -31,4 +31,6 @@
     <string name="add_row">Add row</string>
     <string name="subtract_row">Subtract row</string>
     <string name="current_tile_set">Current Tile Set</string>
+    <string name="rotation">Rotation</string>
+    <string name="reflection">Reflection</string>
 </resources>
