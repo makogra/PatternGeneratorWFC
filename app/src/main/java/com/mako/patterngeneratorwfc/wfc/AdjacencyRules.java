@@ -11,11 +11,13 @@ public class AdjacencyRules {
     private List<List<List<Integer>>> defaultPatternEnablers;
     private final List<Integer[][]> patternList;
     private final int patternSize;
+    private final int overLap;
 
-    AdjacencyRules(List<Integer[][]> patternList, int totalNumberOfPatterns){
+    AdjacencyRules(List<Integer[][]> patternList, int overLap){
         this.patternList = patternList;
-        this.totalNumberOfPatterns = totalNumberOfPatterns;
+        this.totalNumberOfPatterns = patternList.size();
         this.patternSize = patternList.get(0).length;
+        this.overLap = overLap;
     }
 
     public List<List<List<Integer>>> getDefaultPatternEnablers() {
@@ -58,78 +60,83 @@ public class AdjacencyRules {
     private boolean isEnabler(int patternIndex, int direction, int patternEnabler) {
         Integer[][] pattern1 = patternList.get(patternIndex);
         Integer[][] pattern2 = patternList.get(patternEnabler);
-        int[] directionOffset = Directions.getDirection(direction);
+        int[] directionVector = Directions.getDirection(direction);
         int row1, row2, col1, col2, toRow, toCol;
 
 
-        if (directionOffset[0] != 0 && directionOffset[1] != 0){
+        if (directionVector[0] != 0 && directionVector[1] != 0){
             // It's diagonal
-            if (directionOffset[0] == 1) {
+            if (directionVector[0] == 1) {
                 // It's DOWN_...
-                row1 = patternSize-1;
+                row1 = patternSize-overLap;
                 row2 = 0;
             } else{
                 // It's UP_...
                 row1 = 0;
-                row2 = patternSize-1;
+                row2 = patternSize-overLap;
             }
 
-            if (directionOffset[1] == 1){
+            if (directionVector[1] == 1){
                 // It's ..._RIGHT
-                col1 = patternSize-1;
+                col1 = patternSize-overLap;
                 col2 = 0;
             } else {
                 // It's ..._LEFT
                 col1 = 0;
-                col2 = patternSize-1;
+                col2 = patternSize-overLap;
             }
 
-            return pattern1[row1][col1].equals(pattern2[row2][col2]);
+            for (int i = 0; i < overLap; i++) {
+                for (int j = 0; j < overLap; j++) {
+                    if (!pattern1[row1 + i][col1 + j].equals(pattern2[row2 + i][col2 + j]))
+                        return false;
+                }
+            }
+            return true;
         }
 
-        if (directionOffset[0] == 0){
-            // It's vertical
-            row1 = 0;
-            row2 = 0;
+        if (directionVector[0] == 0){
+            // It's horizontal
             toRow = patternSize;
 
-            if (directionOffset[1] == 1){
+            if (directionVector[1] == 1){
                 // It's RIGHT
-                col1 = patternSize-1;
+                col1 = patternSize-overLap;
                 col2 = 0;
             } else {
                 // It's LEFT
                 col1 = 0;
-                col2 = patternSize-1;
+                col2 = patternSize-overLap;
             }
 
-
-            for (; row1 < toRow; row1++, row2++) {
-                if (!pattern1[row1][col1].equals(pattern2[row2][col2]))
-                    return false;
+            for (int i = 0; i < overLap; i++) {
+                for (int row = 0; row < toRow; row++) {
+                    if (!pattern1[row][col1 + i].equals(pattern2[row][col2 + i]))
+                        return false;
+                }
             }
 
             return true;
         }
 
-        // It's horizontal
-        col1 = 0;
-        col2 = 0;
+        // It's vertical
         toCol = patternSize;
 
-        if (directionOffset[0] == 1){
-            // It;s DOWN
-            row1 = 0;
-            row2 = patternSize-1;
-        } else {
+        if (directionVector[0] == -1){
             // It's UP
-            row1 = patternSize-1;
+            row1 = 0;
+            row2 = patternSize-overLap;
+        } else {
+            // It's DOWN
+            row1 = patternSize-overLap;
             row2 = 0;
         }
 
-        for (;col1 < toCol; col1++, col2++){
-            if (!pattern1[row1][col1].equals(pattern2[row2][col2]))
-                return false;
+        for (int i = 0; i < overLap; i++) {
+            for (int col = 0; col < toCol; col++){
+                if (!pattern1[row1 + i][col].equals(pattern2[row2 + i][col]))
+                    return false;
+            }
         }
 
         return true;
