@@ -31,8 +31,10 @@ public class InputHandlerTest {
                 {0,0,1,2,2,2},
         };
         patternSize = 2;
+        boolean rotation = true;
+        boolean reflection = true;
 
-        inputHandler = new InputHandler(inputGridValue, patternSize);
+        inputHandler = new InputHandler(inputGridValue, patternSize, rotation, reflection);
     }
 
     @Test

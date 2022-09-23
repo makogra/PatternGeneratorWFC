@@ -2,7 +2,6 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -54,8 +53,11 @@ public class RotationAndReflectionTest {
             {3,6,9}
     };
 
-    RotationAndReflection test1 = new RotationAndReflection(input1);
-    RotationAndReflection test2 = new RotationAndReflection(input2);
+    boolean enableRotation = true;
+    boolean enableReflection = true;
+
+    RotationAndReflection test1 = new RotationAndReflection(input1, enableRotation, enableReflection);
+    RotationAndReflection test2 = new RotationAndReflection(input2, enableRotation, enableReflection);
 
     @Test
     public void getAllRotationsAndReflections() {
