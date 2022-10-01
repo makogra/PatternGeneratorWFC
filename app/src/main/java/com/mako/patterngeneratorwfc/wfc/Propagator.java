@@ -28,9 +28,13 @@ public class Propagator {
     private Queue<EntryPattern> propagateQueue;
     private final Wave wave;
     private final String TAG = "Propagator";
+    private final int mMaxHeight;
+    private final int mMaxWidth;
 
     Propagator(Wave wave){
         this.wave = wave;
+        this.mMaxHeight = wave.getHeight();
+        this.mMaxWidth = wave.getWidth();
         propagateQueue = new LinkedList<>();
     }
 
@@ -71,15 +75,12 @@ public class Propagator {
         int patternCol;
         int[] direction;
         int[][] directions = Directions.getDIRECTIONS();
-        //TODO make max... field in class
-        int maxHeight = wave.getHeight();
-        int maxWidth = wave.getWidth();
         for (int directionIndex = 0; directionIndex < directions.length; directionIndex++) {
             direction = directions[directionIndex];
             patternRow = row + direction[0];
             patternCol = col + direction[1];
 
-            if (patternRow < 0 || patternRow >= maxHeight || patternCol < 0 || patternCol >= maxWidth || wave.getCell(patternRow, patternCol).isObserved())
+            if (patternRow < 0 || patternRow >= mMaxHeight || patternCol < 0 || patternCol >= mMaxWidth || wave.getCell(patternRow, patternCol).isObserved())
                 continue;
 
             propagateQueue.add(new EntryPattern(patternRow, patternCol, pattern, Directions.oppositeDirectionIndex(directionIndex), propagateEnabler));
