@@ -70,7 +70,8 @@ public class Wave {
         this.outputPatternGridWidth = (int) Math.ceil((outputWidth-1)/(double)(patternSize-1));
         this.propagator = new Propagator(this);
 
-        initGrid(defaultPatternEnablers, numberOfPossiblePatterns, relativeFrequency);
+        initStaticCell(defaultPatternEnablers, numberOfPossiblePatterns, relativeFrequency);
+        initGrid();
         initOutputPatternGrid();
         initLowestEntropyQueue();
 
@@ -127,12 +128,20 @@ public class Wave {
         lowestEntropyQueue.add(new EntropyEntry(row, col, wave[row][col].getEntropy()));
     }
 
-    private void initGrid(List<List<List<Integer>>> defaultPatternEnablers, int numberOfPossiblePatterns, double[] relativeFrequency){
+    private void initStaticCell(List<List<List<Integer>>> defaultPatternEnablers, int numberOfPossiblePatterns, double[] relativeFrequency) {
+        Cell.setsPropagator(propagator);
+        Cell.setsDefaultPatternEnablers(defaultPatternEnablers);
+        Cell.setsRelativeFrequency(relativeFrequency);
+        Cell.setsTotalNumberOfPossiblePatterns(numberOfPossiblePatterns);
+    }
+
+    private void initGrid(){
         wave = new Cell[outputPatternGridHeight][outputPatternGridWidth];
+
 
         for (int height = 0; height < outputPatternGridHeight; height++) {
             for (int width = 0; width < outputPatternGridWidth; width++) {
-                wave[height][width] = new Cell(height, width, defaultPatternEnablers, numberOfPossiblePatterns, relativeFrequency, propagator);
+                wave[height][width] = new Cell(height, width);
             }
         }
     }

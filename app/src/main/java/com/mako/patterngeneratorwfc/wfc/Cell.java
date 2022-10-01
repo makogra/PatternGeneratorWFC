@@ -12,6 +12,10 @@ import kotlin.random.Random;
 public class Cell {
 
     private static final String TAG = Cell.class.getName();
+    private static List<List<List<Integer>>> sDefaultPatternEnablers;
+    private static int sTotalNumberOfPossiblePatterns;
+    private static double[] sRelativeFrequency;
+    private static Propagator sPropagator;
 
     private boolean isObserved;
     // index correspondent's to pattern id
@@ -22,27 +26,21 @@ public class Cell {
     private List<List<List<Integer>>> patternEnablers;
     // Number of patterns that are still possible
     private int numberOfPossiblePatterns;
-    private final int totalNumberOfPatterns;
     // Number that represent uncertainty. The fewer possibilities of patterns, lower the value
     private double entropy;
     // small number added to entropy to more easily distinguish the lower entropy between two cells
     private final double entropyNoise;
-    private final double[] relativeFrequency;
     private final int row;
     private final int col;
-    private final Propagator propagator;
 
 
-    // TODO make relativeFrequency, propagator, defaultPatternEnablers, and totalNumberOfPossiblePatterns static
-    Cell(int row, int col, List<List<List<Integer>>> defaultPatternEnablers, int totalNumberOfPossiblePatterns, double[] relativeFrequency, Propagator propagator) {
+
+    Cell(int row, int col) {
         this.row = row;
         this.col = col;
         this.isObserved = false;
-        this.relativeFrequency = relativeFrequency;
-        this.totalNumberOfPatterns = totalNumberOfPossiblePatterns;
-        this.numberOfPossiblePatterns = totalNumberOfPatterns;
-        this.propagator = propagator;
-        this.patternEnablers = clonePatternEnables(defaultPatternEnablers);
+        this.numberOfPossiblePatterns = sTotalNumberOfPossiblePatterns;
+        this.patternEnablers = clonePatternEnables(sDefaultPatternEnablers);
 
         this.possiblePatterns = new boolean[numberOfPossiblePatterns];
         Arrays.fill(possiblePatterns, true);
@@ -51,6 +49,22 @@ public class Cell {
 
         this.entropyNoise = Random.Default.nextDouble(0.00001);
         updateEntropy();
+    }
+
+    public static void setsDefaultPatternEnablers(List<List<List<Integer>>> sDefaultPatternEnablers) {
+        Cell.sDefaultPatternEnablers = sDefaultPatternEnablers;
+    }
+
+    public static void setsTotalNumberOfPossiblePatterns(int sTotalNumberOfPossiblePatterns) {
+        Cell.sTotalNumberOfPossiblePatterns = sTotalNumberOfPossiblePatterns;
+    }
+
+    public static void setsRelativeFrequency(double[] sRelativeFrequency) {
+        Cell.sRelativeFrequency = sRelativeFrequency;
+    }
+
+    public static void setsPropagator(Propagator sPropagator) {
+        Cell.sPropagator = sPropagator;
     }
 
     //Getters
@@ -96,7 +110,7 @@ public class Cell {
             if (!possiblePatterns[patternIndex])
                 continue;
 
-            relativeFrequencyHelper = relativeFrequency[patternIndex];
+            relativeFrequencyHelper = sRelativeFrequency[patternIndex];
             totalWeight += relativeFrequencyHelper;
             sumOfWeightLogWeight += relativeFrequencyHelper * Math.log(relativeFrequencyHelper);
         }
@@ -150,7 +164,7 @@ public class Cell {
             if (helperList.remove((Integer) patternIndex)) {
                 if (helperList.isEmpty()) {
                     update = true;
-                    propagator.addToPropagate(row, col, patternId, true);
+                    sPropagator.addToPropagate(row, col, patternId, true);
                 }
             }
         }
@@ -184,7 +198,7 @@ public class Cell {
 
             if (listOfPatternEnables.isEmpty()) {
                 update = true;
-                propagator.addToPropagate(row, col, patternId, true);
+                sPropagator.addToPropagate(row, col, patternId, true);
             }
 
         }
@@ -208,7 +222,7 @@ public class Cell {
 
 
 
-        if (patternIndex < 0 || patternIndex >= totalNumberOfPatterns) {
+        if (patternIndex < 0 || patternIndex >= sTotalNumberOfPossiblePatterns) {
             //Error
             return -3;
         }
