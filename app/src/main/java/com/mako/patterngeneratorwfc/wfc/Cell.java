@@ -107,7 +107,7 @@ public class Cell {
                 continue;
             }
             for (int j = 0; j < Directions.getTOTAL_DIRECTIONS_NUMBER(); j++) {
-                if (patternEnablers.get(i).get(j).size() == 0) {
+                if (patternEnablers.get(i).get(j) == null || patternEnablers.get(i).get(j).size() == 0) {
                     possiblePatterns[i] = false;
                     patternEnablers.set(i, null);
                     break;
