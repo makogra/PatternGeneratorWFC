@@ -1,5 +1,7 @@
 package com.mako.patterngeneratorwfc.wfc;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +10,8 @@ import java.util.List;
 import kotlin.random.Random;
 
 public class Cell {
+
+    private static final String TAG = Cell.class.getName();
 
     private boolean isObserved;
     // index correspondent's to pattern id
@@ -131,7 +135,8 @@ public class Cell {
         updateNumberOfPossiblePatterns();
         updateEntropy();
         if (numberOfPossiblePatterns == 0)
-            isObserved = true;
+            Log.w(TAG, "update: numberOfPossiblePatterns = 0");
+            //isObserved = true;
     }
 
     public void removePatternFromPatternEnablers(int directionIndex, int patternIndex) {
@@ -230,6 +235,6 @@ public class Cell {
             if (randomIndex-- <= 0)
                 return patternIndex;
         }
-        return possiblePatterns.length;
+        return possiblePatterns.length-1;
     }
 }
