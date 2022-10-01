@@ -198,7 +198,7 @@ public class Wave {
                 throw new IllegalStateException("Contradiction");
             case -2 :
                 wave[row][col].update();
-                if ((wave[row][col].isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !wave[row][col].isObserved()))
+                if ((wave[row][col].isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !wave[row][col].isObserved())) // second argument is unnecessary, because it's already checked
                     throw new IllegalStateException("Contradiction");
                 return;
             case -3 :
