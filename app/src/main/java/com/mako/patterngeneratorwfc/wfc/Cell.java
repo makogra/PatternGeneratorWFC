@@ -125,6 +125,7 @@ public class Cell {
         }
         this.numberOfPossiblePatterns = sum;
     }
+
     void update(){
         updatePossiblePatterns();
         updateNumberOfPossiblePatterns();
@@ -137,8 +138,9 @@ public class Cell {
         boolean update = false;
         List<Integer> helperList;
         for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
-            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null)
+            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null) {
                 continue;
+            }
             helperList = patternEnablers.get(patternId).get(directionIndex);
             if (helperList.remove((Integer) patternIndex)) {
                 if (helperList.isEmpty()) {
@@ -157,8 +159,9 @@ public class Cell {
         List<Integer> listOfPatternEnables;
         List<Integer> listOfPatternsToRemove;
         for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
-            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null)
+            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null) {
                 continue;
+            }
 
             listOfPatternsToRemove = new ArrayList<>();
             listOfPatternEnables = patternEnablers.get(patternId).get(directionIndex);
