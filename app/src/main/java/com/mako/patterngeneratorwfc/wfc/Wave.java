@@ -81,6 +81,10 @@ public class Wave {
         return wave[row][col].isObserved();
     }
 
+    public Propagator getPropagator() {
+        return propagator;
+    }
+
     public Cell getCell(int row, int col){
         return wave[row][col];
     }

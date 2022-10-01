@@ -32,9 +32,8 @@ public class WFC {
         this.defaultPatternEnablers = adjacencyRules.getDefaultPatternEnablers();
         patternList = inputHandler.getPatternList();
         inputValueMap = tileSet.getValueToStringPath();
-        //TODO fill propagator constructor
 
-        this.propagator = new Propagator(wave);
+        this.propagator = wave.getPropagator();
     }
 
     //Getters
