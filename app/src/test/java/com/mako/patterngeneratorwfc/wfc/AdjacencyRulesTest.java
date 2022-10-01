@@ -1,5 +1,6 @@
 package com.mako.patterngeneratorwfc.wfc;
 
+import static android.util.ArraysDeep.deepEqual;
 import static org.junit.Assert.*;
 
 import android.util.Log;
@@ -130,24 +131,6 @@ public class AdjacencyRulesTest {
         Log.d(TAG, "getDefaultPatternEnablers: " + shouldBe);
         Log.d(TAG, "getDefaultPatternEnablers: " + was);
         assertTrue(deepEqual(shouldBe, was));
-    }
-
-    private boolean deepEqual(List<List<List<Integer>>> shouldBe, List<List<List<Integer>>> was) {
-        if (shouldBe.size() != was.size())
-            return false;
-        for (int i = 0; i < shouldBe.size(); i++) {
-            if (shouldBe.get(i).size() != was.get(i).size())
-                return false;
-            for (int j = 0; j < shouldBe.get(i).size(); j++) {
-                if (shouldBe.get(i).get(j).size() != was.get(i).get(j).size())
-                    return false;
-                for (int k = 0; k < shouldBe.get(i).get(j).size(); k++) {
-                    if (!shouldBe.get(i).get(j).get(k).equals(was.get(i).get(j).get(k)))
-                        return false;
-                }
-            }
-        }
-        return true;
     }
 
     @Test
