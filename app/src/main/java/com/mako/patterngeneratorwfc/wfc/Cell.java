@@ -28,6 +28,8 @@ public class Cell {
     private final int col;
     private final Propagator propagator;
 
+
+    // TODO make relativeFrequency, propagator, defaultPatternEnablers, and totalNumberOfPossiblePatterns static
     Cell(int row, int col, List<List<List<Integer>>> defaultPatternEnablers, int totalNumberOfPossiblePatterns, double[] relativeFrequency, Propagator propagator) {
         this.row = row;
         this.col = col;
