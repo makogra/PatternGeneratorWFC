@@ -115,14 +115,16 @@ public class RotationAndReflection {
         }
 
         //then we reverse the elements of each row
+        int temp;
         for(int i=0;i<patternSize;i++)
         {
             //logic to reverse each row i.e 1D Array.
             int low = 0, high = patternSize-1;
             while(low < high)
             {
-                outputMatrix[i][low] = matrix[i][high];
-                outputMatrix[i][high] = matrix[i][low];
+                temp = outputMatrix[i][high];
+                outputMatrix[i][high] =  outputMatrix[i][low];
+                outputMatrix[i][low] = temp;
                 low++;
                 high--;
             }
