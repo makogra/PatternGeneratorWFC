@@ -71,6 +71,7 @@ public class Propagator {
         int patternCol;
         int[] direction;
         int[][] directions = Directions.getDIRECTIONS();
+        //TODO make max... field in class
         int maxHeight = wave.getHeight();
         int maxWidth = wave.getWidth();
         for (int directionIndex = 0; directionIndex < directions.length; directionIndex++) {
