@@ -89,6 +89,9 @@ public class SettingsTileSetFragment extends Fragment {
         SwitchCompat rotation = view.findViewById(R.id.rotation_switch);
         SwitchCompat reflection = view.findViewById(R.id.reflection_switch);
 
+        settingsTileSetViewModel.setRotation(rotation.isChecked());
+        settingsTileSetViewModel.setReflection(reflection.isChecked());
+
         rotation.setOnCheckedChangeListener((buttonView, isChecked) -> {
             settingsTileSetViewModel.setRotation(isChecked);
             Log.d(TAG, "initSwitches: rotation = " + isChecked);
