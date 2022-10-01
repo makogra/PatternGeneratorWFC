@@ -31,7 +31,7 @@ public class RotationAndReflection {
 
         if (enableRotation){
             size = allPatterns.size();
-            int numberOfRotations = 4;
+            int numberOfRotations = 3;
             Integer[][] previousPattern;
             for (int i = 0; i < size; i++) {
                 previousPattern = allPatterns.get(i);
