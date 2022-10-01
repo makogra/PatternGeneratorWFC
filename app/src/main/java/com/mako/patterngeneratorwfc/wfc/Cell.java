@@ -175,9 +175,7 @@ public class Cell {
 
             }
 
-            for (Integer p : listOfPatternsToRemove) {
-                patternEnablers.get(patternId).get(directionIndex).remove(p);
-            }
+            patternEnablers.get(patternId).get(directionIndex).removeAll(listOfPatternsToRemove);
 
             if (listOfPatternEnables.isEmpty()) {
                 update = true;
