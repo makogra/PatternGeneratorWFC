@@ -132,6 +132,7 @@ public class Cell {
     }
 
     public void removePatternFromPatternEnablers(int directionIndex, int patternIndex) {
+        boolean update = false;
         List<Integer> helperList;
         for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
             if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null)
@@ -139,17 +140,18 @@ public class Cell {
             helperList = patternEnablers.get(patternId).get(directionIndex);
             if (helperList.remove((Integer) patternIndex)) {
                 if (helperList.isEmpty()) {
-                    possiblePatterns[patternId] = false;
-                    numberOfPossiblePatterns--;
-                    patternEnablers.set(patternId, null);
+                    update = true;
                     propagator.addToPropagate(row, col, patternId, true);
                 }
             }
         }
-        update();
+        if (update) {
+            update();
+        }
     }
 
     void removePatternEnablesExceptPattern(int directionIndex, int patternIndex) {
+        boolean update = false;
         List<Integer> listOfPatternEnables;
         List<Integer> listOfPatternsToRemove;
         for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
@@ -173,15 +175,14 @@ public class Cell {
             }
 
             if (listOfPatternEnables.isEmpty()) {
-                possiblePatterns[patternId] = false;
-                numberOfPossiblePatterns--;
-                patternEnablers.set(patternId, null);
+                update = true;
                 propagator.addToPropagate(row, col, patternId, true);
             }
 
         }
-
-        update();
+        if (update) {
+            update();
+        }
     }
 
     public int observe() {
