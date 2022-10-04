@@ -78,6 +78,8 @@ public class WFCFragment extends Fragment {
                 int outputHeight = mSettingsTileSetViewModel.getValue(1);
                 int outputWidth = mSettingsTileSetViewModel.getValue(2);
                 int tilesOverlap = mSettingsTileSetViewModel.getValue(3);
+                boolean rotation = mSettingsTileSetViewModel.getRotation();
+                boolean reflection = mSettingsTileSetViewModel.getReflection();
                 TileSet input = mTileSetViewModel.getCurrentTileSet();
                 Log.d(TAG, "onCreateView: tileSet = " + input);
                 String[][] tempInputGrid =  new String[][]{
@@ -88,14 +90,16 @@ public class WFCFragment extends Fragment {
                         {"G","G","G","C","S","S","S","S"}
                 };
 
-                WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth);
+                WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth, rotation, reflection);
                 wfc.run(30);
                 if (wfc.isCollapsed()){
                     int[][] outputGrid = wfc.getOutputGrid();
                     Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, tilesOverlap, wfc.getPatternList());
 
                     showResult(result, wfc.getInputValueMap());
+                    //TODO display finish
                 }
+                //TODO else display failure
             }).start();
         });
         return view;

@@ -21,20 +21,19 @@ public class WFC {
     private final InputHandler inputHandler;
     private final List<List<List<Integer>>> defaultPatternEnablers;
 
-    public WFC(TileSet tileSet, int patternSize, int tilesOverLap, int outputHeight, int outputWidth) {
+    public WFC(TileSet tileSet, int patternSize, int tilesOverLap, int outputHeight, int outputWidth, boolean rotation, boolean reflection) {
         this.patternSize = patternSize;
         this.tilesOverLap = tilesOverLap;
         this.outputHeight = outputHeight;
         this.outputWidth = outputWidth;
         this.wave = new Wave(outputHeight, outputWidth, patternSize);
-        this.inputHandler = new InputHandler(tileSet.getValueGrid(), patternSize);
-        AdjacencyRules adjacencyRules = new AdjacencyRules(inputHandler.getPatternList(), inputHandler.getTotalNumberOfPatterns());
+        this.inputHandler = new InputHandler(tileSet.getValueGrid(), patternSize, rotation, reflection);
+        AdjacencyRules adjacencyRules = new AdjacencyRules(inputHandler.getPatternList(), tilesOverLap);
         this.defaultPatternEnablers = adjacencyRules.getDefaultPatternEnablers();
         patternList = inputHandler.getPatternList();
         inputValueMap = tileSet.getValueToStringPath();
-        //TODO fill propagator constructor
 
-        this.propagator = new Propagator(wave);
+        this.propagator = wave.getPropagator();
     }
 
     //Getters

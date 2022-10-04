@@ -11,10 +11,10 @@ public class InputHandler {
     private List<Integer[][]> patternList;
     private double[] relativeFrequency;
 
-    public InputHandler(int[][] valueGrid, int patternSize){
+    public InputHandler(int[][] valueGrid, int patternSize, boolean rotation, boolean reflection){
         this.valueGrid = valueGrid;
         this.patternSize = patternSize;
-        makePatternGridAndPatternList();
+        makePatternGridAndPatternList(rotation, reflection);
     }
 
     public int[][] getValueGrid() {
@@ -33,7 +33,7 @@ public class InputHandler {
         return patternList.size();
     }
 
-    private void makePatternGridAndPatternList(){
+    private void makePatternGridAndPatternList(boolean enableRotation, boolean enableReflection){
         int patternGridHeight = valueGrid.length + 1 - patternSize;
         int patternGridWidth = valueGrid[0].length + 1 - patternSize;
         this.patternList = new ArrayList<Integer[][]>(){
@@ -88,6 +88,7 @@ public class InputHandler {
         List<Integer> listOfPatternsWithDuplicates = new ArrayList<>();
         List<Integer[][]> allRotations;
         RotationAndReflection rotationAndReflection;
+        //TODO add flag to enable/disable reflection and rotation
 
         for (int row = 0; row < patternGridHeight; row++) {
             for (int col = 0; col < patternGridWidth; col++) {
@@ -97,8 +98,8 @@ public class InputHandler {
                         pattern[i][j] = valueGrid[row+i][col+j];
                     }
                 }
-                rotationAndReflection = new RotationAndReflection(pattern);
-                allRotations = rotationAndReflection.getAllRotationsAndReflections();
+                rotationAndReflection = new RotationAndReflection(pattern, enableRotation, enableReflection);
+                allRotations = rotationAndReflection.getAll();
                 for (Integer[][] rotation : allRotations){
                     if (patternList.contains(rotation)){
                         patternIndex = patternList.indexOf(rotation);

@@ -15,8 +15,6 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Settings TileSet Fragment  -->
     <string name="pattern_size">pattern_size</string>
@@ -31,4 +29,6 @@
     <string name="add_row">Add row</string>
     <string name="subtract_row">Subtract row</string>
     <string name="current_tile_set">Current Tile Set</string>
+    <string name="rotation">Rotation</string>
+    <string name="reflection">Reflection</string>
 </resources>

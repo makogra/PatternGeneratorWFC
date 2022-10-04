@@ -70,7 +70,8 @@ public class Wave {
         this.outputPatternGridWidth = (int) Math.ceil((outputWidth-1)/(double)(patternSize-1));
         this.propagator = new Propagator(this);
 
-        initGrid(defaultPatternEnablers, numberOfPossiblePatterns, relativeFrequency);
+        initStaticCell(defaultPatternEnablers, numberOfPossiblePatterns, relativeFrequency);
+        initGrid();
         initOutputPatternGrid();
         initLowestEntropyQueue();
 
@@ -79,6 +80,10 @@ public class Wave {
     //Getters
     public boolean isCellObserved(int row, int col){
         return wave[row][col].isObserved();
+    }
+
+    public Propagator getPropagator() {
+        return propagator;
     }
 
     public Cell getCell(int row, int col){
@@ -123,12 +128,20 @@ public class Wave {
         lowestEntropyQueue.add(new EntropyEntry(row, col, wave[row][col].getEntropy()));
     }
 
-    private void initGrid(List<List<List<Integer>>> defaultPatternEnablers, int numberOfPossiblePatterns, double[] relativeFrequency){
+    private void initStaticCell(List<List<List<Integer>>> defaultPatternEnablers, int numberOfPossiblePatterns, double[] relativeFrequency) {
+        Cell.setsPropagator(propagator);
+        Cell.setsDefaultPatternEnablers(defaultPatternEnablers);
+        Cell.setsRelativeFrequency(relativeFrequency);
+        Cell.setsTotalNumberOfPossiblePatterns(numberOfPossiblePatterns);
+    }
+
+    private void initGrid(){
         wave = new Cell[outputPatternGridHeight][outputPatternGridWidth];
+
 
         for (int height = 0; height < outputPatternGridHeight; height++) {
             for (int width = 0; width < outputPatternGridWidth; width++) {
-                wave[height][width] = new Cell(height, width, defaultPatternEnablers, numberOfPossiblePatterns, relativeFrequency, propagator);
+                wave[height][width] = new Cell(height, width);
             }
         }
     }
@@ -198,7 +211,7 @@ public class Wave {
                 throw new IllegalStateException("Contradiction");
             case -2 :
                 wave[row][col].update();
-                if ((wave[row][col].isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !wave[row][col].isObserved()))
+                if ((wave[row][col].isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !wave[row][col].isObserved())) // second argument is unnecessary, because it's already checked
                     throw new IllegalStateException("Contradiction");
                 return;
             case -3 :

@@ -11,20 +11,38 @@
         android:id="@+id/fragment_settings_tile_set_test_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/rotation_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_marginStart="8dp"
+        android:checked="true"
+        android:text="@string/rotation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_settings_tile_set_test_text_view" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/reflection_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/reflection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rotation_switch" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_settings_tile_set_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_settings_tile_set_test_text_view">
+        app:layout_constraintTop_toBottomOf="@+id/reflection_switch">
 
     </androidx.recyclerview.widget.RecyclerView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

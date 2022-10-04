@@ -1,5 +1,7 @@
 package com.mako.patterngeneratorwfc.wfc;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +10,12 @@ import java.util.List;
 import kotlin.random.Random;
 
 public class Cell {
+
+    private static final String TAG = Cell.class.getName();
+    private static List<List<List<Integer>>> sDefaultPatternEnablers;
+    private static int sTotalNumberOfPossiblePatterns;
+    private static double[] sRelativeFrequency;
+    private static Propagator sPropagator;
 
     private boolean isObserved;
     // index correspondent's to pattern id
@@ -18,25 +26,21 @@ public class Cell {
     private List<List<List<Integer>>> patternEnablers;
     // Number of patterns that are still possible
     private int numberOfPossiblePatterns;
-    private final int totalNumberOfPatterns;
     // Number that represent uncertainty. The fewer possibilities of patterns, lower the value
     private double entropy;
     // small number added to entropy to more easily distinguish the lower entropy between two cells
     private final double entropyNoise;
-    private final double[] relativeFrequency;
     private final int row;
     private final int col;
-    private final Propagator propagator;
 
-    Cell(int row, int col, List<List<List<Integer>>> defaultPatternEnablers, int totalNumberOfPossiblePatterns, double[] relativeFrequency, Propagator propagator) {
+
+
+    Cell(int row, int col) {
         this.row = row;
         this.col = col;
         this.isObserved = false;
-        this.relativeFrequency = relativeFrequency;
-        this.totalNumberOfPatterns = totalNumberOfPossiblePatterns;
-        this.numberOfPossiblePatterns = totalNumberOfPatterns;
-        this.propagator = propagator;
-        this.patternEnablers = clonePatternEnables(defaultPatternEnablers);
+        this.numberOfPossiblePatterns = sTotalNumberOfPossiblePatterns;
+        this.patternEnablers = clonePatternEnables(sDefaultPatternEnablers);
 
         this.possiblePatterns = new boolean[numberOfPossiblePatterns];
         Arrays.fill(possiblePatterns, true);
@@ -45,6 +49,22 @@ public class Cell {
 
         this.entropyNoise = Random.Default.nextDouble(0.00001);
         updateEntropy();
+    }
+
+    public static void setsDefaultPatternEnablers(List<List<List<Integer>>> sDefaultPatternEnablers) {
+        Cell.sDefaultPatternEnablers = sDefaultPatternEnablers;
+    }
+
+    public static void setsTotalNumberOfPossiblePatterns(int sTotalNumberOfPossiblePatterns) {
+        Cell.sTotalNumberOfPossiblePatterns = sTotalNumberOfPossiblePatterns;
+    }
+
+    public static void setsRelativeFrequency(double[] sRelativeFrequency) {
+        Cell.sRelativeFrequency = sRelativeFrequency;
+    }
+
+    public static void setsPropagator(Propagator sPropagator) {
+        Cell.sPropagator = sPropagator;
     }
 
     //Getters
@@ -90,7 +110,7 @@ public class Cell {
             if (!possiblePatterns[patternIndex])
                 continue;
 
-            relativeFrequencyHelper = relativeFrequency[patternIndex];
+            relativeFrequencyHelper = sRelativeFrequency[patternIndex];
             totalWeight += relativeFrequencyHelper;
             sumOfWeightLogWeight += relativeFrequencyHelper * Math.log(relativeFrequencyHelper);
         }
@@ -105,7 +125,7 @@ public class Cell {
                 continue;
             }
             for (int j = 0; j < Directions.getTOTAL_DIRECTIONS_NUMBER(); j++) {
-                if (patternEnablers.get(i).get(j).size() == 0) {
+                if (patternEnablers.get(i).get(j) == null || patternEnablers.get(i).get(j).size() == 0) {
                     possiblePatterns[i] = false;
                     patternEnablers.set(i, null);
                     break;
@@ -123,38 +143,44 @@ public class Cell {
         }
         this.numberOfPossiblePatterns = sum;
     }
+
     void update(){
         updatePossiblePatterns();
         updateNumberOfPossiblePatterns();
         updateEntropy();
         if (numberOfPossiblePatterns == 0)
-            isObserved = true;
+            Log.w(TAG, "update: numberOfPossiblePatterns = 0");
+            //isObserved = true;
     }
 
     public void removePatternFromPatternEnablers(int directionIndex, int patternIndex) {
+        boolean update = false;
         List<Integer> helperList;
         for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
-            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null)
+            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null) {
                 continue;
+            }
             helperList = patternEnablers.get(patternId).get(directionIndex);
             if (helperList.remove((Integer) patternIndex)) {
                 if (helperList.isEmpty()) {
-                    possiblePatterns[patternId] = false;
-                    numberOfPossiblePatterns--;
-                    patternEnablers.set(patternId, null);
-                    propagator.addToPropagate(row, col, patternId, true);
+                    update = true;
+                    sPropagator.addToPropagate(row, col, patternId, true);
                 }
             }
         }
-        update();
+        if (update) {
+            update();
+        }
     }
 
     void removePatternEnablesExceptPattern(int directionIndex, int patternIndex) {
+        boolean update = false;
         List<Integer> listOfPatternEnables;
         List<Integer> listOfPatternsToRemove;
         for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
-            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null)
+            if (!possiblePatterns[patternId] || patternEnablers.get(patternId) == null) {
                 continue;
+            }
 
             listOfPatternsToRemove = new ArrayList<>();
             listOfPatternEnables = patternEnablers.get(patternId).get(directionIndex);
@@ -168,20 +194,17 @@ public class Cell {
 
             }
 
-            for (Integer p : listOfPatternsToRemove) {
-                patternEnablers.get(patternId).get(directionIndex).remove(p);
-            }
+            patternEnablers.get(patternId).get(directionIndex).removeAll(listOfPatternsToRemove);
 
             if (listOfPatternEnables.isEmpty()) {
-                possiblePatterns[patternId] = false;
-                numberOfPossiblePatterns--;
-                patternEnablers.set(patternId, null);
-                propagator.addToPropagate(row, col, patternId, true);
+                update = true;
+                sPropagator.addToPropagate(row, col, patternId, true);
             }
 
         }
-
-        update();
+        if (update) {
+            update();
+        }
     }
 
     public int observe() {
@@ -199,7 +222,7 @@ public class Cell {
 
 
 
-        if (patternIndex < 0 || patternIndex >= totalNumberOfPatterns) {
+        if (patternIndex < 0 || patternIndex >= sTotalNumberOfPossiblePatterns) {
             //Error
             return -3;
         }
@@ -226,6 +249,6 @@ public class Cell {
             if (randomIndex-- <= 0)
                 return patternIndex;
         }
-        return possiblePatterns.length;
+        return possiblePatterns.length-1;
     }
 }
