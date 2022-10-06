@@ -235,22 +235,10 @@ public class WFCFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateViewModels();
-        updateUI(requireView());
         Log.d(TAG, "onResume() called ");
         testMSettingsViewModel();
         displayResult();
 
-    }
-
-    private void updateUI(View view){
-        TextView idTextView = view.findViewById(R.id.fragment_wfc_tile_set_id_text_view);
-        TextView settingsTextView = view.findViewById(R.id.fragment_wfc_settings_text_view);
-        TextView resultTextView = view.findViewById(R.id.fragment_wfc_result_text_view);
-
-        testMSettingsViewModel();
-        idTextView.setText(mTileSetViewModel.getCurrentId());
-        settingsTextView.setText(mSettingsTileSetViewModel.toString());
-        resultTextView.setText(mWFCViewModel.getTestConnection());
     }
 
     private void initViewModels() {

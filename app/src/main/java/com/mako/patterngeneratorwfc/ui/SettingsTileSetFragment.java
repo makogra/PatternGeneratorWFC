@@ -111,9 +111,6 @@ public class SettingsTileSetFragment extends Fragment {
         this.recyclerView.swapAdapter(adapter, true);
         //adapter.notifyDataSetChanged();
 
-        TextView textView = this.requireView().findViewById(R.id.fragment_settings_tile_set_test_text_view);
-        textView.setText(tileSetViewModel.getCurrentId());
-
         observe();
 
 

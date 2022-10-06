@@ -6,38 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.WFCFragment">
 
-    <TextView
-        android:id="@+id/fragment_wfc_tile_set_id_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="TileSet Id" />
-
-    <TextView
-        android:id="@+id/fragment_wfc_settings_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        app:layout_constraintTop_toBottomOf="@id/fragment_wfc_tile_set_id_text_view"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/fragment_wfc_result_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Result"
-        app:layout_constraintTop_toBottomOf="@id/fragment_wfc_settings_text_view"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
     <Button
         android:id="@+id/fragment_wfc_start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="start"
-        app:layout_constraintTop_toBottomOf="@id/fragment_wfc_result_text_view"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
