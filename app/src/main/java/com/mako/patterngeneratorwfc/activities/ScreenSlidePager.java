@@ -26,6 +26,7 @@ public class ScreenSlidePager extends FragmentActivity {
      */
     private static final int NUM_PAGES = 3;
     private static final String TAG = "ScreenSlidePager";
+    private static ViewPager2 INSTANCE;
 
     /**
      * The pager widget, which handles animation and allows swapping
@@ -38,6 +39,10 @@ public class ScreenSlidePager extends FragmentActivity {
      */
     private ScreenSlidePagerAdapter pagerAdapter;
 
+    public static ViewPager2 getInstance(){
+        return INSTANCE;
+    }
+
 
 
     @Override
@@ -47,6 +52,7 @@ public class ScreenSlidePager extends FragmentActivity {
 
         // Instance a ViewPager and a PagerAdapter
         mPager = findViewById(R.id.pager);
+        INSTANCE = mPager;
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), getLifecycle(), this);
         mPager.setAdapter(pagerAdapter);
         // different page swap animation.

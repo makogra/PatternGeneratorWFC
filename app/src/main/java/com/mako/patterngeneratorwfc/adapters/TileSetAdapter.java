@@ -17,9 +17,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.TileSet;
+import com.mako.patterngeneratorwfc.activities.ScreenSlidePager;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.wfc.Colors;
 
@@ -32,6 +34,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     private FrameLayout currentFocusedFrameLayout;
     private int height;
     private int width;
+    private ViewPager2 mPager;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
@@ -59,6 +62,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     public TileSetAdapter(@NonNull DiffUtil.ItemCallback<TileSet> diffCallback, TileSetViewModel tileSetViewModel) {
         super(diffCallback);
         this.tileSetViewModel = tileSetViewModel;
+        mPager = ScreenSlidePager.getInstance();
     }
 
     @NonNull
@@ -87,6 +91,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
             holder.frameLayout.setBackgroundResource(R.color.active);
             currentFocusedFrameLayout = holder.frameLayout;
             tileSetViewModel.setCurrentId(current.getTileId());
+            mPager.setCurrentItem(mPager.getCurrentItem() + 1, true);
         });
     }
 
