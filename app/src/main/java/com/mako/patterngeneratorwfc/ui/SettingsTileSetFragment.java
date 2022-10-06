@@ -191,6 +191,9 @@ public class SettingsTileSetFragment extends Fragment {
             if (settingsTileSetViewModel.setValue(settingsTileSetViewModel.getValue(i), i))
                 return;
             settingsTileSetViewModel.setValue(average, i);
+            if ( i == 3 ){//Overlap
+                settingsTileSetViewModel.setValue(1, i);
+            }
         }
     }
 
