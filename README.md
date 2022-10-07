@@ -5,7 +5,7 @@ App that allows You to create custom input maps and see the result of WFC algori
 
 # Download
 
-<a href="download/WFC_MP_demo.apk">Android app</a>
+<a href="download/WFC_MP_demo.apk" download>Android app</a>
 
 # Screenshots
 <img src="img/Screenshot_1.png"/>
