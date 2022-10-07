@@ -69,13 +69,36 @@ public abstract class TileSetRoomDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TileSetRoomDatabase.class, "tileset_database")
                             .enableMultiInstanceInvalidation()
-                            .addCallback(sRoomDatabaseCallback)
+                            //.addCallback(sRoomDatabaseCallback)
                             .build();
                     new Thread(() -> INSTANCE.runInTransaction(() -> {
                         Log.d(TAG, "getDatabase: lambda");
                         INSTANCE.tileSetDao().insert( new TileSet(
-                                "new Tile set(3)",
-                                new int[][]{{1,2},{3,4}},
+                                "new Tile set(laske)",
+                                new int[][]{
+                                        {1, 1, 1, 1, 1, 1},
+                                        {1, 2, 2, 2, 2, 1},
+                                        {1, 2, 3, 3, 2, 1},
+                                        {1, 2, 3, 3, 2, 1},
+                                        {1, 2, 2, 2, 2, 1},
+                                        {1, 1, 1, 1, 1, 1}
+                                },
+                                new ArrayList<String>(){{
+                                    add("_");
+                                    add("G");
+                                    add("C");
+                                    add("S");
+                                    add("M");
+                                }}));
+                        INSTANCE.tileSetDao().insert(new TileSet(
+                                "new Tile set(standard)",
+                                new int[][]{
+                                        {1,1,1,1,2,3,3,3},
+                                        {1,1,1,2,2,3,3,3},
+                                        {1,1,1,2,3,3,3,3},
+                                        {1,1,1,2,3,3,3,3},
+                                        {1,1,1,2,3,3,3,3}
+                                },
                                 new ArrayList<String>(){{
                                     add("_");
                                     add("G");
