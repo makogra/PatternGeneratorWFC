@@ -2,6 +2,7 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -175,11 +176,13 @@ public class Wave {
 
             @Override
             public boolean add(EntropyEntry entropyEntry) {
+                EntropyEntry entryToRemove = null;
                 for (EntropyEntry entry : this){
                     if (entry.equals(entropyEntry) && entry.entropy > entropyEntry.entropy)
-                        this.remove(entry);
+                        entryToRemove = entry;
                 }
-
+                if (null != entryToRemove)
+                    this.remove(entryToRemove);
                 return super.add(entropyEntry);
             }
         };
