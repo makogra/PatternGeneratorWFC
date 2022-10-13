@@ -1,22 +1,22 @@
 package com.mako.patterngeneratorwfc.wfc;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
 
 public class Wave {
 
+    /*
     private static class EntropyEntry implements Comparable<EntropyEntry>{
-        int row;
-        int col;
+        Cell cell;
         double entropy;
 
-        public EntropyEntry(int row, int col, double entropy) {
-            this.row = row;
-            this.col = col;
+        public EntropyEntry(Cell cell, double entropy) {
+        this.cell = cell;
             this.entropy = entropy;
         }
 
@@ -29,8 +29,8 @@ public class Wave {
         @Override
         public String toString() {
             return "EntropyEntry{" +
-                    "row=" + row +
-                    ", col=" + col +
+                    "row=" + cell.getRow() +
+                    ", col=" + cell.getRow() +
                     ", entropy=" + entropy +
                     '}';
         }
@@ -41,9 +41,11 @@ public class Wave {
                 return false;
             }
             EntropyEntry e = (EntropyEntry) obj;
-            return e.row == this.row && e.col == this.col;
+            return e.cell.getRow() == this.cell.getRow() && e.cell.getCol() == this.cell.getCol();
         }
     }
+
+     */
 
     private static final String TAG = "Wave";
     private final int outputPatternGridWidth;
@@ -53,7 +55,7 @@ public class Wave {
     private boolean isCollapsed;
     private Cell[][] wave;
     private int[][] outputPatternGrid;
-    private PriorityQueue<EntropyEntry> lowestEntropyQueue;
+    private PriorityQueue<Cell> lowestEntropyCellQueue;
 
     Wave(int outputHeight, int outputWidth, int patternSize ){
         this.outputPatternGridHeight = (int) Math.ceil((outputHeight-1)/(double)(patternSize-1));
@@ -111,13 +113,13 @@ public class Wave {
         return isCollapsed;
     }
 
-    private EntropyEntry getLowestEntropyEntry() {
-        if( lowestEntropyQueue.size() == 0){
+    private Cell getCellWithLowestEntropy() {
+        if( lowestEntropyCellQueue.size() == 0){
             checkIfIsCollapse();
             if (isCollapsed)
                 return null;
         }
-        return lowestEntropyQueue.poll();
+        return lowestEntropyCellQueue.poll();
     }
 
     void decreaseNumberOfCellsLeftToObserve(){
@@ -125,8 +127,8 @@ public class Wave {
 
     }
 
-    void addToLowestEntropyQueue(int row, int col){
-        lowestEntropyQueue.add(new EntropyEntry(row, col, wave[row][col].getEntropy()));
+    void addToLowestEntropyQueue(Cell cell){
+        lowestEntropyCellQueue.offer(cell);
     }
 
     private void initStaticCell(List<List<List<Integer>>> defaultPatternEnablers, int numberOfPossiblePatterns, double[] relativeFrequency) {
@@ -158,16 +160,11 @@ public class Wave {
     }
 
     private void initLowestEntropyQueue(){
-        lowestEntropyQueue =  new PriorityQueue<EntropyEntry>(){
+        lowestEntropyCellQueue =  new PriorityQueue<Cell>(){
             @Override
             public boolean contains(Object o) {
-                if (!(o instanceof EntropyEntry))
-                    return false;
-
-                EntropyEntry e = (EntropyEntry) o;
-
-                for( EntropyEntry entry : this){
-                    if( entry.row == e.row && entry.col == e.col)
+                for( Cell cell : this){
+                    if( cell.equals(o))
                         return true;
                 }
                 return false;
@@ -175,46 +172,48 @@ public class Wave {
 
 
             @Override
-            public boolean add(EntropyEntry entropyEntry) {
-                EntropyEntry entryToRemove = null;
-                for (EntropyEntry entry : this){
-                    if (entry.equals(entropyEntry) && entry.entropy > entropyEntry.entropy)
-                        entryToRemove = entry;
+            public boolean add(Cell cell) {
+                if (null == cell){
+                    Log.w(TAG, "add: null", new NullPointerException());
+                    return false;
                 }
-                if (null != entryToRemove)
-                    this.remove(entryToRemove);
-                return super.add(entropyEntry);
+                Cell cellToRemove = null;
+                for (Cell entry : this){
+                    if (entry.equals(cell) && entry.getEntropy() > cell.getEntropy())
+                        cellToRemove = entry;
+                }
+                if (null != cellToRemove)
+                    this.remove(cellToRemove);
+                return super.add(cell);
             }
         };
-        for (int row = 0; row < wave.length; row++) {
-            for (int col = 0; col < wave[0].length; col++) {
-                lowestEntropyQueue.add(new EntropyEntry(row, col, wave[row][col].getEntropy()));
-            }
+        for (Cell[] cells : wave) {
+            lowestEntropyCellQueue.addAll(Arrays.asList(cells).subList(0, wave[0].length));
         }
     }
 
     public void collapse() {
-        EntropyEntry lowestEntropyEntry;
+        Cell cellWithLowestEntropy;
         int row;
         int col;
         int patternValue;
 
         do {
-            lowestEntropyEntry = getLowestEntropyEntry();
-            if (lowestEntropyEntry == null)
+            cellWithLowestEntropy = getCellWithLowestEntropy();
+            if (cellWithLowestEntropy == null)
                 return;
-            row = lowestEntropyEntry.row;
-            col = lowestEntropyEntry.col;
-        } while (wave[row][col].isObserved());
+        } while (cellWithLowestEntropy.isObserved());
+        row = cellWithLowestEntropy.getRow();
+        col = cellWithLowestEntropy.getCol();
 
-        patternValue = wave[row][col].observe();
+        patternValue = cellWithLowestEntropy.observe();
 
         switch (patternValue) {
             case -1 :
                 throw new IllegalStateException("Contradiction");
             case -2 :
-                wave[row][col].update();
-                if ((wave[row][col].isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !wave[row][col].isObserved())) // second argument is unnecessary, because it's already checked
+                cellWithLowestEntropy.update();
+                if ((cellWithLowestEntropy.isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !cellWithLowestEntropy.isObserved())) // second argument is unnecessary, because it's already checked
                     throw new IllegalStateException("Contradiction");
                 return;
             case -3 :
@@ -235,7 +234,7 @@ public class Wave {
                     if (item.getNumberOfPossiblePatterns() == 0)
                         throw new IllegalStateException("Contradiction");
                     else
-                        lowestEntropyQueue.add(new EntropyEntry(item.getRow(), item.getCol(), item.getEntropy()));
+                        lowestEntropyCellQueue.add(item);
                 }
         }
         isCollapsed = collapsed;
