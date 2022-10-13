@@ -66,7 +66,7 @@ public class Propagator {
             cell.removePatternEnablesExceptPattern(directionIndex, pattern);
         }
 
-        wave.addToLowestEntropyQueue(row, col);
+        wave.addToLowestEntropyQueue(cell);
 
     }
 
@@ -83,7 +83,7 @@ public class Propagator {
             if (patternRow < 0 || patternRow >= mMaxHeight || patternCol < 0 || patternCol >= mMaxWidth || wave.getCell(patternRow, patternCol).isObserved())
                 continue;
 
-            propagateQueue.add(new EntryPattern(patternRow, patternCol, pattern, Directions.oppositeDirectionIndex(directionIndex), propagateEnabler));
+            propagateQueue.offer(new EntryPattern(patternRow, patternCol, pattern, Directions.oppositeDirectionIndex(directionIndex), propagateEnabler));
         }
     }
 
