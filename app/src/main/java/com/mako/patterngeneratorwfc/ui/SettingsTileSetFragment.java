@@ -64,6 +64,7 @@ public class SettingsTileSetFragment extends Fragment {
          */
 
         observe();
+        observePatternSize();
 
     }
 
@@ -197,7 +198,18 @@ public class SettingsTileSetFragment extends Fragment {
     }
 
 
+    private void observePatternSize(){
 
+        settingsTileSetViewModel.getNeedUIUpdate().observe(this, needUIUpdate -> {
+            if (!needUIUpdate){
+                return;
+            }
+            adapter.notifyItemChanged(3);
+            settingsTileSetViewModel.getNeedUIUpdate().postValue(false);
+        });
+
+
+    }
 
 
 }

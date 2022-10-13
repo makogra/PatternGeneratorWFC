@@ -3,6 +3,7 @@ package com.mako.patterngeneratorwfc.datamodels;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class SettingsTileSetViewModel extends ViewModel {
     private int[] settingsValue;
     private boolean rotation = false;
     private boolean reflection = false;
+    private MutableLiveData<Boolean> needUIUpdate = new MutableLiveData<Boolean>(){{postValue(false);}};
 
 
     // Getters
@@ -130,13 +132,32 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public void increment(int position) throws IllegalAccessException {
         setValue(getValue(position) + 1, position);
+        if (position == 0){//patternSize
+            updateOverlap();
+        }
     }
 
     public void decrement(int position) throws IllegalAccessException {
         setValue(getValue(position) - 1, position);
+        if (position == 0){//patternSize
+            updateOverlap();
+        }
     }
 
+    private void updateOverlap() {
+        int currentPatternSize = getValue(0);
+        int currentOverlap = getValue(3);
 
+        setMax(currentPatternSize - 1, 3);
+        if (currentOverlap >= currentPatternSize){
+            setValue(currentPatternSize - 1, 3);
+            needUIUpdate.postValue(true);
+        }
+    }
+
+    public MutableLiveData<Boolean> getNeedUIUpdate() {
+        return needUIUpdate;
+    }
 
     private boolean outOfArr(int position) {
         return position < 0 || position > settingsLength;
