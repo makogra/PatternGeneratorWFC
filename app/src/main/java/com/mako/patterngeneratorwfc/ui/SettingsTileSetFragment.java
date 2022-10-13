@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
@@ -177,8 +175,8 @@ public class SettingsTileSetFragment extends Fragment {
                     min = MIN_OUTPUT_WIDTH;
                     break;
                 case 3: // tiles overlap
-                    // max same as in case 0, that mean max = patternSize;
-                    max = settingsTileSetViewModel.getMax(0);
+                    // max is one less than value of case 0, that mean max overlap = (current) patternSize - 1;
+                    max = settingsTileSetViewModel.getValue(0) - 1;
                     break;
                 default:
                     throw new NotImplementedError("add modules in SettingsTileSetFragment");
@@ -192,6 +190,7 @@ public class SettingsTileSetFragment extends Fragment {
                 return;
             settingsTileSetViewModel.setValue(average, i);
             if ( i == 3 ){//Overlap
+                //Set default value of overlap to 1
                 settingsTileSetViewModel.setValue(1, i);
             }
         }
