@@ -9,7 +9,7 @@ import java.util.List;
 
 import kotlin.random.Random;
 
-public class Cell {
+public class Cell implements Comparable<Cell> {
 
     private static final String TAG = Cell.class.getName();
     private static List<List<List<Integer>>> sDefaultPatternEnablers;
@@ -250,5 +250,31 @@ public class Cell {
                 return patternIndex;
         }
         return possiblePatterns.length-1;
+    }
+
+    @Override
+    public int compareTo(Cell o) {
+        return Double.compare(this.entropy, o.entropy);
+    }
+
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "isObserved=" + isObserved +
+                ", possiblePatterns=" + Arrays.toString(possiblePatterns) +
+                ", numberOfPossiblePatterns=" + numberOfPossiblePatterns +
+                ", entropy=" + entropy +
+                ", row=" + row +
+                ", col=" + col +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Cell)){
+            return false;
+        }
+        Cell c = (Cell) obj;
+        return c.row == this.row && c.col == this.col;
     }
 }
