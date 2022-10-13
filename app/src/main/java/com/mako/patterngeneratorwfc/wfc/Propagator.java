@@ -86,4 +86,12 @@ public class Propagator {
             propagateQueue.add(new EntryPattern(patternRow, patternCol, pattern, Directions.oppositeDirectionIndex(directionIndex), propagateEnabler));
         }
     }
+
+    public void finish(){
+        /*
+        if (null != mExecutor)
+            mExecutor.shutdown();
+
+         */
+    }
 }
