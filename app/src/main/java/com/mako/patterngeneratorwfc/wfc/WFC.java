@@ -98,6 +98,8 @@ public class WFC {
                     Log.d(TAG, "Failed " + "tried " + currentTrieCount + "times\n" + e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
                     initWave();
                     currentTrieCount++;
+                } finally {
+                    wave.finish();
                 }
             }
 

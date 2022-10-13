@@ -244,6 +244,9 @@ public class Wave {
         propagator.propagate();
     }
 
+    public void finish() {
+        propagator.finish();
+    }
 
     @NonNull
     @Override
