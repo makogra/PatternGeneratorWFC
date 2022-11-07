@@ -192,7 +192,7 @@ public class Wave {
         }
     }
 
-    public void collapse() {
+    public Cell collapse() {
         Cell cellWithLowestEntropy;
         int row;
         int col;
@@ -201,7 +201,7 @@ public class Wave {
         do {
             cellWithLowestEntropy = getCellWithLowestEntropy();
             if (cellWithLowestEntropy == null)
-                return;
+                return null;
         } while (cellWithLowestEntropy.isObserved());
         row = cellWithLowestEntropy.getRow();
         col = cellWithLowestEntropy.getCol();
@@ -215,7 +215,7 @@ public class Wave {
                 cellWithLowestEntropy.update();
                 if ((cellWithLowestEntropy.isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !cellWithLowestEntropy.isObserved())) // second argument is unnecessary, because it's already checked
                     throw new IllegalStateException("Contradiction");
-                return;
+                return cellWithLowestEntropy;
             case -3 :
                 throw new IllegalStateException("ERROR IDK WTF");
         }
@@ -223,6 +223,8 @@ public class Wave {
 
         this.outputPatternGrid[row][col] = patternValue;
         propagator.addToPropagate(row, col, patternValue, false);
+
+        return cellWithLowestEntropy;
     }
 
     private void checkIfIsCollapse() {
