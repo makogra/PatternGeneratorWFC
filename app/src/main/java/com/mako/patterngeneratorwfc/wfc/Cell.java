@@ -153,6 +153,7 @@ public class Cell implements Comparable<Cell> {
             //isObserved = true;
     }
 
+    //TODO move remove... methods to propagator
     public void removePatternFromPatternEnablers(int directionIndex, int patternIndex) {
         boolean update = false;
         List<Integer> helperList;
