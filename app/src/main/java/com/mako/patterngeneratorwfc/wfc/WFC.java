@@ -2,7 +2,9 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import android.util.Log;
 
+import com.mako.patterngeneratorwfc.DisplayWFC;
 import com.mako.patterngeneratorwfc.TileSet;
+import com.mako.patterngeneratorwfc.ui.WFCFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +22,7 @@ public class WFC {
     private final List<Integer[][]> patternList;
     private final InputHandler inputHandler;
     private final List<List<List<Integer>>> defaultPatternEnablers;
+    private final DisplayWFC displayWFC;
 
     public WFC(TileSet tileSet, int patternSize, int tilesOverLap, int outputHeight, int outputWidth, boolean rotation, boolean reflection) {
         this.patternSize = patternSize;
@@ -34,6 +37,7 @@ public class WFC {
         inputValueMap = tileSet.getValueToStringPath();
 
         this.propagator = wave.getPropagator();
+        displayWFC = new DisplayWFC(patternSize, wave, outputHeight, outputWidth, patternList, inputValueMap);
     }
 
     //Getters
@@ -69,13 +73,14 @@ public class WFC {
         Log.d(TAG, "run: started...");
         int currentTrieCount = 0;
         int collapseCount = 0;
-        displayPatterns();
+        displayWFC.displayPatterns();
         int numberOfOutcomes = 1;
         long start;
         long finish;
         long time;
         long totalTime = 0L;
         long[] times = new long[numberOfOutcomes];
+        Cell observedCell;
         for (int i = 0; i < numberOfOutcomes; i++) {
             initWave();
             start = System.currentTimeMillis();
@@ -85,7 +90,8 @@ public class WFC {
                 try {
                     while (!wave.isCollapsed()){
                         collapseCount++;
-                        wave.collapse();
+                        observedCell = wave.collapse();
+                        displayWFC.notifyResultUpdate(observedCell);
                         wave.propagate();
                         Log.d(TAG, "run: processing ...");
                     }
@@ -124,5 +130,9 @@ public class WFC {
 
     public List<String> getInputValueMap() {
         return inputValueMap;
+    }
+
+    public void observe(WFCFragment wfcFragment) {
+        displayWFC.observe(wfcFragment);
     }
 }

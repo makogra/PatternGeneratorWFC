@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +24,7 @@ import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.WFCViewModel;
+import com.mako.patterngeneratorwfc.wfc.Cell;
 import com.mako.patterngeneratorwfc.wfc.WFC;
 
 import java.util.List;
@@ -38,6 +38,9 @@ public class WFCFragment extends Fragment {
     private SettingsTileSetViewModel mSettingsTileSetViewModel;
     private WFCViewModel mWFCViewModel;
     private ResultViewModel mResultViewModel;
+    private Bitmap mResultBitmap = null;
+    private List<String> mInputValueMap;
+    private List<Integer[][]> mPatternList;
 
     public WFCFragment() {
     }
@@ -94,12 +97,15 @@ public class WFCFragment extends Fragment {
                 createEmptyBitmap(outputHeight, outputWidth);
 
                 WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth, rotation, reflection);
+                mInputValueMap = wfc.getInputValueMap();
+                mPatternList = wfc.getPatternList();
+                wfc.observe(this);
                 wfc.run(30);
                 if (wfc.isCollapsed()){
                     int[][] outputGrid = wfc.getOutputGrid();
                     Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, tilesOverlap, wfc.getPatternList());
 
-                    showResult(result, wfc.getInputValueMap());
+                    //showResult(result, wfc.getInputValueMap());
                     //TODO display finish
                 }
                 //TODO else display failure
@@ -281,5 +287,42 @@ public class WFCFragment extends Fragment {
             Log.d(TAG, "testMSettingsViewModel: isNotValueInited");
         if (mSettingsTileSetViewModel.isNotMinMaxInnited())
             Log.d(TAG, "testMSettingsViewModel: isNotMinMaxInnited");
+    }
+
+    public void updateResult(Cell cell, int value) {
+        if (mResultBitmap == null){
+            Log.w(TAG, "updateResult: updating Null bitmap", new NullPointerException());
+        }
+        //TODO
+        int row = cell.getRow();
+        int col = cell.getCol();
+        int height = mSettingsTileSetViewModel.getValue(1);
+        int width = mSettingsTileSetViewModel.getValue(2);
+        int xRatio = mResultBitmap.getWidth()/width;
+        int yRatio = mResultBitmap.getHeight()/height;
+        Integer[][] pattern = mPatternList.get(value);
+        //int color = getColorOfAPixel(value, mInputValueMap);
+        ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
+
+        imageView.post(() -> {
+            int color;
+            for (int patternRow = 0; patternRow < pattern.length; patternRow++) {
+                for (int patternCol = 0; patternCol < pattern[0].length; patternCol++) {
+                    // For each item in pattern
+                    color = getColorOfAPixel(pattern[patternRow][patternCol], mInputValueMap);
+                    for (int x = (row + patternRow) * xRatio; x < (row + patternRow + 1) * xRatio; x++) {
+                        for (int y = (col + patternCol) * yRatio; y < (col + patternCol + 1) * yRatio; y++) {
+                            mResultBitmap.setPixel(x, y, color);
+                        }
+                    }
+                }
+            }
+
+            //imageView.setImageBitmap(mResultBitmap);
+        });
+
+
+        // get bitmap
+
     }
 }
