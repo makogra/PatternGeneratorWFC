@@ -109,6 +109,7 @@ public class WFCFragment extends Fragment {
     }
 
     private void clearPreviousBitmap() {
+        mResultBitmap = null;
         ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
         new Handler(Looper.getMainLooper()).post(() -> imageView.setImageBitmap(null));
     }
