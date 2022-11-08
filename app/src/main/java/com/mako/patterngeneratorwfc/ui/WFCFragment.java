@@ -150,7 +150,15 @@ public class WFCFragment extends Fragment {
             params.width = width;
             frameLayout.setLayoutParams(params);
 
-            imageView.setImageBitmap(Bitmap.createScaledBitmap(scaledBitmap, width, height, false));
+
+            Bitmap temp = Bitmap.createScaledBitmap(scaledBitmap, width, height, false);
+            Log.d(TAG, "attacheScaledBitmap: temp bitmap = width: " + temp.getWidth() + " height: " + temp.getHeight());
+            for (int i = 0; i < temp.getWidth()/scaledBitmap.getWidth(); i++) {
+                temp.setPixel(i, 6, Color.BLACK);
+            }
+            //imageView.setImageBitmap(Bitmap.createScaledBitmap(scaledBitmap, width, height, false));
+            imageView.setImageBitmap(temp);
+            mResultBitmap = temp;
         });
     }
 
