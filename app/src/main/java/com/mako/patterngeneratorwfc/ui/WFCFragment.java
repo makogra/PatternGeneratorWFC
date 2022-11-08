@@ -252,6 +252,7 @@ public class WFCFragment extends Fragment {
         mWFCViewModel = mViewModelProvider.get(WFCViewModel.class);
     }
 
+    //TODO move this method to tests
     private void testMSettingsViewModel(){
         if (mSettingsTileSetViewModel == null){
             Log.d(TAG, "testMSettingsViewModel: is null");
