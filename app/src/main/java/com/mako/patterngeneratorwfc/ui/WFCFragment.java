@@ -90,6 +90,9 @@ public class WFCFragment extends Fragment {
                         {"G","G","G","C","S","S","S","S"}
                 };
 
+                //TODO create new bitmap
+                createEmptyBitmap(outputHeight, outputWidth);
+
                 WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth, rotation, reflection);
                 wfc.run(30);
                 if (wfc.isCollapsed()){
@@ -209,6 +212,11 @@ public class WFCFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private void createEmptyBitmap(int outputHeight, int outputWidth){
+        Bitmap emptySmallBitmap = Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888);
+        attacheScaledBitmap(emptySmallBitmap);
     }
 
     private int getColorOfAPixel(Integer valueId, List<String> inputValueMap) {
