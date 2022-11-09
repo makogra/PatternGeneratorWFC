@@ -24,6 +24,7 @@ import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.WFCViewModel;
+import com.mako.patterngeneratorwfc.utiles.BitmapUtilsWFC;
 import com.mako.patterngeneratorwfc.wfc.Cell;
 import com.mako.patterngeneratorwfc.wfc.WFC;
 
@@ -41,6 +42,7 @@ public class WFCFragment extends Fragment {
     private Bitmap mResultBitmap = null;
     private List<String> mInputValueMap;
     private List<Integer[][]> mPatternList;
+    private BitmapUtilsWFC mBitmapUtilsWFC;
 
     public WFCFragment() {
     }
@@ -62,6 +64,7 @@ public class WFCFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initViewModels();
+        initBitMapUtilsWFC();
         //displayResult();
     }
 
@@ -76,7 +79,7 @@ public class WFCFragment extends Fragment {
         startButton.setOnClickListener(v -> {
             displayWFCStarted();
             new Thread(() -> {
-                clearPreviousBitmap();
+                mBitmapUtilsWFC.clearPreviousBitmap();
                 int patternSize = mSettingsTileSetViewModel.getValue(0);
                 int outputHeight = mSettingsTileSetViewModel.getValue(1);
                 int outputWidth = mSettingsTileSetViewModel.getValue(2);
@@ -94,7 +97,7 @@ public class WFCFragment extends Fragment {
                 };
 
                 //TODO create new bitmap
-                createEmptyBitmap(outputHeight, outputWidth);
+                mBitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
 
                 WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth, rotation, reflection);
                 mInputValueMap = wfc.getInputValueMap();
@@ -114,17 +117,17 @@ public class WFCFragment extends Fragment {
         return view;
     }
 
-    private void clearPreviousBitmap() {
-        mResultBitmap = null;
-        ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
-        new Handler(Looper.getMainLooper()).post(() -> imageView.setImageBitmap(null));
+    private void initBitMapUtilsWFC(){
+        if (mBitmapUtilsWFC == null){
+            mBitmapUtilsWFC = new BitmapUtilsWFC(this);
+        }
     }
 
 
     private void displayResult() {
         if (mResultViewModel.getBitmap() == null)
             return;
-        attacheScaledBitmap(mResultViewModel.getBitmap());
+        mBitmapUtilsWFC.attacheScaledBitmap(mResultViewModel.getBitmap());
     }
 
     private void showResult(Result result, List<String> inputValueMap) {
@@ -137,10 +140,10 @@ public class WFCFragment extends Fragment {
         Bitmap outputBitmap;
         mResultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
         outputBitmap = mResultViewModel.getBitmap();
-        makeBitmap(inputValueMap, patternGrid, patternSize, overlap, patternList, outputBitmap);
+        mBitmapUtilsWFC.makeBitmap(inputValueMap, patternGrid, patternSize, overlap, patternList, outputBitmap);
         mResultViewModel.setBitmap(outputBitmap);
 
-        attacheScaledBitmap(outputBitmap);
+        mBitmapUtilsWFC.attacheScaledBitmap(outputBitmap);
 
     }
 
