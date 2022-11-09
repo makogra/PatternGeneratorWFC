@@ -24,7 +24,6 @@ import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.activities.AddTileSetActivity;
 import com.mako.patterngeneratorwfc.adapters.TileSetAdapter;
 import com.mako.patterngeneratorwfc.database.TileSetRepository;
-import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 
 import java.util.ArrayList;
