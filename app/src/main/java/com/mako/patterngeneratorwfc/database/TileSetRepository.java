@@ -13,11 +13,11 @@ public class TileSetRepository {
 
     private static final String TAG = "TileSetRepository";
     private static volatile TileSetRepository INSTANCE;
-    private final TileSetDao mTileSetDao;
+    private final TileSetDao tileSetDao;
 
     private TileSetRepository(Application application){
         TileSetRoomDatabase db = TileSetRoomDatabase.getDatabase(application);
-        mTileSetDao = db.tileSetDao();
+        tileSetDao = db.tileSetDao();
     }
 
     public static TileSetRepository getInstance(Application application){
@@ -40,39 +40,39 @@ public class TileSetRepository {
     }
 
     public LiveData<List<String>> getAllIds() {
-        return mTileSetDao.getAllIds();
+        return tileSetDao.getAllIds();
     }
 
     public LiveData<List<TileSet>> getTileSetList() {
-        return mTileSetDao.getTileSetList();
+        return tileSetDao.getTileSetList();
     }
 
     public LiveData<TileSet> getTileSet(String id){
-        return mTileSetDao.getTileSet(id);
+        return tileSetDao.getTileSet(id);
     }
 
     public TileSet getTileSetValue(String id){
-        return mTileSetDao.getTileSetValue(id);
+        return tileSetDao.getTileSetValue(id);
     }
 
     public LiveData<Integer> count(){
-        return mTileSetDao.count();
+        return tileSetDao.count();
     }
 
     public void insert(TileSet tileSet){
         TileSetRoomDatabase.databaseWriteExecutor.execute(() -> {
-            mTileSetDao.insert(tileSet);
+            tileSetDao.insert(tileSet);
             Log.i(TAG, "inserted: " + tileSet);
         });
     }
 
     public String getFirstTileSet() {
-        return mTileSetDao.getFirstTileSet();
+        return tileSetDao.getFirstTileSet();
     }
 
     public void deleteId(String id){
         TileSetRoomDatabase.databaseWriteExecutor.execute(() -> {
-            mTileSetDao.delete(id);
+            tileSetDao.delete(id);
             Log.i(TAG, "TileSet with id: [" + id + "] has been DELETED");
         });
     }

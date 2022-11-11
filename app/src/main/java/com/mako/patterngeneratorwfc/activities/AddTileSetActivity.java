@@ -35,10 +35,10 @@ public class AddTileSetActivity extends AppCompatActivity {
         private void setColor(int color){
             String key = Colors.getKey(color);
 
-            if (!mValueToStringMap.contains(key)){
-                mValueToStringMap.add(key);
+            if (!valueToStringMap.contains(key)){
+                valueToStringMap.add(key);
             }
-            tag = mValueToStringMap.indexOf(key);
+            tag = valueToStringMap.indexOf(key);
         }
 
         private void setTag(int tag){
@@ -46,14 +46,14 @@ public class AddTileSetActivity extends AppCompatActivity {
         }
     }
 
-    private AddTileSetViewModel mAddTileSetViewModel;
+    private AddTileSetViewModel addTileSetViewModel;
     private static final String TAG = "AddTileSetActivity";
 
-    private GridLayout mMainContent;
+    private GridLayout mainContent;
     private int rows,
                 cols;
-    private int[][] mValueGrid;
-    private List<String> mValueToStringMap;
+    private int[][] valueGrid;
+    private List<String> valueToStringMap;
     private CurrentColor currentColor;
 
     @Override
@@ -61,7 +61,7 @@ public class AddTileSetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tile_set);
 
-        mAddTileSetViewModel = new ViewModelProvider(this).get(AddTileSetViewModel.class);
+        addTileSetViewModel = new ViewModelProvider(this).get(AddTileSetViewModel.class);
 
         cancelOnClick();
         saveOnClick();
@@ -74,17 +74,17 @@ public class AddTileSetActivity extends AppCompatActivity {
 
     private void initChangeTileSet() {
         ImageView currentTileSetView = findViewById(R.id.current_tile_set);
-        currentTileSetView.setImageDrawable(new ColorDrawable(Colors.getValue(mValueToStringMap.get(currentColor.tag))));
+        currentTileSetView.setImageDrawable(new ColorDrawable(Colors.getValue(valueToStringMap.get(currentColor.tag))));
         //add tag?
         currentTileSetView.setOnClickListener((view) -> {
             //TODO add onClick listener, as popup menu to chose color.
             //temp change to another color
             //cyrcle throuw all curently colors in map
             currentColor.tag++;
-            if (currentColor.tag == mValueToStringMap.size())
+            if (currentColor.tag == valueToStringMap.size())
                 currentColor.tag = 1;
 
-            currentTileSetView.setImageDrawable(new ColorDrawable(Colors.getValue(mValueToStringMap.get(currentColor.tag))));
+            currentTileSetView.setImageDrawable(new ColorDrawable(Colors.getValue(valueToStringMap.get(currentColor.tag))));
         });
 
     }
@@ -100,31 +100,31 @@ public class AddTileSetActivity extends AppCompatActivity {
     }
 
     private void initCurrentColor() {
-        if (mValueGrid.length > 0 && mValueGrid[0].length > 0){
-            currentColor = new CurrentColor(mValueGrid[0][0]);
+        if (valueGrid.length > 0 && valueGrid[0].length > 0){
+            currentColor = new CurrentColor(valueGrid[0][0]);
             return;
         }
-        if (mValueToStringMap.isEmpty()){
-            mValueToStringMap.add(Colors.getKey(Color.GREEN));
+        if (valueToStringMap.isEmpty()){
+            valueToStringMap.add(Colors.getKey(Color.GREEN));
         }
         currentColor = new CurrentColor(1);
     }
 
     private void initTileSet() {
-        if (mAddTileSetViewModel.getTileSet() == null){
+        if (addTileSetViewModel.getTileSet() == null){
             Log.d(TAG, "initAddTileSetViewModel: ");
-            mAddTileSetViewModel.setTileSet(mAddTileSetViewModel.getSampleTileSet());
+            addTileSetViewModel.setTileSet(addTileSetViewModel.getSampleTileSet());
         }
-        mValueGrid = mAddTileSetViewModel.getValueGrid();
-        mValueToStringMap = mAddTileSetViewModel.getValueToStringPath();
+        valueGrid = addTileSetViewModel.getValueGrid();
+        valueToStringMap = addTileSetViewModel.getValueToStringPath();
     }
 
     private void restoreValueGrid() {
-        rows = mValueGrid.length;
-        cols = mValueGrid[0].length;
+        rows = valueGrid.length;
+        cols = valueGrid[0].length;
         
-        if (cols != mMainContent.getColumnCount()){
-            mMainContent.setColumnCount(cols);
+        if (cols != mainContent.getColumnCount()){
+            mainContent.setColumnCount(cols);
         }
 
         TextView textView;
@@ -132,35 +132,35 @@ public class AddTileSetActivity extends AppCompatActivity {
         for (int i = 0; i < rows * cols; i++) {
             row = i / cols;
             col = i % cols;
-            Log.d(TAG, "restoreValueGrid: row = " + row + " col = " + col + " value = " + mValueGrid[row][col]);
-            if (i < mMainContent.getChildCount()){
-                textView = (TextView) mMainContent.getChildAt(i);
-                textView.setTag(R.integer.tag_color, mValueGrid[row][col]);
+            Log.d(TAG, "restoreValueGrid: row = " + row + " col = " + col + " value = " + valueGrid[row][col]);
+            if (i < mainContent.getChildCount()){
+                textView = (TextView) mainContent.getChildAt(i);
+                textView.setTag(R.integer.tag_color, valueGrid[row][col]);
                 textView.setTag(R.integer.tag_row, row);
                 textView.setTag(R.integer.tag_col, col);
                 textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
             } else {
                 textView = templateView();
-                textView.setTag(R.integer.tag_color, mValueGrid[row][col]);
+                textView.setTag(R.integer.tag_color, valueGrid[row][col]);
                 textView.setTag(R.integer.tag_row, row);
                 textView.setTag(R.integer.tag_col, col);
                 textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
-                mMainContent.addView(textView);
+                mainContent.addView(textView);
             }
         }
         updateText();
     }
 
     private int getColor(int row, int col) {
-        int value = mValueGrid[row][col];
+        int value = valueGrid[row][col];
 
-        String colorStr = mValueToStringMap.get(value);
+        String colorStr = valueToStringMap.get(value);
 
         return Colors.getValue(colorStr);
     }
 
     private int getColorWithTag(Object tag){
-        String colorStr = mValueToStringMap.get((Integer) tag);
+        String colorStr = valueToStringMap.get((Integer) tag);
         return Colors.getValue(colorStr);
     }
 
@@ -171,18 +171,18 @@ public class AddTileSetActivity extends AppCompatActivity {
     }
 
     private void saveValueGrid() {
-        mValueGrid = new int[rows][cols];
+        valueGrid = new int[rows][cols];
         int index;
         TextView textView;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 index = i * cols + j;
-                textView = (TextView) mMainContent.getChildAt(index);
-                mValueGrid[i][j] = (int) textView.getTag(R.integer.tag_color);
+                textView = (TextView) mainContent.getChildAt(index);
+                valueGrid[i][j] = (int) textView.getTag(R.integer.tag_color);
             }
         }
 
-        mAddTileSetViewModel.setValueGrid(mValueGrid);
+        addTileSetViewModel.setValueGrid(valueGrid);
     }
 
     private void save() {
@@ -191,11 +191,11 @@ public class AddTileSetActivity extends AppCompatActivity {
         EditText editText = findViewById(R.id.activity_add_tile_set_id_text_view);
         String id = editText.getText().toString();
         if (id.equals(""))
-            id = mAddTileSetViewModel.getTileId();
+            id = addTileSetViewModel.getTileId();
         else
-            mAddTileSetViewModel.setTileId(id);
+            addTileSetViewModel.setTileId(id);
         Log.i(TAG, "add new tile set of id : " + id);
-        intent.putExtra("TileSet", mAddTileSetViewModel.getTileSet());
+        intent.putExtra("TileSet", addTileSetViewModel.getTileSet());
 
         setResult(RESULT_OK, intent);
         super.onBackPressed();
@@ -208,7 +208,7 @@ public class AddTileSetActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        mAddTileSetViewModel.setTileSet(mAddTileSetViewModel.getSampleTileSet());
+        addTileSetViewModel.setTileSet(addTileSetViewModel.getSampleTileSet());
         super.onResume();
     }
 
@@ -223,9 +223,9 @@ public class AddTileSetActivity extends AppCompatActivity {
         ImageButton addCol = findViewById(R.id.add_col);
         ImageButton subtractCol = findViewById(R.id.subtract_col);
 
-        mMainContent = findViewById(R.id.main_content);
-        rows = mMainContent.getRowCount();
-        cols = mMainContent.getColumnCount();
+        mainContent = findViewById(R.id.main_content);
+        rows = mainContent.getRowCount();
+        cols = mainContent.getColumnCount();
 
         addRow.setOnClickListener((view) -> {
             Log.d(TAG, "initAddAndSubtractButtonsOnClick: addRow");
@@ -252,9 +252,9 @@ public class AddTileSetActivity extends AppCompatActivity {
         if (cols <= 0)
             return;
         for (int i = rows; i > 0; i--) {
-            mMainContent.removeViewAt(i * cols - 1);
+            mainContent.removeViewAt(i * cols - 1);
         }
-        mMainContent.setColumnCount(mMainContent.getColumnCount() - 1);
+        mainContent.setColumnCount(mainContent.getColumnCount() - 1);
         cols--;
 
         updateText();
@@ -264,7 +264,7 @@ public class AddTileSetActivity extends AppCompatActivity {
         if (rows <= 0)
             return;
         for (int i = 0; i < cols; i++) {
-            mMainContent.removeViewAt(mMainContent.getChildCount() - 1);
+            mainContent.removeViewAt(mainContent.getChildCount() - 1);
         }
         rows--;
     }
@@ -275,11 +275,11 @@ public class AddTileSetActivity extends AppCompatActivity {
         updateValueGrid();
         for (int i = 0; i < cols; i++) {
             textView = templateView();
-            textView.setTag(R.integer.tag_color, mValueGrid[rows - 1][i]);
+            textView.setTag(R.integer.tag_color, valueGrid[rows - 1][i]);
             textView.setTag(R.integer.tag_row, rows - 1);
             textView.setTag(R.integer.tag_col, i);
             textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
-            mMainContent.addView(textView);
+            mainContent.addView(textView);
         }
 
 
@@ -288,7 +288,7 @@ public class AddTileSetActivity extends AppCompatActivity {
 
     private void updateValueGrid() {
         int[][] newValueGrid = new int[rows][cols];
-        int[][] oldValueGrid = mValueGrid;
+        int[][] oldValueGrid = valueGrid;
 
         boolean addInRow;
         boolean addInCol;
@@ -307,12 +307,12 @@ public class AddTileSetActivity extends AppCompatActivity {
             }
         }
 
-        mValueGrid = newValueGrid;
-        mAddTileSetViewModel.setValueGrid(newValueGrid);
+        valueGrid = newValueGrid;
+        addTileSetViewModel.setValueGrid(newValueGrid);
     }
 
     private void addCol() {
-        mMainContent.setColumnCount(mMainContent.getColumnCount() + 1);
+        mainContent.setColumnCount(mainContent.getColumnCount() + 1);
         cols++;
         TextView textView;
         updateValueGrid();
@@ -320,11 +320,11 @@ public class AddTileSetActivity extends AppCompatActivity {
         for (int i = 0; i < rows; i++) {
             textView = templateView();
             index = (i + 1) * cols - 1;
-            textView.setTag(R.integer.tag_color, mValueGrid[i][cols - 1]);
+            textView.setTag(R.integer.tag_color, valueGrid[i][cols - 1]);
             textView.setTag(R.integer.tag_row, i);
             textView.setTag(R.integer.tag_col, cols - 1);
             textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
-            mMainContent.addView(textView, index);
+            mainContent.addView(textView, index);
         }
 
         updateText();
@@ -333,7 +333,7 @@ public class AddTileSetActivity extends AppCompatActivity {
     private void updateText(){
         TextView textView;
         for (int i = 0; i < cols * rows; i++) {
-            textView = (TextView) mMainContent.getChildAt(i);
+            textView = (TextView) mainContent.getChildAt(i);
             textView.setText("" + i);
         }
     }
@@ -343,14 +343,14 @@ public class AddTileSetActivity extends AppCompatActivity {
         params.height = 100;
         params.width = 100;
         TextView textView = new TextView(this);
-        textView.setTag(R.integer.tag_color, mValueGrid[rows - 1][cols - 1]);
+        textView.setTag(R.integer.tag_color, valueGrid[rows - 1][cols - 1]);
         textView.setBackgroundColor(getColorWithTag(textView.getTag(R.integer.tag_color)));
         textView.setLayoutParams(params);
         textView.setOnClickListener((view) -> {
             int row = (int) view.getTag(R.integer.tag_row);
             int col = (int) view.getTag(R.integer.tag_col);
             Log.d(TAG, "templateView: row = " + row + " col = " + col);
-            mValueGrid[row][col] = currentColor.tag;
+            valueGrid[row][col] = currentColor.tag;
             view.setTag(R.integer.tag_color, currentColor.tag);
 
             view.setBackgroundColor(getColorWithTag(view.getTag(R.integer.tag_color)));

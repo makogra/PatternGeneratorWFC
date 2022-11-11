@@ -34,7 +34,7 @@ public class TileSetFragment extends Fragment {
     private static final String TAG = "TileSetFragment";
     private static final int SPAN_COUNT = 2;
     private static ViewModelProvider sViewModelProvider;
-    private TileSetViewModel mTileSetViewModel;
+    private TileSetViewModel tileSetViewModel;
     private TileSetAdapter adapter;
 
 
@@ -51,8 +51,8 @@ public class TileSetFragment extends Fragment {
                 return;
             }
             TileSet tileSetFromResult = intent.getParcelableExtra("TileSet");
-            mTileSetViewModel.insert(tileSetFromResult);
-            mTileSetViewModel.setCurrentId(tileSetFromResult.getTileId());
+            tileSetViewModel.insert(tileSetFromResult);
+            tileSetViewModel.setCurrentId(tileSetFromResult.getTileId());
             Log.d(TAG, "result is working correctly " + tileSetFromResult);
         }
     });
@@ -68,8 +68,8 @@ public class TileSetFragment extends Fragment {
 
         });
         RecyclerView recyclerView = view.findViewById(R.id.fragment_tile_set_recycler_view);
-        adapter = new TileSetAdapter(new TileSetAdapter.TileSetDiff(), mTileSetViewModel);
-        mTileSetViewModel.getTileSetList().observe(getViewLifecycleOwner(), adapter::submitList);
+        adapter = new TileSetAdapter(new TileSetAdapter.TileSetDiff(), tileSetViewModel);
+        tileSetViewModel.getTileSetList().observe(getViewLifecycleOwner(), adapter::submitList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), SPAN_COUNT));
         return view;
@@ -78,10 +78,10 @@ public class TileSetFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTileSetViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
+        tileSetViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
         new Thread(() -> {
 
-            mTileSetViewModel.initCurrentId();
+            tileSetViewModel.initCurrentId();
             Log.d(TAG, "Ascync init currentId compleate");
         }).start();
     }
@@ -97,7 +97,7 @@ public class TileSetFragment extends Fragment {
         TileSetRepository repo = TileSetRepository.getInstance(requireActivity().getApplication());
         repo.deleteId(tileId);
         //TODO choose current id
-        if (mTileSetViewModel.getCurrentId().equals(tileId)){
+        if (tileSetViewModel.getCurrentId().equals(tileId)){
             Log.d(TAG, "onContextItemSelected: ");
             chooseCurrentId(repo);
         }
@@ -121,14 +121,14 @@ public class TileSetFragment extends Fragment {
                     add("S");
                     add("M");
                 }});
-                mTileSetViewModel.insert(tileSet);
-                mTileSetViewModel.setCurrentId(tileSet.getTileId());
+                tileSetViewModel.insert(tileSet);
+                tileSetViewModel.setCurrentId(tileSet.getTileId());
             } else {
 
-                mTileSetViewModel.setCurrentId(tileSets.get(0).getTileId());
+                tileSetViewModel.setCurrentId(tileSets.get(0).getTileId());
             }
             flag.set(true);
-            Log.d(TAG, "chooseCurrentId: choosed id: " + mTileSetViewModel.getCurrentId());
+            Log.d(TAG, "chooseCurrentId: choosed id: " + tileSetViewModel.getCurrentId());
             adapter.notifyItemChanged(0);
         });
     }

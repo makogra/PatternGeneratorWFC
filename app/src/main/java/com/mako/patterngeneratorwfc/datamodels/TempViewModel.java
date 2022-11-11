@@ -13,15 +13,15 @@ import java.util.List;
 
 public class TempViewModel extends AndroidViewModel {
 
-    private TileSetRepository mRepository;
+    private TileSetRepository tileSetRepository;
     private LiveData<List<TileSet>> listLiveData;
     private LiveData<Integer> count;
 
     public TempViewModel(@NonNull Application application) {
         super(application);
-        mRepository = TileSetRepository.getInstance(application);
-        this.listLiveData = mRepository.getTileSetList();
-        this.count = mRepository.count();
+        tileSetRepository = TileSetRepository.getInstance(application);
+        this.listLiveData = tileSetRepository.getTileSetList();
+        this.count = tileSetRepository.count();
     }
 
     public LiveData<List<TileSet>> getListLiveData() {
@@ -33,14 +33,14 @@ public class TempViewModel extends AndroidViewModel {
     }
 
     public void insert(TileSet tileSet){
-        mRepository.insert(tileSet);
+        tileSetRepository.insert(tileSet);
     }
 
     public LiveData<TileSet> getTileSet(String id){
-        return mRepository.getTileSet(id);
+        return tileSetRepository.getTileSet(id);
     }
 
     public LiveData<List<String>> getAllIds() {
-        return mRepository.getAllIds();
+        return tileSetRepository.getAllIds();
     }
 }

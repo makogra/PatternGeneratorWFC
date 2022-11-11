@@ -34,7 +34,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     private FrameLayout currentFocusedFrameLayout;
     private int height;
     private int width;
-    private ViewPager2 mPager;
+    private ViewPager2 pager2;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
@@ -62,7 +62,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     public TileSetAdapter(@NonNull DiffUtil.ItemCallback<TileSet> diffCallback, TileSetViewModel tileSetViewModel) {
         super(diffCallback);
         this.tileSetViewModel = tileSetViewModel;
-        mPager = ScreenSlidePager.getInstance();
+        pager2 = ScreenSlidePager.getInstance();
     }
 
     @NonNull
@@ -91,7 +91,7 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
             holder.frameLayout.setBackgroundResource(R.color.active);
             currentFocusedFrameLayout = holder.frameLayout;
             tileSetViewModel.setCurrentId(current.getTileId());
-            mPager.setCurrentItem(mPager.getCurrentItem() + 1, true);
+            pager2.setCurrentItem(pager2.getCurrentItem() + 1, true);
         });
     }
 

@@ -32,7 +32,7 @@ public class ScreenSlidePager extends FragmentActivity {
      * The pager widget, which handles animation and allows swapping
      * horizontally to access previous and next wizard steps.
      */
-    private ViewPager2 mPager;
+    private ViewPager2 pager2;
 
     /**
      * The pager adapter, which provides the pages to the view pager widget.
@@ -51,23 +51,23 @@ public class ScreenSlidePager extends FragmentActivity {
         setContentView(R.layout.activity_screen_slide_pager);
 
         // Instance a ViewPager and a PagerAdapter
-        mPager = findViewById(R.id.pager);
-        INSTANCE = mPager;
+        pager2 = findViewById(R.id.pager);
+        INSTANCE = pager2;
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), getLifecycle(), this);
-        mPager.setAdapter(pagerAdapter);
+        pager2.setAdapter(pagerAdapter);
         // different page swap animation.
         //mPager.setPageTransformer(new DepthPageTransform());
     }
 
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0){
+        if (pager2.getCurrentItem() == 0){
             // If the user is currently looking at the first step allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            pager2.setCurrentItem(pager2.getCurrentItem() - 1);
         }
     }
 

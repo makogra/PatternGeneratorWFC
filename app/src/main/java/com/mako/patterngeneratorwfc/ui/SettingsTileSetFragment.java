@@ -32,7 +32,7 @@ public class SettingsTileSetFragment extends Fragment {
     private static final String TAG = "SettingsTileSetFragment";
     private static ViewModelProvider sViewModelProvider;
     private static TileSetRepository sTileSetRepository;
-    private ViewModelProvider mViewModelProvider;
+    private ViewModelProvider viewModelProvider;
     private SettingsTileSetViewModel settingsTileSetViewModel;
     private TileSetViewModel tileSetViewModel;
     private RecyclerView recyclerView;
@@ -50,9 +50,9 @@ public class SettingsTileSetFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mViewModelProvider = new ViewModelProvider(requireActivity());
+        this.viewModelProvider = new ViewModelProvider(requireActivity());
         sTileSetRepository = TileSetRepository.getInstance(requireActivity().getApplication());
-        tileSetViewModel = mViewModelProvider.get(TileSetViewModel.class);
+        tileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
         Log.d(TAG, tileSetViewModel.getCurrentId());
         initSettingsTileSetViewModel();
         /*
@@ -138,7 +138,7 @@ public class SettingsTileSetFragment extends Fragment {
     }
 
     private void initSettingsTileSetViewModel() {
-        settingsTileSetViewModel = mViewModelProvider.get(SettingsTileSetViewModel.class);
+        settingsTileSetViewModel = viewModelProvider.get(SettingsTileSetViewModel.class);
         if (SettingsTileSetViewModel.isNotListAlreadyInitialized()){
             SettingsTileSetViewModel.setSettingsArr(getResources().getStringArray(R.array.settings_tile_set_arr));
             Log.d(TAG, "initSettingsTileSetViewModel: setSettingsArr");

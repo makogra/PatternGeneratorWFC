@@ -3,14 +3,11 @@ package com.mako.patterngeneratorwfc.ui;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,15 +31,15 @@ public class WFCFragment extends Fragment {
 
     private static final String TAG = "WFCFragment";
     private static ViewModelProvider sViewModelProvider;
-    private ViewModelProvider mViewModelProvider;
-    private TileSetViewModel mTileSetViewModel;
-    private SettingsTileSetViewModel mSettingsTileSetViewModel;
-    private WFCViewModel mWFCViewModel;
-    private ResultViewModel mResultViewModel;
-    private Bitmap mResultBitmap = null;
-    private List<String> mInputValueMap;
-    private List<Integer[][]> mPatternList;
-    private BitmapUtilsWFC mBitmapUtilsWFC;
+    private ViewModelProvider viewModelProvider;
+    private TileSetViewModel tileSetViewModel;
+    private SettingsTileSetViewModel settingsTileSetViewModel;
+    private WFCViewModel wfcViewModel;
+    private ResultViewModel resultViewModel;
+    private Bitmap resultBitmap = null;
+    private List<String> inputValueMap;
+    private List<Integer[][]> patternList;
+    private BitmapUtilsWFC bitmapUtilsWFC;
 
     public WFCFragment() {
     }
@@ -57,7 +54,7 @@ public class WFCFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
-        mResultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
+        resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
     }
 
     @Override
@@ -79,14 +76,14 @@ public class WFCFragment extends Fragment {
         startButton.setOnClickListener(v -> {
             displayWFCStarted();
             new Thread(() -> {
-                mBitmapUtilsWFC.clearPreviousBitmap();
-                int patternSize = mSettingsTileSetViewModel.getValue(0);
-                int outputHeight = mSettingsTileSetViewModel.getValue(1);
-                int outputWidth = mSettingsTileSetViewModel.getValue(2);
-                int tilesOverlap = mSettingsTileSetViewModel.getValue(3);
-                boolean rotation = mSettingsTileSetViewModel.getRotation();
-                boolean reflection = mSettingsTileSetViewModel.getReflection();
-                TileSet input = mTileSetViewModel.getCurrentTileSet();
+                bitmapUtilsWFC.clearPreviousBitmap();
+                int patternSize = settingsTileSetViewModel.getValue(0);
+                int outputHeight = settingsTileSetViewModel.getValue(1);
+                int outputWidth = settingsTileSetViewModel.getValue(2);
+                int tilesOverlap = settingsTileSetViewModel.getValue(3);
+                boolean rotation = settingsTileSetViewModel.getRotation();
+                boolean reflection = settingsTileSetViewModel.getReflection();
+                TileSet input = tileSetViewModel.getCurrentTileSet();
                 Log.d(TAG, "onCreateView: tileSet = " + input);
                 String[][] tempInputGrid =  new String[][]{
                         {"G","G","G","G","C","S","S","S"},
@@ -97,11 +94,11 @@ public class WFCFragment extends Fragment {
                 };
 
                 //TODO create new bitmap
-                mBitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
+                bitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
 
                 WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth, rotation, reflection);
-                mInputValueMap = wfc.getInputValueMap();
-                mPatternList = wfc.getPatternList();
+                inputValueMap = wfc.getInputValueMap();
+                patternList = wfc.getPatternList();
                 wfc.observe(this);
                 wfc.run(30);
                 if (wfc.isCollapsed()){
@@ -118,16 +115,16 @@ public class WFCFragment extends Fragment {
     }
 
     private void initBitMapUtilsWFC(){
-        if (mBitmapUtilsWFC == null){
-            mBitmapUtilsWFC = new BitmapUtilsWFC(this);
+        if (bitmapUtilsWFC == null){
+            bitmapUtilsWFC = new BitmapUtilsWFC(this);
         }
     }
 
 
     private void displayResult() {
-        if (mResultViewModel.getBitmap() == null)
+        if (resultViewModel.getBitmap() == null)
             return;
-        mBitmapUtilsWFC.attacheScaledBitmap(mResultViewModel.getBitmap());
+        bitmapUtilsWFC.attacheScaledBitmap(resultViewModel.getBitmap());
     }
 
     private void showResult(Result result, List<String> inputValueMap) {
@@ -138,12 +135,12 @@ public class WFCFragment extends Fragment {
                 overlap = result.getOverlap();
         List<Integer[][]> patternList = result.getPatternList();
         Bitmap outputBitmap;
-        mResultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
-        outputBitmap = mResultViewModel.getBitmap();
-        mBitmapUtilsWFC.makeBitmap(inputValueMap, patternGrid, patternSize, overlap, patternList, outputBitmap);
-        mResultViewModel.setBitmap(outputBitmap);
+        resultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
+        outputBitmap = resultViewModel.getBitmap();
+        bitmapUtilsWFC.makeBitmap(inputValueMap, patternGrid, patternSize, overlap, patternList, outputBitmap);
+        resultViewModel.setBitmap(outputBitmap);
 
-        mBitmapUtilsWFC.attacheScaledBitmap(outputBitmap);
+        bitmapUtilsWFC.attacheScaledBitmap(outputBitmap);
 
     }
 
@@ -186,42 +183,42 @@ public class WFCFragment extends Fragment {
     }
 
     private void initViewModels() {
-        this.mViewModelProvider = new ViewModelProvider(requireActivity());
+        this.viewModelProvider = new ViewModelProvider(requireActivity());
         updateViewModels();
     }
 
     private void updateViewModels(){
-        mTileSetViewModel = mViewModelProvider.get(TileSetViewModel.class);
-        mSettingsTileSetViewModel = mViewModelProvider.get(SettingsTileSetViewModel.class);
-        mWFCViewModel = mViewModelProvider.get(WFCViewModel.class);
+        tileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
+        settingsTileSetViewModel = viewModelProvider.get(SettingsTileSetViewModel.class);
+        wfcViewModel = viewModelProvider.get(WFCViewModel.class);
     }
 
     //TODO move this method to tests
     private void testMSettingsViewModel(){
-        if (mSettingsTileSetViewModel == null){
+        if (settingsTileSetViewModel == null){
             Log.d(TAG, "testMSettingsViewModel: is null");
             return;
         }
         Log.d(TAG, "testMSettingsViewModel: isn't null");
 
-        if (mSettingsTileSetViewModel.isNotValueInited())
+        if (settingsTileSetViewModel.isNotValueInited())
             Log.d(TAG, "testMSettingsViewModel: isNotValueInited");
-        if (mSettingsTileSetViewModel.isNotMinMaxInnited())
+        if (settingsTileSetViewModel.isNotMinMaxInnited())
             Log.d(TAG, "testMSettingsViewModel: isNotMinMaxInnited");
     }
 
     public void updateResult(Cell cell, int value) {
-        if (mResultBitmap == null){
+        if (resultBitmap == null){
             Log.w(TAG, "updateResult: updating Null bitmap", new NullPointerException());
         }
         //TODO
         int row = cell.getRow();
         int col = cell.getCol();
-        int height = mSettingsTileSetViewModel.getValue(1);
-        int width = mSettingsTileSetViewModel.getValue(2);
-        int xRatio = mResultBitmap.getWidth()/width;
-        int yRatio = mResultBitmap.getHeight()/height;
-        Integer[][] pattern = mPatternList.get(value);
+        int height = settingsTileSetViewModel.getValue(1);
+        int width = settingsTileSetViewModel.getValue(2);
+        int xRatio = resultBitmap.getWidth()/width;
+        int yRatio = resultBitmap.getHeight()/height;
+        Integer[][] pattern = patternList.get(value);
         //int color = getColorOfAPixel(value, mInputValueMap);
         ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
 
@@ -230,10 +227,10 @@ public class WFCFragment extends Fragment {
             for (int patternRow = 0; patternRow < pattern.length; patternRow++) {
                 for (int patternCol = 0; patternCol < pattern[0].length; patternCol++) {
                     // For each item in pattern
-                    color = getColorOfAPixel(pattern[patternRow][patternCol], mInputValueMap);
+                    color = getColorOfAPixel(pattern[patternRow][patternCol], inputValueMap);
                     for (int x = (row + patternRow) * xRatio; x < (row + patternRow + 1) * xRatio; x++) {
                         for (int y = (col + patternCol) * yRatio; y < (col + patternCol + 1) * yRatio; y++) {
-                            mResultBitmap.setPixel(x, y, color);
+                            resultBitmap.setPixel(x, y, color);
                         }
                     }
                 }

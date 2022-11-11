@@ -1,23 +1,15 @@
 package com.mako.patterngeneratorwfc.datamodels;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.service.quicksettings.Tile;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.preference.PreferenceManager;
 
 import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.database.TileSetRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileSetViewModel extends AndroidViewModel {
@@ -26,7 +18,7 @@ public class TileSetViewModel extends AndroidViewModel {
     //TODO Wrok on a callback in database class
     private static final String TAG  = "TileSetViewModel";
 
-    private final TileSetRepository mTileSetRepository;
+    private final TileSetRepository tileSetRepository;
     private LiveData<List<TileSet>> tileSetList;
     private List<TileSet> list;
     private String currentId;
@@ -38,7 +30,7 @@ public class TileSetViewModel extends AndroidViewModel {
         super(application);
         if (application.getApplicationContext() == null)
             Log.wtf(TAG, "Null jak nic");
-        mTileSetRepository = TileSetRepository.getInstance(application);
+        tileSetRepository = TileSetRepository.getInstance(application);
         Log.d(TAG, "TileSetViewModel() called with: application = [" + application + "]");
         //tileSetList = mTileSetRepository.getTileSetList();
 
@@ -48,14 +40,14 @@ public class TileSetViewModel extends AndroidViewModel {
     public void initCurrentId() {
         if (currentId == null){
             Log.d(TAG, "initCurrentId() called");
-            setCurrentId(mTileSetRepository.getFirstTileSet());
+            setCurrentId(tileSetRepository.getFirstTileSet());
         }
     }
 
 
     public LiveData<List<TileSet>> getTileSetList() {
         if (tileSetList == null){
-            tileSetList = mTileSetRepository.getTileSetList();
+            tileSetList = tileSetRepository.getTileSetList();
         }
         return tileSetList;
     }
@@ -78,11 +70,11 @@ public class TileSetViewModel extends AndroidViewModel {
     }
 
     public TileSet getCurrentTileSet(){
-        return mTileSetRepository.getTileSetValue(currentId);
+        return tileSetRepository.getTileSetValue(currentId);
     }
 
     public void insert(@NonNull TileSet tileSet){
-        mTileSetRepository.insert(tileSet);
+        tileSetRepository.insert(tileSet);
     }
 
     //TODO delete
