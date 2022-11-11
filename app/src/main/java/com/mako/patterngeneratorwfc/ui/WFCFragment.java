@@ -22,6 +22,7 @@ import com.mako.patterngeneratorwfc.datamodels.SettingsTileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.TileSetViewModel;
 import com.mako.patterngeneratorwfc.datamodels.WFCViewModel;
 import com.mako.patterngeneratorwfc.utiles.BitmapUtilsWFC;
+import com.mako.patterngeneratorwfc.utiles.ToastUtilsWFC;
 import com.mako.patterngeneratorwfc.wfc.Cell;
 import com.mako.patterngeneratorwfc.wfc.WFC;
 
@@ -40,6 +41,7 @@ public class WFCFragment extends Fragment {
     private List<String> inputValueMap;
     private List<Integer[][]> patternList;
     private BitmapUtilsWFC bitmapUtilsWFC;
+    private ToastUtilsWFC toastUtilsWFC;
 
     public WFCFragment() {
     }
@@ -74,7 +76,7 @@ public class WFCFragment extends Fragment {
         Log.d(TAG, "onCreateView() called with: inflater = [" + inflater + "], container = [" + container + "], savedInstanceState = [" + savedInstanceState + "]");
         Button startButton = view.findViewById(R.id.fragment_wfc_start_button);
         startButton.setOnClickListener(v -> {
-            displayWFCStarted();
+            toastUtilsWFC.displayWFCStarted();
             new Thread(() -> {
                 bitmapUtilsWFC.clearPreviousBitmap();
                 int patternSize = settingsTileSetViewModel.getValue(0);
@@ -107,8 +109,10 @@ public class WFCFragment extends Fragment {
 
                     //showResult(result, wfc.getInputValueMap());
                     //TODO display finish
+                    //TODO if result isn't visible display toast about finish
+                } else {
+                    toastUtilsWFC.displayWFCFinished(false);
                 }
-                //TODO else display failure
             }).start();
         });
         return view;
@@ -144,11 +148,7 @@ public class WFCFragment extends Fragment {
 
     }
 
-    private void displayWFCStarted() {
-        Log.d(TAG, "displayWFCStarted: started wfc " + Thread.currentThread().getName());
-        Toast.makeText(requireActivity().getApplicationContext(), "WFC started...", Toast.LENGTH_SHORT).show();
 
-    }
 
     @Override
     public void onResume() {
@@ -157,6 +157,7 @@ public class WFCFragment extends Fragment {
         Log.d(TAG, "onResume() called ");
         testMSettingsViewModel();
         displayResult();
+        toastUtilsWFC = new ToastUtilsWFC(this.getContext());
 
     }
 

@@ -1,0 +1,29 @@
+package com.mako.patterngeneratorwfc.utiles;
+
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+public class ToastUtilsWFC {
+
+    private static final String TAG = ToastUtilsWFC.class.getName();
+    private final Context context;
+
+    public ToastUtilsWFC(Context context){
+        this.context = context;
+    }
+
+    public void displayWFCStarted() {
+        Log.d(TAG, "displayWFCStarted: started wfc " + Thread.currentThread().getName());
+        Toast.makeText(context, "WFC started...", Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void displayWFCFinished(boolean result){
+        if (result){
+            Toast.makeText(context, "WFC finished successful", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Toast.makeText(context, "WFC failed", Toast.LENGTH_SHORT).show();
+    }
+}
