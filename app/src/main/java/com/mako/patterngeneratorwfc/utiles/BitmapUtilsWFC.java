@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 
 import com.mako.patterngeneratorwfc.R;
+import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class BitmapUtilsWFC {
 
     private static final String TAG = BitmapUtilsWFC.class.getName();
     private Fragment fragment;
+    private ResultViewModel resultViewModel;
 
     public BitmapUtilsWFC(Fragment fragment) {
         this.fragment = fragment;
@@ -48,7 +50,7 @@ public class BitmapUtilsWFC {
             }
             //imageView.setImageBitmap(Bitmap.createScaledBitmap(scaledBitmap, width, height, false));
             imageView.setImageBitmap(temp);
-            mResultBitmap = temp;
+            resultViewModel.setBitmap(temp);
         });
     }
 
@@ -109,9 +111,31 @@ public class BitmapUtilsWFC {
 
 
     public void clearPreviousBitmap() {
-        mResultBitmap = null;
+        resultViewModel.setBitmap(null);
         ImageView imageView = fragment.requireView().findViewById(R.id.fragment_wfc_image_view);
         new Handler(Looper.getMainLooper()).post(() -> imageView.setImageBitmap(null));
+    }
+
+    public int getColorOfAPixel(Integer valueId, List<String> inputValueMap) {
+        int color;
+        String value = inputValueMap.get(valueId);
+        switch (value){
+            case "G":
+                color = Color.GREEN;
+                break;
+            case "C":
+                color = Color.YELLOW;
+                break;
+            case "S":
+                color = Color.BLUE;
+                break;
+            case "M":
+                color = Color.GRAY;
+                break;
+            default:
+                color = Color.BLACK;
+        }
+        return color;
     }
 
 

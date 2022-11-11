@@ -144,28 +144,6 @@ public class WFCFragment extends Fragment {
 
     }
 
-    private int getColorOfAPixel(Integer valueId, List<String> inputValueMap) {
-        int color;
-        String value = inputValueMap.get(valueId);
-        switch (value){
-            case "G":
-                color = Color.GREEN;
-                break;
-            case "C":
-                color = Color.YELLOW;
-                break;
-            case "S":
-                color = Color.BLUE;
-                break;
-            case "M":
-                color = Color.GRAY;
-                break;
-            default:
-                color = Color.BLACK;
-        }
-        return color;
-    }
-
     private void displayWFCStarted() {
         Log.d(TAG, "displayWFCStarted: started wfc " + Thread.currentThread().getName());
         Toast.makeText(requireActivity().getApplicationContext(), "WFC started...", Toast.LENGTH_SHORT).show();
@@ -227,7 +205,7 @@ public class WFCFragment extends Fragment {
             for (int patternRow = 0; patternRow < pattern.length; patternRow++) {
                 for (int patternCol = 0; patternCol < pattern[0].length; patternCol++) {
                     // For each item in pattern
-                    color = getColorOfAPixel(pattern[patternRow][patternCol], inputValueMap);
+                    color = bitmapUtilsWFC.getColorOfAPixel(pattern[patternRow][patternCol], inputValueMap);
                     for (int x = (row + patternRow) * xRatio; x < (row + patternRow + 1) * xRatio; x++) {
                         for (int y = (col + patternCol) * yRatio; y < (col + patternCol + 1) * yRatio; y++) {
                             resultBitmap.setPixel(x, y, color);
