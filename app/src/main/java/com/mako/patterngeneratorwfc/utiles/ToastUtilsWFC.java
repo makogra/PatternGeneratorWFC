@@ -1,6 +1,8 @@
 package com.mako.patterngeneratorwfc.utiles;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,10 +22,16 @@ public class ToastUtilsWFC {
     }
 
     public void displayWFCFinished(boolean result){
-        if (result){
-            Toast.makeText(context, "WFC finished successful", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Toast.makeText(context, "WFC failed", Toast.LENGTH_SHORT).show();
+        toast(() -> {
+            if (result){
+                Toast.makeText(context, "WFC finished successful", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Toast.makeText(context, "WFC failed", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void toast(Runnable runnable){
+        new Handler(Looper.getMainLooper()).post(runnable);
     }
 }
