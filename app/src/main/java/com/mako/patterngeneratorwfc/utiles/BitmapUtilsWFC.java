@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
@@ -24,6 +25,7 @@ public class BitmapUtilsWFC {
 
     public BitmapUtilsWFC(Fragment fragment) {
         this.fragment = fragment;
+        resultViewModel = new ViewModelProvider(fragment.requireActivity()).get(ResultViewModel.class);
     }
 
     public void attacheScaledBitmap(Bitmap scaledBitmap) {
@@ -32,6 +34,7 @@ public class BitmapUtilsWFC {
             int     height,
                     width,
                     ratio;
+            //Somehow view is null here
             FrameLayout frameLayout = fragment.requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
             ImageView imageView = fragment.requireView().findViewById(R.id.fragment_wfc_image_view);
             ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
@@ -42,15 +45,8 @@ public class BitmapUtilsWFC {
             params.width = width;
             frameLayout.setLayoutParams(params);
 
-
-            Bitmap temp = Bitmap.createScaledBitmap(scaledBitmap, width, height, false);
-            Log.d(TAG, "attacheScaledBitmap: temp bitmap = width: " + temp.getWidth() + " height: " + temp.getHeight());
-            for (int i = 0; i < temp.getWidth()/scaledBitmap.getWidth(); i++) {
-                temp.setPixel(i, 6, Color.BLACK);
-            }
-            //imageView.setImageBitmap(Bitmap.createScaledBitmap(scaledBitmap, width, height, false));
-            imageView.setImageBitmap(temp);
-            resultViewModel.setBitmap(temp);
+            imageView.setImageBitmap(Bitmap.createScaledBitmap(scaledBitmap, width, height, false));
+            //resultViewModel.setBitmap(temp);
         });
     }
 
@@ -106,6 +102,7 @@ public class BitmapUtilsWFC {
 
     public void createEmptyBitmap(int outputHeight, int outputWidth){
         Bitmap emptySmallBitmap = Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888);
+        resultViewModel.setBitmap(emptySmallBitmap);
         attacheScaledBitmap(emptySmallBitmap);
     }
 
