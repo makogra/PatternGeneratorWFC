@@ -37,7 +37,6 @@ public class WFCFragment extends Fragment {
     private SettingsTileSetViewModel settingsTileSetViewModel;
     private WFCViewModel wfcViewModel;
     private ResultViewModel resultViewModel;
-    private Bitmap resultBitmap = null;
     private List<String> inputValueMap;
     private List<Integer[][]> patternList;
     private BitmapUtilsWFC bitmapUtilsWFC;
@@ -110,6 +109,7 @@ public class WFCFragment extends Fragment {
                     //showResult(result, wfc.getInputValueMap());
                     //TODO display finish
                     //TODO if result isn't visible display toast about finish
+                    toastUtilsWFC.displayWFCFinished(true);
                 } else {
                     toastUtilsWFC.displayWFCFinished(false);
                 }
@@ -187,12 +187,14 @@ public class WFCFragment extends Fragment {
     }
 
     public void updateResult(Cell cell, int value) {
+        Bitmap resultBitmap = resultViewModel.getBitmap();
         if (resultBitmap == null){
             Log.w(TAG, "updateResult: updating Null bitmap", new NullPointerException());
+            return;
         }
-        //TODO
         int row = cell.getRow();
         int col = cell.getCol();
+        //TODO change to better naming and be comsistant with it, and maybe write it in the documentation
         int height = settingsTileSetViewModel.getValue(1);
         int width = settingsTileSetViewModel.getValue(2);
         int xRatio = resultBitmap.getWidth()/width;
