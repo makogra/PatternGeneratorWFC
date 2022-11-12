@@ -111,9 +111,13 @@ public class BitmapUtilsWFC {
 
 
     public void clearPreviousBitmap() {
+        //createEmptyBitmap(resultViewModel.getBitmap().getHeight(), resultViewModel.getBitmap().getWidth());
+        /*
         resultViewModel.setBitmap(null);
         ImageView imageView = fragment.requireView().findViewById(R.id.fragment_wfc_image_view);
-        new Handler(Looper.getMainLooper()).post(() -> imageView.setImageBitmap(null));
+        ne
+        w Handler(Looper.getMainLooper()).post(() -> imageView.setImageBitmap(null));
+         */
     }
 
     public int getColorOfAPixel(Integer valueId, List<String> inputValueMap) {
