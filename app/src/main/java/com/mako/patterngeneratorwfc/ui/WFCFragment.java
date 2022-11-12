@@ -183,7 +183,7 @@ public class WFCFragment extends Fragment {
         if (settingsTileSetViewModel.isNotValueInited())
             Log.d(TAG, "testMSettingsViewModel: isNotValueInited");
         if (settingsTileSetViewModel.isNotMinMaxInnited())
-            Log.d(TAG, "testMSettingsViewModel: isNotMinMaxInnited");
+            Log.d(TAG, "testMSettingsViewModel: isNotMinMaxInited");
     }
 
     public void updateResult(Cell cell, int value) {
