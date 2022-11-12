@@ -36,6 +36,7 @@ public class DisplayWFC {
     }
 
     public void notifyResultUpdate(Cell cell) {
+        if (cell == null) return;
         //int x = (cell.getRow() / patternSize) + (cell.getRow() % patternSize);
         //int y = (cell.getCol() / patternSize) + (cell.getCol() % patternSize);
 
