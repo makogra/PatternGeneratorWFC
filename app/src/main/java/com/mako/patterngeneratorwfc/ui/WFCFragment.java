@@ -200,28 +200,23 @@ public class WFCFragment extends Fragment {
         int xRatio = resultBitmap.getWidth()/width;
         int yRatio = resultBitmap.getHeight()/height;
         Integer[][] pattern = patternList.get(value);
-        //int color = getColorOfAPixel(value, mInputValueMap);
         ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
 
-        imageView.post(() -> {
-            int color;
-            for (int patternRow = 0; patternRow < pattern.length; patternRow++) {
-                for (int patternCol = 0; patternCol < pattern[0].length; patternCol++) {
-                    // For each item in pattern
-                    color = bitmapUtilsWFC.getColorOfAPixel(pattern[patternRow][patternCol], inputValueMap);
-                    for (int x = (row + patternRow) * xRatio; x < (row + patternRow + 1) * xRatio; x++) {
-                        for (int y = (col + patternCol) * yRatio; y < (col + patternCol + 1) * yRatio; y++) {
-                            resultBitmap.setPixel(x, y, color);
-                        }
+        int color;
+        for (int patternRow = 0; patternRow < pattern.length; patternRow++) {
+            for (int patternCol = 0; patternCol < pattern[0].length; patternCol++) {
+                // For each item in pattern
+                color = bitmapUtilsWFC.getColorOfAPixel(pattern[patternRow][patternCol], inputValueMap);
+                for (int x = (row + patternRow) * xRatio; x < (row + patternRow + 1) * xRatio; x++) {
+                    for (int y = (col + patternCol) * yRatio; y < (col + patternCol + 1) * yRatio; y++) {
+                        resultBitmap.setPixel(x, y, color);
                     }
                 }
             }
+        }
 
-            //imageView.setImageBitmap(mResultBitmap);
-        });
+        bitmapUtilsWFC.attacheScaledBitmap(resultBitmap);
 
-
-        // get bitmap
-
+        resultViewModel.setBitmap(resultBitmap);
     }
 }
