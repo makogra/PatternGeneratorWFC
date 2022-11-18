@@ -44,8 +44,8 @@ public class DisplayWFC {
         //int x = (cell.getRow() / patternSize) + (cell.getRow() % patternSize);
         //int y = (cell.getCol() / patternSize) + (cell.getCol() % patternSize);
 
-        int x = cell.getRow() / patternSize;
-        int y = cell.getCol() / patternSize;
+        int x = cell.getRow(); // patternSize;
+        int y = cell.getCol(); // patternSize;
 
         int value = wave.getOutputValue(x, y);
         wfcFragmentObserver.updateResult(cell, value);
