@@ -220,7 +220,7 @@ public class Cell implements Comparable<Cell> {
 
 
         int patternIndex = getPatternIndex();
-
+        Log.d(TAG, "observe: returned index = " + patternIndex);
 
 
         if (patternIndex < 0 || patternIndex >= sTotalNumberOfPossiblePatterns) {
@@ -244,10 +244,10 @@ public class Cell implements Comparable<Cell> {
         updateNumberOfPossiblePatterns();
         int randomIndex = random.nextInt(numberOfPossiblePatterns);
 
-        for (int patternIndex = 0; patternIndex < possiblePatterns.length; patternIndex++) {
+        for (int patternIndex = 0; patternIndex < possiblePatterns.length; patternIndex++, randomIndex--) {
             if (!possiblePatterns[patternIndex])
                 continue;
-            if (randomIndex-- <= 0)
+            if (randomIndex <= 1)
                 return patternIndex;
         }
         return possiblePatterns.length-1;
