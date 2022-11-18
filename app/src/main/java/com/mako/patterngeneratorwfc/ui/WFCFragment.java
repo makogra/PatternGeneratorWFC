@@ -110,6 +110,15 @@ public class WFCFragment extends Fragment {
                     //TODO display finish
                     //TODO if result isn't visible display toast about finish
                     toastUtilsWFC.displayWFCFinished(true);
+                    Bitmap rBitmap = resultViewModel.getBitmap();
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < rBitmap.getHeight(); i++) {
+                        for (int j = 0; j < rBitmap.getWidth(); j++) {
+                            sb.append(rBitmap.getPixel(j,i));
+                        }
+                        sb.append("\n");
+                    }
+                    Log.i(TAG, "onCreateView: resultBitmap = \n" + sb.toString());
                 } else {
                     toastUtilsWFC.displayWFCFinished(false);
                 }
