@@ -35,6 +35,10 @@ public class DisplayWFC {
         this.inputValueMap = inputValueMap;
     }
 
+    public void setWave(Wave wave) {
+        this.wave = wave;
+    }
+
     public void notifyResultUpdate(Cell cell) {
         if (cell == null) return;
         //int x = (cell.getRow() / patternSize) + (cell.getRow() % patternSize);
