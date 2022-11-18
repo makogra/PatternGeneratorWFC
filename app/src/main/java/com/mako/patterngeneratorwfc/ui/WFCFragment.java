@@ -192,26 +192,22 @@ public class WFCFragment extends Fragment {
             Log.w(TAG, "updateResult: updating Null bitmap", new NullPointerException());
             return;
         }
-        int row = cell.getRow();
-        int col = cell.getCol();
-        //TODO change to better naming and be comsistant with it, and maybe write it in the documentation
-        int height = settingsTileSetViewModel.getValue(1);
-        int width = settingsTileSetViewModel.getValue(2);
-        int xRatio = resultBitmap.getWidth()/width;
-        int yRatio = resultBitmap.getHeight()/height;
         Integer[][] pattern = patternList.get(value);
-        ImageView imageView = requireView().findViewById(R.id.fragment_wfc_image_view);
+        int patternSize = pattern.length;
+        int row = cell.getRow() * (patternSize - 1);
+        int col = cell.getCol() * (patternSize - 1);
+        //TODO change to better naming and be comsistant with it, and maybe write it in the documentation
+        int height = resultBitmap.getHeight();
+        int width = resultBitmap.getWidth();
+
+
 
         int color;
-        for (int patternRow = 0; patternRow < pattern.length; patternRow++) {
-            for (int patternCol = 0; patternCol < pattern[0].length; patternCol++) {
+        for (int patternRow = 0; patternRow < patternSize; patternRow++) {
+            for (int patternCol = 0; patternCol < patternSize; patternCol++) {
                 // For each item in pattern
                 color = bitmapUtilsWFC.getColorOfAPixel(pattern[patternRow][patternCol], inputValueMap);
-                for (int x = (row + patternRow) * xRatio; x < (row + patternRow + 1) * xRatio; x++) {
-                    for (int y = (col + patternCol) * yRatio; y < (col + patternCol + 1) * yRatio; y++) {
-                        resultBitmap.setPixel(x, y, color);
-                    }
-                }
+                resultBitmap.setPixel(patternCol + col, patternRow + row, color);
             }
         }
 
