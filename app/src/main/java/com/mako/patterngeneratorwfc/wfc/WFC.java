@@ -83,6 +83,7 @@ public class WFC {
         Cell observedCell;
         for (int i = 0; i < numberOfOutcomes; i++) {
             initWave();
+            displayWFC.setWave(wave);
             start = System.currentTimeMillis();
 
 
@@ -103,6 +104,8 @@ public class WFC {
                     collapseCount = 0;
                     Log.d(TAG, "Failed " + "tried " + currentTrieCount + "times\n" + e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
                     initWave();
+                    displayWFC.setWave(wave);
+                    //displayWFC.clearResult(outputHeight, outputWidth);
                     currentTrieCount++;
                 } finally {
                     wave.finish();
