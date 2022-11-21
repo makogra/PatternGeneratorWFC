@@ -105,7 +105,7 @@ public class WFC {
                     Log.d(TAG, "Failed " + "tried " + currentTrieCount + "times\n" + e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
                     initWave();
                     displayWFC.setWave(wave);
-                    //displayWFC.clearResult(outputHeight, outputWidth);
+                    displayWFC.clearResult(outputHeight, outputWidth);
                     currentTrieCount++;
                 } finally {
                     wave.finish();

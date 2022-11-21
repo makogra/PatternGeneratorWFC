@@ -224,4 +224,10 @@ public class WFCFragment extends Fragment {
 
         resultViewModel.setBitmap(resultBitmap);
     }
+
+    public void clearResult(int outputHeight, int outputWidth){
+        //bitmapUtilsWFC.resetFrameLayout();
+        bitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
+
+    }
 }

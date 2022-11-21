@@ -158,4 +158,8 @@ public class DisplayWFC {
     public void observe(WFCFragment wfcFragmentObserver){
         this.wfcFragmentObserver = wfcFragmentObserver;
     }
+
+    public void clearResult(int outputHeight, int outputWidth) {
+        wfcFragmentObserver.clearResult(outputHeight, outputWidth);
+    }
 }
