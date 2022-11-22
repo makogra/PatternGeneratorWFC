@@ -13,7 +13,6 @@ public class WFC {
 
     private static final String TAG = "WFC";
     private final int patternSize;
-    private final int tilesOverLap;
     private final int outputHeight;
     private final int outputWidth;
     private final Propagator propagator;
@@ -26,12 +25,11 @@ public class WFC {
 
     public WFC(TileSet tileSet, int patternSize, int tilesOverLap, int outputHeight, int outputWidth, boolean rotation, boolean reflection) {
         this.patternSize = patternSize;
-        this.tilesOverLap = tilesOverLap;
         this.outputHeight = outputHeight;
         this.outputWidth = outputWidth;
         this.wave = new Wave(outputHeight, outputWidth, patternSize);
         this.inputHandler = new InputHandler(tileSet.getValueGrid(), patternSize, rotation, reflection);
-        AdjacencyRules adjacencyRules = new AdjacencyRules(inputHandler.getPatternList(), tilesOverLap);
+        AdjacencyRules adjacencyRules = new AdjacencyRules(inputHandler.getPatternList());
         this.defaultPatternEnablers = adjacencyRules.getDefaultPatternEnablers();
         patternList = inputHandler.getPatternList();
         inputValueMap = tileSet.getValueToStringPath();
@@ -47,10 +45,6 @@ public class WFC {
 
     public int getPatternSize() {
         return patternSize;
-    }
-
-    public int getTilesOverLap() {
-        return tilesOverLap;
     }
 
     public int getOutputHeight() {
