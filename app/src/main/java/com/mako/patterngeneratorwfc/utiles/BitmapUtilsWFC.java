@@ -64,7 +64,7 @@ public class BitmapUtilsWFC {
      * @param patternList - list of all patterns
      * @param outputBitmap - bitmap that will be filled accordingly to patternGrid
      */
-    public void makeBitmap(List<String> inputValueMap, int[][] patternGrid, int patternSize, int overlap, List<Integer[][]> patternList, Bitmap outputBitmap) {
+    public void makeBitmap(List<String> inputValueMap, int[][] patternGrid, int patternSize, List<Integer[][]> patternList, Bitmap outputBitmap) {
 
         int patternId;
         int x;

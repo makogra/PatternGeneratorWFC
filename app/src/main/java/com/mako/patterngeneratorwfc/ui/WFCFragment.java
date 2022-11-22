@@ -144,13 +144,12 @@ public class WFCFragment extends Fragment {
         int[][] patternGrid = result.getOutputGrid();
         int     patternSize = result.getPatternSize(),
                 outputHeight = result.getHeight(),
-                outputWidth = result.getWidth(),
-                overlap = 1;
+                outputWidth = result.getWidth();
         List<Integer[][]> patternList = result.getPatternList();
         Bitmap outputBitmap;
         resultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
         outputBitmap = resultViewModel.getBitmap();
-        bitmapUtilsWFC.makeBitmap(inputValueMap, patternGrid, patternSize, overlap, patternList, outputBitmap);
+        bitmapUtilsWFC.makeBitmap(inputValueMap, patternGrid, patternSize, patternList, outputBitmap);
         resultViewModel.setBitmap(outputBitmap);
 
         bitmapUtilsWFC.attacheScaledBitmap(outputBitmap);
