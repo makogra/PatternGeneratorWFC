@@ -81,7 +81,6 @@ public class WFCFragment extends Fragment {
                 int patternSize = settingsTileSetViewModel.getValue(0);
                 int outputHeight = settingsTileSetViewModel.getValue(1);
                 int outputWidth = settingsTileSetViewModel.getValue(2);
-                int tilesOverlap = settingsTileSetViewModel.getValue(3);
                 boolean rotation = settingsTileSetViewModel.getRotation();
                 boolean reflection = settingsTileSetViewModel.getReflection();
                 TileSet input = tileSetViewModel.getCurrentTileSet();
