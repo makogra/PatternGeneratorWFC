@@ -104,7 +104,7 @@ public class WFCFragment extends Fragment {
                 wfc.run(30);
                 if (wfc.isCollapsed()){
                     int[][] outputGrid = wfc.getOutputGrid();
-                    Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, tilesOverlap, wfc.getPatternList());
+                    Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, wfc.getPatternList());
 
                     //showResult(result, wfc.getInputValueMap());
                     //TODO display finish
@@ -145,7 +145,7 @@ public class WFCFragment extends Fragment {
         int     patternSize = result.getPatternSize(),
                 outputHeight = result.getHeight(),
                 outputWidth = result.getWidth(),
-                overlap = result.getOverlap();
+                overlap = 1;
         List<Integer[][]> patternList = result.getPatternList();
         Bitmap outputBitmap;
         resultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
