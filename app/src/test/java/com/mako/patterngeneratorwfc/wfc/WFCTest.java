@@ -42,7 +42,7 @@ public class WFCTest {
         }};
         TileSet tileSet = new TileSet("Test", tempInputGridValue, map);
         
-        wfc = new WFC(tileSet, 3, 1, 64, 32, true, true);
+        wfc = new WFC(tileSet, 3, 64, 32, true, true);
     }
 
     @Test

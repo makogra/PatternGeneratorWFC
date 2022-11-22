@@ -39,8 +39,7 @@ public class AdjacencyRulesTest {
                     {1,3,3}
             });
         }};
-        int overLap = 1;
-        adjacencyRules = new AdjacencyRules(patterList, overLap);
+        adjacencyRules = new AdjacencyRules(patterList);
     }
 
     private List<List<List<Integer>>> initShouldBe(){
@@ -152,7 +151,7 @@ public class AdjacencyRulesTest {
                     {1, 1, 1}
             });
         }};
-        adjacencyRules = new AdjacencyRules(patterList, 1);
+        adjacencyRules = new AdjacencyRules(patterList);
 
         List<List<List<Integer>>> was = adjacencyRules.getDefaultPatternEnablers();
         List<List<List<Integer>>> shouldBe = initShouldBe();

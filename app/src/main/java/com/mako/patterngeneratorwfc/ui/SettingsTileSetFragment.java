@@ -175,10 +175,6 @@ public class SettingsTileSetFragment extends Fragment {
                     max = MAX_OUTPUT_WIDTH;
                     min = MIN_OUTPUT_WIDTH;
                     break;
-                case 3: // tiles overlap
-                    // max is one less than value of case 0, that mean max overlap = (current) patternSize - 1;
-                    max = settingsTileSetViewModel.getValue(0) - 1;
-                    break;
                 default:
                     throw new NotImplementedError("add modules in SettingsTileSetFragment");
             }
@@ -190,10 +186,6 @@ public class SettingsTileSetFragment extends Fragment {
             if (settingsTileSetViewModel.setValue(settingsTileSetViewModel.getValue(i), i))
                 return;
             settingsTileSetViewModel.setValue(average, i);
-            if ( i == 3 ){//Overlap
-                //Set default value of overlap to 1
-                settingsTileSetViewModel.setValue(1, i);
-            }
         }
     }
 

@@ -32,7 +32,6 @@ public class PropagatorTest {
         int outputHeight = 64;
         int outputWidth = 64;
         int patternSize = 3;
-        int tilesOverLap = 1;
         boolean rotation = true;
         boolean reflection = true;
         List<String> map = new ArrayList<String>(){{
@@ -43,6 +42,6 @@ public class PropagatorTest {
         }};
         TileSet tileSet = new TileSet("Test", valueGrid, map);
 
-        wfc = new WFC(tileSet, patternSize, tilesOverLap, outputHeight, outputWidth, rotation, reflection);
+        wfc = new WFC(tileSet, patternSize, outputHeight, outputWidth, rotation, reflection);
     }
 }

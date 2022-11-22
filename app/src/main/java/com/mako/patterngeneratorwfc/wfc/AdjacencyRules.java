@@ -11,13 +11,12 @@ public class AdjacencyRules {
     private List<List<List<Integer>>> defaultPatternEnablers;
     private final List<Integer[][]> patternList;
     private final int patternSize;
-    private final int overLap;
+    private final int OVERLAP = 1;
 
-    AdjacencyRules(List<Integer[][]> patternList, int overLap){
+    AdjacencyRules(List<Integer[][]> patternList){
         this.patternList = patternList;
         this.totalNumberOfPatterns = patternList.size();
         this.patternSize = patternList.get(0).length;
-        this.overLap = overLap;
     }
 
     public List<List<List<Integer>>> getDefaultPatternEnablers() {
@@ -68,26 +67,26 @@ public class AdjacencyRules {
             // It's diagonal
             if (directionVector[0] == 1) {
                 // It's DOWN_...
-                row1 = patternSize-overLap;
+                row1 = patternSize-OVERLAP;
                 row2 = 0;
             } else{
                 // It's UP_...
                 row1 = 0;
-                row2 = patternSize-overLap;
+                row2 = patternSize-OVERLAP;
             }
 
             if (directionVector[1] == 1){
                 // It's ..._RIGHT
-                col1 = patternSize-overLap;
+                col1 = patternSize-OVERLAP;
                 col2 = 0;
             } else {
                 // It's ..._LEFT
                 col1 = 0;
-                col2 = patternSize-overLap;
+                col2 = patternSize-OVERLAP;
             }
 
-            for (int i = 0; i < overLap; i++) {
-                for (int j = 0; j < overLap; j++) {
+            for (int i = 0; i < OVERLAP; i++) {
+                for (int j = 0; j < OVERLAP; j++) {
                     if (!pattern1[row1 + i][col1 + j].equals(pattern2[row2 + i][col2 + j]))
                         return false;
                 }
@@ -101,15 +100,15 @@ public class AdjacencyRules {
 
             if (directionVector[1] == 1){
                 // It's RIGHT
-                col1 = patternSize-overLap;
+                col1 = patternSize-OVERLAP;
                 col2 = 0;
             } else {
                 // It's LEFT
                 col1 = 0;
-                col2 = patternSize-overLap;
+                col2 = patternSize-OVERLAP;
             }
 
-            for (int i = 0; i < overLap; i++) {
+            for (int i = 0; i < OVERLAP; i++) {
                 for (int row = 0; row < toRow; row++) {
                     if (!pattern1[row][col1 + i].equals(pattern2[row][col2 + i]))
                         return false;
@@ -125,14 +124,14 @@ public class AdjacencyRules {
         if (directionVector[0] == -1){
             // It's UP
             row1 = 0;
-            row2 = patternSize-overLap;
+            row2 = patternSize-OVERLAP;
         } else {
             // It's DOWN
-            row1 = patternSize-overLap;
+            row1 = patternSize-OVERLAP;
             row2 = 0;
         }
 
-        for (int i = 0; i < overLap; i++) {
+        for (int i = 0; i < OVERLAP; i++) {
             for (int col = 0; col < toCol; col++){
                 if (!pattern1[row1 + i][col].equals(pattern2[row2 + i][col]))
                     return false;

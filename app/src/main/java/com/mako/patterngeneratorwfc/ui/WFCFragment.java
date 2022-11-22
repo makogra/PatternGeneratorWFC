@@ -81,7 +81,6 @@ public class WFCFragment extends Fragment {
                 int patternSize = settingsTileSetViewModel.getValue(0);
                 int outputHeight = settingsTileSetViewModel.getValue(1);
                 int outputWidth = settingsTileSetViewModel.getValue(2);
-                int tilesOverlap = settingsTileSetViewModel.getValue(3);
                 boolean rotation = settingsTileSetViewModel.getRotation();
                 boolean reflection = settingsTileSetViewModel.getReflection();
                 TileSet input = tileSetViewModel.getCurrentTileSet();
@@ -97,14 +96,14 @@ public class WFCFragment extends Fragment {
                 //TODO create new bitmap
                 bitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
 
-                WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth, rotation, reflection);
+                WFC wfc = new WFC(input, patternSize, outputHeight, outputWidth, rotation, reflection);
                 inputValueMap = wfc.getInputValueMap();
                 patternList = wfc.getPatternList();
                 wfc.observe(this);
                 wfc.run(30);
                 if (wfc.isCollapsed()){
                     int[][] outputGrid = wfc.getOutputGrid();
-                    Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, tilesOverlap, wfc.getPatternList());
+                    Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, wfc.getPatternList());
 
                     //showResult(result, wfc.getInputValueMap());
                     //TODO display finish
@@ -144,13 +143,12 @@ public class WFCFragment extends Fragment {
         int[][] patternGrid = result.getOutputGrid();
         int     patternSize = result.getPatternSize(),
                 outputHeight = result.getHeight(),
-                outputWidth = result.getWidth(),
-                overlap = result.getOverlap();
+                outputWidth = result.getWidth();
         List<Integer[][]> patternList = result.getPatternList();
         Bitmap outputBitmap;
         resultViewModel.setBitmap(Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888));
         outputBitmap = resultViewModel.getBitmap();
-        bitmapUtilsWFC.makeBitmap(inputValueMap, patternGrid, patternSize, overlap, patternList, outputBitmap);
+        bitmapUtilsWFC.makeBitmap(inputValueMap, patternGrid, patternSize, patternList, outputBitmap);
         resultViewModel.setBitmap(outputBitmap);
 
         bitmapUtilsWFC.attacheScaledBitmap(outputBitmap);
