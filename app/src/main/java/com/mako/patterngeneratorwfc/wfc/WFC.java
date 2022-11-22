@@ -23,7 +23,7 @@ public class WFC {
     private final List<List<List<Integer>>> defaultPatternEnablers;
     private final DisplayWFC displayWFC;
 
-    public WFC(TileSet tileSet, int patternSize, int tilesOverLap, int outputHeight, int outputWidth, boolean rotation, boolean reflection) {
+    public WFC(TileSet tileSet, int patternSize, int outputHeight, int outputWidth, boolean rotation, boolean reflection) {
         this.patternSize = patternSize;
         this.outputHeight = outputHeight;
         this.outputWidth = outputWidth;

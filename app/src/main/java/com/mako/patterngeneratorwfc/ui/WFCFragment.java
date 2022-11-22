@@ -97,7 +97,7 @@ public class WFCFragment extends Fragment {
                 //TODO create new bitmap
                 bitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
 
-                WFC wfc = new WFC(input, patternSize, tilesOverlap, outputHeight, outputWidth, rotation, reflection);
+                WFC wfc = new WFC(input, patternSize, outputHeight, outputWidth, rotation, reflection);
                 inputValueMap = wfc.getInputValueMap();
                 patternList = wfc.getPatternList();
                 wfc.observe(this);
