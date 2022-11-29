@@ -36,6 +36,7 @@ public class WFC {
 
         this.propagator = wave.getPropagator();
         displayWFC = new DisplayWFC(patternSize, wave, outputHeight, outputWidth, patternList, inputValueMap);
+        displayWFC.displayRules(defaultPatternEnablers);
     }
 
     //Getters

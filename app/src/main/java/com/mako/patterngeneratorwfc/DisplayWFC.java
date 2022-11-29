@@ -101,7 +101,7 @@ public class DisplayWFC {
         }*/
     }
 
-    void displayRules(List<List<List<Integer>>> defaultPatternEnablers){
+    public void displayRules(List<List<List<Integer>>> defaultPatternEnablers){
         for (int i = 0; i < defaultPatternEnablers.size(); i++) {
             Log.d(TAG, "-----------------------------------------");
             Log.d(TAG, "For patternId " + i);
