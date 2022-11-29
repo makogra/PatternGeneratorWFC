@@ -210,8 +210,8 @@ public class WFCFragment extends Fragment {
 
 
         int color;
-        for (int patternRow = 0; patternRow < patternSize; patternRow++) {
-            for (int patternCol = 0; patternCol < patternSize; patternCol++) {
+        for (int patternRow = 0; patternRow < patternSize && (patternRow + row) < height; patternRow++) {
+            for (int patternCol = 0; patternCol < patternSize && (patternCol + col) < width; patternCol++) {
                 // For each item in pattern
                 color = bitmapUtilsWFC.getColorOfAPixel(pattern[patternRow][patternCol], inputValueMap);
                 resultBitmap.setPixel(patternCol + col, patternRow + row, color);
