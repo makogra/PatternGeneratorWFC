@@ -49,11 +49,91 @@ public class AdjacencyRules {
         for (int patternIndex = 0; patternIndex < patternList.size(); patternIndex++) {
             for (int direction = 0; direction < numberOfDirections; direction++) {
                 for (int patternEnabler = 0; patternEnabler < patternList.size(); patternEnabler++) {
-                    if (isEnabler(patternIndex, direction, patternEnabler))
+                    if (isEnabler2(patternIndex, direction, patternEnabler))
                         defaultPatternEnablers.get(patternIndex).get(direction).add(patternEnabler);
                 }
             }
         }
+    }
+
+    private boolean isEnabler2(int patternIndex, int direction, int patternEnabler) {
+        Integer[][] pattern1 = patternList.get(patternIndex);
+        Integer[][] pattern2 = patternList.get(patternEnabler);
+        int[] directionOffset = Directions.getDirection(direction);
+        int row1, row2, col1, col2, toRow, toCol;
+
+
+        if (directionOffset[0] != 0 && directionOffset[1] != 0){
+            // It's diagonal
+            if (directionOffset[0] == 1) {
+                // It's DOWN_...
+                row1 = patternSize-1;
+                row2 = 0;
+            } else{
+                // It's UP_...
+                row1 = 0;
+                row2 = patternSize-1;
+            }
+
+            if (directionOffset[1] == 1){
+                // It's ..._RIGHT
+                col1 = patternSize-1;
+                col2 = 0;
+            } else {
+                // It's ..._LEFT
+                col1 = 0;
+                col2 = patternSize-1;
+            }
+
+            return pattern1[row1][col1].equals(pattern2[row2][col2]);
+        }
+
+        if (directionOffset[0] == 0){
+            // It's vertical
+            row1 = 0;
+            row2 = 0;
+            toRow = patternSize;
+
+            if (directionOffset[1] == 1){
+                // It's RIGHT
+                col1 = patternSize-1;
+                col2 = 0;
+            } else {
+                // It's LEFT
+                col1 = 0;
+                col2 = patternSize-1;
+            }
+
+
+            for (; row1 < toRow; row1++, row2++) {
+                if (!pattern1[row1][col1].equals(pattern2[row2][col2]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        // It's horizontal
+        col1 = 0;
+        col2 = 0;
+        toCol = patternSize;
+
+        if (directionOffset[0] == 1){
+            // It;s DOWN
+            row1 = 0;
+            row2 = patternSize-1;
+        } else {
+            // It's UP
+            row1 = patternSize-1;
+            row2 = 0;
+        }
+
+        for (;col1 < toCol; col1++, col2++){
+            if (!pattern1[row1][col1].equals(pattern2[row2][col2]))
+                return false;
+        }
+
+        return true;
     }
 
     private boolean isEnabler(int patternIndex, int direction, int patternEnabler) {
