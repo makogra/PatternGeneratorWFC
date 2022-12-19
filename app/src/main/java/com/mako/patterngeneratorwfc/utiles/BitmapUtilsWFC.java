@@ -16,38 +16,47 @@ import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BitmapUtilsWFC {
 
     private static final String TAG = BitmapUtilsWFC.class.getName();
     private Fragment fragment;
     private ResultViewModel resultViewModel;
+    private final long DELAY_IN_MILLIS = 100L;
+    private final AtomicLong frames = new AtomicLong(1L);
+
 
     public BitmapUtilsWFC(Fragment fragment) {
         this.fragment = fragment;
         resultViewModel = new ViewModelProvider(fragment.requireActivity()).get(ResultViewModel.class);
     }
 
-    public void attacheScaledBitmap(Bitmap scaledBitmap) {
+    public void attacheScaledBitmap(Bitmap bitmap) {
+        attacheScaledBitmapSmooth(bitmap);
+    }
+
+    public void attacheScaledBitmapSmooth(Bitmap bitmap){
         waitForView();
-        new Handler(Looper.getMainLooper()).post(() -> {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
             int     height,
                     width,
                     ratio;
-            //Somehow view is null here
+            frames.getAndDecrement();
+            if (fragment.getView() == null)
+                return;
             FrameLayout frameLayout = fragment.requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
             ImageView imageView = fragment.requireView().findViewById(R.id.fragment_wfc_image_view);
             ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
-            ratio = Math.min(frameLayout.getHeight() / scaledBitmap.getHeight(), frameLayout.getWidth() / scaledBitmap.getWidth());
-            height = scaledBitmap.getHeight() * ratio;
-            width = scaledBitmap.getWidth() * ratio;
+            ratio = Math.min(frameLayout.getHeight() / bitmap.getHeight(), frameLayout.getWidth() / bitmap.getWidth());
+            height = bitmap.getHeight() * ratio;
+            width = bitmap.getWidth() * ratio;
             params.height = height;
             params.width = width;
             frameLayout.setLayoutParams(params);
 
-            imageView.setImageBitmap(Bitmap.createScaledBitmap(scaledBitmap, width, height, false));
-            //resultViewModel.setBitmap(temp);
-        });
+            imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, width, height, false));
+        }, frames.getAndIncrement()*DELAY_IN_MILLIS);
     }
 
     private void waitForView() {
@@ -108,6 +117,7 @@ public class BitmapUtilsWFC {
 
 
     public void clearPreviousBitmap() {
+        frames.set(1);
         //createEmptyBitmap(resultViewModel.getBitmap().getHeight(), resultViewModel.getBitmap().getWidth());
         /*
         resultViewModel.setBitmap(null);

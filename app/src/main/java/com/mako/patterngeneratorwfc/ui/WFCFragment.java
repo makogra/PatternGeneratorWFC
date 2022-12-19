@@ -27,6 +27,8 @@ import com.mako.patterngeneratorwfc.wfc.Cell;
 import com.mako.patterngeneratorwfc.wfc.WFC;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class WFCFragment extends Fragment {
 
@@ -41,6 +43,7 @@ public class WFCFragment extends Fragment {
     private List<Integer[][]> patternList;
     private BitmapUtilsWFC bitmapUtilsWFC;
     private ToastUtilsWFC toastUtilsWFC;
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     public WFCFragment() {
     }
@@ -93,7 +96,6 @@ public class WFCFragment extends Fragment {
                         {"G","G","G","C","S","S","S","S"}
                 };
 
-                //TODO create new bitmap
                 bitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
 
                 WFC wfc = new WFC(input, patternSize, outputHeight, outputWidth, rotation, reflection);
@@ -106,8 +108,6 @@ public class WFCFragment extends Fragment {
                     Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, wfc.getPatternList());
 
                     //showResult(result, wfc.getInputValueMap());
-                    //TODO display finish
-                    //TODO if result isn't visible display toast about finish
                     toastUtilsWFC.displayWFCFinished(true);
                     Bitmap rBitmap = resultViewModel.getBitmap();
                     StringBuilder sb = new StringBuilder();
@@ -201,12 +201,11 @@ public class WFCFragment extends Fragment {
         }
         Integer[][] pattern = patternList.get(value);
         int patternSize = pattern.length;
-        int row = cell.getRow() * (patternSize - 1);
-        int col = cell.getCol() * (patternSize - 1);
+        int row = cell.getRow() * patternSize;
+        int col = cell.getCol() * patternSize;
         //TODO change to better naming and be comsistant with it, and maybe write it in the documentation
         int height = resultBitmap.getHeight();
         int width = resultBitmap.getWidth();
-
 
 
         int color;
@@ -218,14 +217,12 @@ public class WFCFragment extends Fragment {
             }
         }
 
-        bitmapUtilsWFC.attacheScaledBitmap(resultBitmap);
-
+        executor.execute(() -> bitmapUtilsWFC.attacheScaledBitmapSmooth(resultBitmap.copy(Bitmap.Config.ARGB_8888, false)));
         resultViewModel.setBitmap(resultBitmap);
     }
 
     public void clearResult(int outputHeight, int outputWidth){
         //bitmapUtilsWFC.resetFrameLayout();
         bitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
-
     }
 }
