@@ -113,6 +113,10 @@ public class Wave {
         return isCollapsed;
     }
 
+    boolean isRunning(){
+        return !isCollapsed;
+    }
+
     private Cell getCellWithLowestEntropy() {
         if( lowestEntropyCellQueue.size() == 0){
             checkIfIsCollapse();
