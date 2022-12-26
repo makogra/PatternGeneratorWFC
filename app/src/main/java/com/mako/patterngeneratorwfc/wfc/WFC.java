@@ -15,7 +15,6 @@ public class WFC {
     private final int patternSize;
     private final int outputHeight;
     private final int outputWidth;
-    private final Propagator propagator;
     private Wave wave;
     private final List<String> inputValueMap;
     private final List<Integer[][]> patternList;
@@ -34,7 +33,6 @@ public class WFC {
         patternList = inputHandler.getPatternList();
         inputValueMap = tileSet.getValueToStringPath();
 
-        this.propagator = wave.getPropagator();
         displayWFC = new DisplayWFC(patternSize, wave, outputHeight, outputWidth, patternList, inputValueMap);
         displayWFC.displayRules(defaultPatternEnablers);
     }
@@ -65,56 +63,37 @@ public class WFC {
     }
 
     public void run(int maxPossibleTries){
-        Log.d(TAG, "run: started...");
         int currentTrieCount = 0;
         int collapseCount = 0;
         displayWFC.displayPatterns();
-        int numberOfOutcomes = 1;
-        long start;
-        long finish;
-        long time;
-        long totalTime = 0L;
-        long[] times = new long[numberOfOutcomes];
         Cell observedCell;
-        for (int i = 0; i < numberOfOutcomes; i++) {
-            initWave();
-            displayWFC.setWave(wave);
-            start = System.currentTimeMillis();
+        initWave();
+        displayWFC.setWave(wave);
 
-
-            while (currentTrieCount < maxPossibleTries){
-                try {
-                    while (!wave.isCollapsed()){
-                        collapseCount++;
-                        observedCell = wave.collapse();
-                        displayWFC.notifyResultUpdate(observedCell);
-                        wave.propagate();
-                        Log.d(TAG, "run: processing ...");
-                    }
-                    Log.d(TAG, "Success " + "collapse count: " + collapseCount);
-
-                    displayWFC.displayResult();
-                    break;
-                } catch (Exception e){
-                    collapseCount = 0;
-                    Log.d(TAG, "Failed " + "tried " + currentTrieCount + "times\n" + e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
-                    initWave();
-                    displayWFC.setWave(wave);
-                    displayWFC.clearResult(outputHeight, outputWidth);
-                    currentTrieCount++;
-                } finally {
-                    wave.finish();
+        while (currentTrieCount < maxPossibleTries){
+            try {
+                while (wave.isRunning()){
+                    collapseCount++;
+                    observedCell = wave.collapse();
+                    displayWFC.notifyResultUpdate(observedCell);
+                    wave.propagate();
+                    Log.d(TAG, "run: processing ...");
                 }
+                Log.d(TAG, "Success " + "collapse count: " + collapseCount);
+
+                displayWFC.displayResult();
+                break;
+            } catch (Exception e){
+                collapseCount = 0;
+                Log.d(TAG, "Failed " + "tried " + currentTrieCount + "times\n" + e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
+                initWave();
+                displayWFC.setWave(wave);
+                displayWFC.clearResult(outputHeight, outputWidth);
+                currentTrieCount++;
+            } finally {
+                wave.finish();
             }
-
-            finish = System.currentTimeMillis();
-            time = finish - start;
-            times[i] = time;
-            totalTime += time;
         }
-
-        Log.d(TAG, Arrays.toString(times));
-        Log.d(TAG, "avg time " + totalTime/numberOfOutcomes);
 
     }
 
