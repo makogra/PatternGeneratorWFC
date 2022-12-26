@@ -23,7 +23,7 @@ public class BitmapUtilsWFC {
     private static final String TAG = BitmapUtilsWFC.class.getName();
     private Fragment fragment;
     private ResultViewModel resultViewModel;
-    private final long DELAY_IN_MILLIS = 100L;
+    private final long DELAY_IN_MILLIS = 40L;
     private final AtomicLong frames = new AtomicLong(1L);
 
 
