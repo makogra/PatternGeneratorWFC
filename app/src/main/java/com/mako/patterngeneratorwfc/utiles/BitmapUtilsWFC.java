@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,6 +15,7 @@ import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.datamodels.ResultViewModel;
 
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BitmapUtilsWFC {
@@ -25,11 +25,15 @@ public class BitmapUtilsWFC {
     private ResultViewModel resultViewModel;
     private final long DELAY_IN_MILLIS = 40L;
     private final AtomicLong frames = new AtomicLong(1L);
+    //TODO move to another class
+    private LinkedBlockingQueue<Bitmap> updateQueue;
 
 
     public BitmapUtilsWFC(Fragment fragment) {
         this.fragment = fragment;
         resultViewModel = new ViewModelProvider(fragment.requireActivity()).get(ResultViewModel.class);
+        //TODO move to another class
+        updateQueue = new LinkedBlockingQueue<>();
     }
 
     public void attacheScaledBitmap(Bitmap bitmap) {
@@ -57,6 +61,11 @@ public class BitmapUtilsWFC {
 
             imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, width, height, false));
         }, frames.getAndIncrement()*DELAY_IN_MILLIS);
+    }
+
+    //TODO move to another class
+    public void addToQueueUpdate(Bitmap bitmap){
+        updateQueue.offer(bitmap);
     }
 
     private void waitForView() {
@@ -118,6 +127,7 @@ public class BitmapUtilsWFC {
 
     public void clearPreviousBitmap() {
         frames.set(1);
+        updateQueue.clear();
         //createEmptyBitmap(resultViewModel.getBitmap().getHeight(), resultViewModel.getBitmap().getWidth());
         /*
         resultViewModel.setBitmap(null);
