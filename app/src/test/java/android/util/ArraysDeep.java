@@ -4,6 +4,8 @@ import java.util.List;
 
 public class ArraysDeep {
 
+    private static final String TAG = "ArrayDeep";
+
     public static boolean deepEqual(List<List<List<Integer>>> o1, List<List<List<Integer>>> o2) {
         if (o1.size() != o2.size())
             return false;
@@ -14,8 +16,10 @@ public class ArraysDeep {
                 if (o1.get(i).get(j).size() != o2.get(i).get(j).size())
                     return false;
                 for (int k = 0; k < o1.get(i).get(j).size(); k++) {
-                    if (!o1.get(i).get(j).get(k).equals(o2.get(i).get(j).get(k)))
+                    if (!o1.get(i).get(j).get(k).equals(o2.get(i).get(j).get(k))){
+                        Log.i(TAG, "deepEqual: o1 = " + o1.get(i).get(j).get(k) + " and  o2 = " + o2.get(i).get(j).get(k));
                         return false;
+                    }
                 }
             }
         }
