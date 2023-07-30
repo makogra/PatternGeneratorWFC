@@ -2,14 +2,14 @@ package com.mako.patterngeneratorwfc.wfc;
 
 public class Directions {
 
-    private static final int[] UP = {-1, 0};
-    private static final int[] UP_RIGHT = {-1, 1};
-    private static final int[] RIGHT = {0, 1};
-    private static final int[] DOWN_RIGHT = {1, 1};
-    private static final int[] DOWN = {1, 0};
-    private static final int[] DOWN_LEFT = {1, -1};
-    private static final int[] LEFT = {0, -1};
-    private static final int[] UP_LEFT = {-1, -1};
+    public static final int[] UP = {-1, 0};
+    public static final int[] UP_RIGHT = {-1, 1};
+    public static final int[] RIGHT = {0, 1};
+    public static final int[] DOWN_RIGHT = {1, 1};
+    public static final int[] DOWN = {1, 0};
+    public static final int[] DOWN_LEFT = {1, -1};
+    public static final int[] LEFT = {0, -1};
+    public static final int[] UP_LEFT = {-1, -1};
 
     private static final int[][] DIRECTIONS = {UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT};
 
