@@ -14,15 +14,14 @@ import java.util.List;
 
 public class TileSetViewModel extends AndroidViewModel {
 
-    //TODO remove curentPsoition and work only with current id(String), add method to shearch for the TileSet with secific id and return it.
-    //TODO Wrok on a callback in database class
+    //TODO remove currentPosition and work only with current id(String), add method to search for the TileSet with specific id and return it.
+    //TODO Work on a callback in database class
     private static final String TAG  = "TileSetViewModel";
 
     private final TileSetRepository tileSetRepository;
     private LiveData<List<TileSet>> tileSetList;
     private List<TileSet> list;
     private String currentId;
-    private int currentIndex;
     private int size = 0;
 
 
@@ -61,9 +60,6 @@ public class TileSetViewModel extends AndroidViewModel {
         this.currentId = currentId;
     }
 
-    public int getCurrentIndex() {
-        return currentIndex;
-    }
 
     public TileSet getTileSet(int position) {
         return list.get(position);
