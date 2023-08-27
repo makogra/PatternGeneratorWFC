@@ -18,6 +18,7 @@ import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.ui.SettingsTileSetFragment;
 import com.mako.patterngeneratorwfc.ui.TileSetFragment;
 import com.mako.patterngeneratorwfc.ui.WFCFragment;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 public class ScreenSlidePager extends FragmentActivity {
 
@@ -55,6 +56,8 @@ public class ScreenSlidePager extends FragmentActivity {
         INSTANCE = pager2;
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), getLifecycle(), this);
         pager2.setAdapter(pagerAdapter);
+        DotsIndicator dotsIndicator = findViewById(R.id.dots_indicator);
+        dotsIndicator.setViewPager2(pager2);
         // different page swap animation.
         //mPager.setPageTransformer(new DepthPageTransform());
     }
