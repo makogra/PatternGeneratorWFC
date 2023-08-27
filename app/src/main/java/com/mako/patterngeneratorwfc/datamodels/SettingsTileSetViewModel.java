@@ -22,7 +22,7 @@ public class SettingsTileSetViewModel extends ViewModel {
     private int[] settingsMin;
     private int[] settingsMax;
     private int[] settingsValue;
-    private boolean rotation = false;
+    private boolean rotation = true;
     private boolean reflection = false;
     private MutableLiveData<Boolean> needUIUpdate = new MutableLiveData<Boolean>(){{postValue(false);}};
 
