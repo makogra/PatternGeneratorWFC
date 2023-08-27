@@ -34,7 +34,7 @@ public abstract class TileSetRoomDatabase extends RoomDatabase {
                 Log.d(TAG, "onCreate: Database");
                 TileSetDao dao = INSTANCE.tileSetDao();
                 dao.deleteAll();
-                TileSet tileSet = new TileSet("new Tile set(1)", new int[][]{{1,2,3},{2,3,4},{3,4,4}}, new ArrayList<String>(){{
+                TileSet tileSet = new TileSet("new Tile set(1)", new int[][]{{1,2,3},{2,3,1},{3,1,1}}, new ArrayList<String>(){{
                     add("_");
                     add("G");
                     add("C");

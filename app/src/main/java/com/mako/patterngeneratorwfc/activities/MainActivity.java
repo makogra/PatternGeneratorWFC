@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void populateAndObserve(TextView textView) {
         String id = "Main Thread TileSet";
-        TileSet tileSet = new TileSet(id, new int[][]{{1,2},{3,4}}, new ArrayList<String>(){{
+        TileSet tileSet = new TileSet(id, new int[][]{{1,2},{3,1}}, new ArrayList<String>(){{
             add("_");
             add("G");
             add("C");
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         String id2 = "Main Thread TileSet second";
-        TileSet tileSet2 = new TileSet(id2, new int[][]{{1,2},{3,4}}, new ArrayList<String>(){{
+        TileSet tileSet2 = new TileSet(id2, new int[][]{{1,2},{3,2}}, new ArrayList<String>(){{
             add("_");
             add("G");
             add("C");
