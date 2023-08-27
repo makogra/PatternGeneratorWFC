@@ -51,6 +51,10 @@ public class TileSetFragment extends Fragment {
                 return;
             }
             TileSet tileSetFromResult = intent.getParcelableExtra("TileSet");
+            String oldID = intent.getStringExtra(AddTileSetActivity.PUT_EXTRA_OLD_TILE_ID);
+            if (null != oldID && !oldID.equals(tileSetFromResult.getTileId())) {
+                tileSetViewModel.delete(oldID);
+            }
             tileSetViewModel.insert(tileSetFromResult);
             tileSetViewModel.setCurrentId(tileSetFromResult.getTileId());
             Log.d(TAG, "result is working correctly " + tileSetFromResult);
@@ -88,11 +92,26 @@ public class TileSetFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() != 121){
-            Log.d(TAG, "onContextItemSelected: nwm co się stało że ma inny item id: " + item);
-            return super.onContextItemSelected(item);
+        TileSet tileSet = adapter.getCurrentList().get(item.getGroupId());
+        String tileId = tileSet.getTileId();
+
+        switch (item.getItemId()){
+            case 120:
+                edit(tileSet);
+                break;
+            case 121:
+                delete(item, tileId);
+                break;
+            default:
+                Log.d(TAG, "onContextItemSelected: nwm co się stało że ma inny item id (" + item.getItemId() + "): " + item);
+                return super.onContextItemSelected(item);
         }
-        String tileId = adapter.getCurrentList().get(item.getGroupId()).getTileId();
+
+
+        return super.onContextItemSelected(item);
+    }
+
+    private void delete(MenuItem item, String tileId) {
         Log.d(TAG, "onContextItemSelected() called with: item = [" + item + " " + item.getGroupId() + " " + tileId + "]");
         TileSetRepository repo = TileSetRepository.getInstance(requireActivity().getApplication());
         repo.deleteId(tileId);
@@ -102,7 +121,12 @@ public class TileSetFragment extends Fragment {
             chooseCurrentId(repo);
         }
         adapter.notifyItemRemoved(item.getGroupId());
-        return super.onContextItemSelected(item);
+    }
+
+    private void edit(TileSet tileSet) {
+        Intent intent = new Intent(getContext(), AddTileSetActivity.class);
+        intent.putExtra(AddTileSetActivity.PUT_EXTRA_TILE_SET, tileSet);
+        mGetContent.launch(intent);
     }
 
     private void chooseCurrentId(TileSetRepository tileSetRepository){

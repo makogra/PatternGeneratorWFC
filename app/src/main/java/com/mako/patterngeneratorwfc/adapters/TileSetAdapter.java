@@ -55,7 +55,8 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(this.getAdapterPosition(), 121, 0, "Delete");
+            menu.add(this.getAdapterPosition(), 120, 0, "Edit");
+            menu.add(this.getAdapterPosition(), 121, 1, "Delete");
         }
     }
 

@@ -48,6 +48,9 @@ public class AddTileSetActivity extends AppCompatActivity {
 
     private AddTileSetViewModel addTileSetViewModel;
     private static final String TAG = "AddTileSetActivity";
+    public static final String PUT_EXTRA_TILE_SET = "put extra tile set";
+    public static final String PUT_EXTRA_OLD_TILE_ID = "put extra old tile id";
+
 
     private GridLayout mainContent;
     private int rows,
@@ -55,21 +58,36 @@ public class AddTileSetActivity extends AppCompatActivity {
     private int[][] valueGrid;
     private List<String> valueToStringMap;
     private CurrentColor currentColor;
+    private String oldTileId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_tile_set);
-
         addTileSetViewModel = new ViewModelProvider(this).get(AddTileSetViewModel.class);
+        try {
+            addTileSetViewModel.setTileSet(getIntent().getParcelableExtra(PUT_EXTRA_TILE_SET));
+            Log.d(TAG, "onCreate: tileID form bundle: " + addTileSetViewModel.getTileId());
+            oldTileId = addTileSetViewModel.getTileId();
+
+            EditText editText = findViewById(R.id.activity_add_tile_set_id_text_edit);
+            editText.setText(addTileSetViewModel.getTileId());
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            Log.d(TAG, "onCreate: bundel doesn't have tileId in it");
+        }
+
+
+
 
         cancelOnClick();
-        saveOnClick();
         initAddAndSubtractButtonsOnClick();
+        saveOnClick();
         initTileSet();
         restoreValueGrid();
         initCurrentColor();
         initChangeTileSet();
+
     }
 
     private void initChangeTileSet() {
@@ -190,12 +208,20 @@ public class AddTileSetActivity extends AppCompatActivity {
         Intent intent = new Intent();
         EditText editText = findViewById(R.id.activity_add_tile_set_id_text_edit);
         String id = editText.getText().toString();
-        if (id.equals(""))
+        Log.d(TAG, "save: id = " + id);
+        if (id.equals("")){
             id = addTileSetViewModel.getTileId();
+            Log.d(TAG, "save: id in if = " + id);
+        }
         else
             addTileSetViewModel.setTileId(id);
         Log.i(TAG, "add new tile set of id : " + id);
         intent.putExtra("TileSet", addTileSetViewModel.getTileSet());
+        intent.putExtra(PUT_EXTRA_OLD_TILE_ID, oldTileId);
+        if (null != oldTileId && oldTileId.equals("")) {
+            Log.i(TAG, "save: oldTileID is empty");
+        }
+
 
         setResult(RESULT_OK, intent);
         super.onBackPressed();
@@ -349,7 +375,6 @@ public class AddTileSetActivity extends AppCompatActivity {
         textView.setOnClickListener((view) -> {
             int row = (int) view.getTag(R.integer.tag_row);
             int col = (int) view.getTag(R.integer.tag_col);
-            Log.d(TAG, "templateView: row = " + row + " col = " + col);
             valueGrid[row][col] = currentColor.tag;
             view.setTag(R.integer.tag_color, currentColor.tag);
 
