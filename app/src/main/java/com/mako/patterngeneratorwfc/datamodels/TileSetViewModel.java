@@ -82,6 +82,10 @@ public class TileSetViewModel extends AndroidViewModel {
         return null;
     }
 
+    public void delete(String id){
+        tileSetRepository.deleteId(id);
+    }
+
 
     //private List<>
 }
