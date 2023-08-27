@@ -50,7 +50,8 @@
                 app:layout_constraintTop_toTopOf="@id/toolbar"
                 android:inputType="text"
                 android:hint="Choose the name"
-                android:autofillHints="New Tile Set" />
+                android:autofillHints="New Tile Set"
+                android:selectAllOnFocus="true" />
 
             <ImageButton
                 android:id="@+id/save_button"
