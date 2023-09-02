@@ -33,19 +33,19 @@ public class SettingsTileSetViewModel extends ViewModel {
     }
 
     public int getMin(int position){
-        if (outOfArr(position))
+        if (outOfArrBound(position))
             throw new ArrayIndexOutOfBoundsException("getMin, position: " + position);
         return settingsMin[position];
     }
 
     public int getMax(int position){
-        if (outOfArr(position))
+        if (outOfArrBound(position))
             throw new ArrayIndexOutOfBoundsException("getMax, position: " + position);
         return settingsMax[position];
     }
 
     public int getValue(int position){
-        if (outOfArr(position))
+        if (outOfArrBound(position))
             throw new ArrayIndexOutOfBoundsException("getValue, position: " + position);
         return settingsValue[position];
     }
@@ -88,7 +88,7 @@ public class SettingsTileSetViewModel extends ViewModel {
     }
 
     public void setMin(int value, int position)  {
-        if (outOfArr(position)) {
+        if (outOfArrBound(position)) {
             Log.d(TAG, "setMin, position: " + position);
             return;
         }
@@ -100,7 +100,7 @@ public class SettingsTileSetViewModel extends ViewModel {
     }
 
     public void setMax(int value, int position) {
-        if (outOfArr(position)) {
+        if (outOfArrBound(position)) {
             Log.d(TAG, "setMax, position: " + position);
             return;
         }
@@ -117,7 +117,7 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public boolean setValue(int value, int position) {
         String info = "min: " + getMin(position) + " max: " + getMax(position) + " value: " + value + " at position: " + position;
-        if (outOfArr(position)){
+        if (outOfArrBound(position)){
             Log.w(TAG, "setValue, FAILED (illegal position): " + info);
             return false;
         }
@@ -142,7 +142,7 @@ public class SettingsTileSetViewModel extends ViewModel {
         return needUIUpdate;
     }
 
-    private boolean outOfArr(int position) {
+    private boolean outOfArrBound(int position) {
         return position < 0 || position > settingsLength;
     }
 
