@@ -70,15 +70,12 @@ public class AddTileSetActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate: tileID form bundle: " + addTileSetViewModel.getTileId());
             oldTileId = addTileSetViewModel.getTileId();
 
-            EditText editText = findViewById(R.id.activity_add_tile_set_id_text_edit);
-            editText.setText(addTileSetViewModel.getTileId());
+            EditText idTileSetET = findViewById(R.id.activity_add_tile_set_id_text_edit);
+            idTileSetET.setText(addTileSetViewModel.getTileId());
         } catch (NullPointerException e){
             e.printStackTrace();
             Log.d(TAG, "onCreate: bundel doesn't have tileId in it");
         }
-
-
-
 
         cancelOnClick();
         initAddAndSubtractButtonsOnClick();
@@ -97,7 +94,7 @@ public class AddTileSetActivity extends AppCompatActivity {
         currentTileSetView.setOnClickListener((view) -> {
             //TODO add onClick listener, as popup menu to chose color.
             //temp change to another color
-            //cyrcle throuw all curently colors in map
+            //cycle through all currently colors in map
             currentColor.tag++;
             if (currentColor.tag == valueToStringMap.size())
                 currentColor.tag = 1;
@@ -114,7 +111,10 @@ public class AddTileSetActivity extends AppCompatActivity {
 
     private void cancelOnClick() {
         ImageButton cancelBtn = findViewById(R.id.cancel_button);
-        cancelBtn.setOnClickListener(v -> cancel());
+        cancelBtn.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            super.onBackPressed();
+        });
     }
 
     private void initCurrentColor() {
@@ -227,13 +227,10 @@ public class AddTileSetActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void cancel() {
-        setResult(RESULT_CANCELED);
-        super.onBackPressed();
-    }
-
     @Override
     protected void onResume() {
+        //TODO add if statment to check if current tile set is null, and if it's true than get sampleTileSet
+        // check if when onDestoi is called is currentTileSet saved to viewModel
         addTileSetViewModel.setTileSet(addTileSetViewModel.getSampleTileSet());
         super.onResume();
     }
