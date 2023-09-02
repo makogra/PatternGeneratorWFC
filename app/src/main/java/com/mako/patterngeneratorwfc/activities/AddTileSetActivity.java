@@ -166,7 +166,7 @@ public class AddTileSetActivity extends AppCompatActivity {
                 mainContent.addView(textView);
             }
         }
-        updateText();
+        //updateText();
     }
 
     private int getColor(int row, int col) {
@@ -208,14 +208,11 @@ public class AddTileSetActivity extends AppCompatActivity {
         Intent intent = new Intent();
         EditText editText = findViewById(R.id.activity_add_tile_set_id_text_edit);
         String id = editText.getText().toString();
-        Log.d(TAG, "save: id = " + id);
         if (id.equals("")){
             id = addTileSetViewModel.getTileId();
-            Log.d(TAG, "save: id in if = " + id);
         }
         else
             addTileSetViewModel.setTileId(id);
-        Log.i(TAG, "add new tile set of id : " + id);
         intent.putExtra("TileSet", addTileSetViewModel.getTileSet());
         intent.putExtra(PUT_EXTRA_OLD_TILE_ID, oldTileId);
         if (null != oldTileId && oldTileId.equals("")) {
@@ -250,25 +247,13 @@ public class AddTileSetActivity extends AppCompatActivity {
         rows = mainContent.getRowCount();
         cols = mainContent.getColumnCount();
 
-        addRow.setOnClickListener((view) -> {
-            Log.d(TAG, "initAddAndSubtractButtonsOnClick: addRow");
-            addRow();
-        });
+        addRow.setOnClickListener((view) -> addRow());
 
-        subtractRow.setOnClickListener((view) -> {
-            Log.d(TAG, "initAddAndSubtractButtonsOnClick: subtractRow");
-            subtractRow();
-        });
+        subtractRow.setOnClickListener((view) -> subtractRow());
 
-        addCol.setOnClickListener((view) -> {
-            Log.d(TAG, "initAddAndSubtractButtonsOnClick: addCol");
-            addCol();
-        });
+        addCol.setOnClickListener((view) -> addCol());
 
-        subtractCol.setOnClickListener((view) -> {
-            Log.d(TAG, "initAddAndSubtractButtonsOnClick: subtractCol");
-            subtractCol();
-        });
+        subtractCol.setOnClickListener((view) -> subtractCol());
     }
 
     private void subtractCol() {
@@ -280,7 +265,7 @@ public class AddTileSetActivity extends AppCompatActivity {
         mainContent.setColumnCount(mainContent.getColumnCount() - 1);
         cols--;
 
-        updateText();
+        //updateText();
     }
 
     private void subtractRow() {
@@ -305,8 +290,7 @@ public class AddTileSetActivity extends AppCompatActivity {
             mainContent.addView(textView);
         }
 
-
-        updateText();
+        //updateText();
     }
 
     private void updateValueGrid() {
@@ -350,7 +334,7 @@ public class AddTileSetActivity extends AppCompatActivity {
             mainContent.addView(textView, index);
         }
 
-        updateText();
+        //updateText();
     }
 
     private void updateText(){
