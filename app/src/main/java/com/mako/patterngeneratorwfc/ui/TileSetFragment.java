@@ -57,7 +57,6 @@ public class TileSetFragment extends Fragment {
             }
             tileSetViewModel.insert(tileSetFromResult);
             tileSetViewModel.setCurrentId(tileSetFromResult.getTileId());
-            Log.d(TAG, "result is working correctly " + tileSetFromResult);
         }
     });
 
@@ -84,9 +83,7 @@ public class TileSetFragment extends Fragment {
         super.onCreate(savedInstanceState);
         tileSetViewModel = new ViewModelProvider(requireActivity()).get(TileSetViewModel.class);
         new Thread(() -> {
-
             tileSetViewModel.initCurrentId();
-            Log.d(TAG, "Ascync init currentId compleate");
         }).start();
     }
 
@@ -152,7 +149,7 @@ public class TileSetFragment extends Fragment {
                 tileSetViewModel.setCurrentId(tileSets.get(0).getTileId());
             }
             flag.set(true);
-            Log.d(TAG, "chooseCurrentId: choosed id: " + tileSetViewModel.getCurrentId());
+            Log.d(TAG, "chooseCurrentId: chosen id: " + tileSetViewModel.getCurrentId());
             adapter.notifyItemChanged(0);
         });
     }

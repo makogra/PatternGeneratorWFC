@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "tempViewModel.getCount() = " + tempViewModel.getCount());
 
         tempViewModel.getCount().observe(this, integer -> {
-            //Log.d(TAG, String.valueOf(integer.intValue()));
             Log.d(TAG, integer.toString());
             textView.setText("" + integer);
         });

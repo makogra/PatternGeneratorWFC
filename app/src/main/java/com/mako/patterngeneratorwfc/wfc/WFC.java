@@ -38,10 +38,6 @@ public class WFC {
     }
 
     //Getters
-    /*public int[][] getValueGrid() {
-        return valueGrid;
-    }*/
-
     public int getPatternSize() {
         return patternSize;
     }
@@ -77,15 +73,11 @@ public class WFC {
                     observedCell = wave.collapse();
                     displayWFC.notifyResultUpdate(observedCell);
                     wave.propagate();
-                    Log.d(TAG, "run: processing ...");
                 }
-                Log.d(TAG, "Success " + "collapse count: " + collapseCount);
-
                 displayWFC.displayResult();
                 break;
             } catch (Exception e){
                 collapseCount = 0;
-                Log.d(TAG, "Failed " + "tried " + currentTrieCount + "times\n" + e.getMessage() + " " + Arrays.toString(e.getStackTrace()));
                 initWave();
                 displayWFC.setWave(wave);
                 displayWFC.clearResult(outputHeight, outputWidth);

@@ -97,7 +97,6 @@ public class TileSetAdapter extends ListAdapter<TileSet, TileSetAdapter.ViewHold
     }
 
     private void createThumbnail(@NonNull ViewHolder holder, TileSet current) {
-        Log.d(TAG, "createThumbnail: " + current.getTileId());
         new Thread(new Runnable() {
 
             @Override
