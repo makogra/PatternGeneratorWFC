@@ -3,7 +3,6 @@ package com.mako.patterngeneratorwfc.utiles;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.Toast;
 
 public class ToastUtilsWFC {
@@ -16,7 +15,6 @@ public class ToastUtilsWFC {
     }
 
     public void displayWFCStarted() {
-        Log.d(TAG, "displayWFCStarted: started wfc " + Thread.currentThread().getName());
         Toast.makeText(context, "WFC started...", Toast.LENGTH_SHORT).show();
 
     }

@@ -53,7 +53,6 @@ public class SettingsTileSetFragment extends Fragment {
         this.viewModelProvider = new ViewModelProvider(requireActivity());
         sTileSetRepository = TileSetRepository.getInstance(requireActivity().getApplication());
         tileSetViewModel = viewModelProvider.get(TileSetViewModel.class);
-        Log.d(TAG, tileSetViewModel.getCurrentId());
         initSettingsTileSetViewModel();
         /*
         settingsTileSetViewModel = sViewModelProvider.get(tileSetViewModel.getCurrentId(), SettingsTileSetViewModel.class);
@@ -74,7 +73,6 @@ public class SettingsTileSetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings_tile_set, container, false);
         this.recyclerView = view.findViewById(R.id.fragment_settings_tile_set_recycler_view);
         this.adapter = new SettingsTileSetAdapter(settingsTileSetViewModel);
-        Log.d(TAG, "onCreateView: adapter created");
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.notifyDataSetChanged();
@@ -93,11 +91,9 @@ public class SettingsTileSetFragment extends Fragment {
 
         rotation.setOnCheckedChangeListener((buttonView, isChecked) -> {
             settingsTileSetViewModel.setRotation(isChecked);
-            Log.d(TAG, "initSwitches: rotation = " + isChecked);
         });
         reflection.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             settingsTileSetViewModel.setReflection(isChecked);
-            Log.d(TAG, "initSwitches: reflection = " + isChecked);
         }));
     }
 
@@ -115,11 +111,6 @@ public class SettingsTileSetFragment extends Fragment {
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     private void observe() {

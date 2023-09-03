@@ -1,15 +1,12 @@
 package com.mako.patterngeneratorwfc.ui;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -58,7 +55,6 @@ public class WFCFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         resultViewModel = new ViewModelProvider(requireActivity()).get(ResultViewModel.class);
     }
 
@@ -76,9 +72,9 @@ public class WFCFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_w_f_c, container, false);
-        Log.d(TAG, "onCreateView() called with: inflater = [" + inflater + "], container = [" + container + "], savedInstanceState = [" + savedInstanceState + "]");
         Button startButton = view.findViewById(R.id.fragment_wfc_start_button);
         startButton.setOnClickListener(v -> {
+            //TODO find way to (check and) destroy already running WFC or disable option for starting a new one if one already exists
             toastUtilsWFC.displayWFCStarted();
             new Thread(() -> {
                 bitmapUtilsWFC.clearPreviousBitmap();
@@ -89,13 +85,6 @@ public class WFCFragment extends Fragment {
                 boolean reflection = settingsTileSetViewModel.getReflection();
                 TileSet input = tileSetViewModel.getCurrentTileSet();
                 Log.d(TAG, "onCreateView: tileSet = " + input);
-                String[][] tempInputGrid =  new String[][]{
-                        {"G","G","G","G","C","S","S","S"},
-                        {"G","G","G","C","C","S","S","S"},
-                        {"G","G","G","C","S","S","S","S"},
-                        {"G","G","G","C","S","S","S","S"},
-                        {"G","G","G","C","S","S","S","S"}
-                };
 
                 bitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
 
@@ -164,7 +153,6 @@ public class WFCFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateViewModels();
-        Log.d(TAG, "onResume() called ");
         testMSettingsViewModel();
         displayResult();
         toastUtilsWFC = new ToastUtilsWFC(this.getContext());
@@ -206,7 +194,7 @@ public class WFCFragment extends Fragment {
         int patternSize = pattern.length;
         int row = cell.getRow() * patternSize;
         int col = cell.getCol() * patternSize;
-        //TODO change to better naming and be comsistant with it, and maybe write it in the documentation
+        //TODO change to better naming and be consistent with it, and maybe write it in the documentation
         int height = resultBitmap.getHeight();
         int width = resultBitmap.getWidth();
 
