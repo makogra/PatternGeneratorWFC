@@ -45,6 +45,7 @@ public class SettingsTileSetViewModel extends ViewModel {
     }
 
     public int getValue(int position){
+        //TODO add public static final ints to represent each setting by human readable name
         if (outOfArrBound(position))
             throw new ArrayIndexOutOfBoundsException("getValue, position: " + position);
         return settingsValue[position];
