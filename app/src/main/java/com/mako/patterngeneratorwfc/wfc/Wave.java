@@ -247,6 +247,7 @@ public class Wave {
     }
 
     public void finish() {
+        //TBH this do nothing
         propagator.finish();
     }
 

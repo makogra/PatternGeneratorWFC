@@ -2,6 +2,8 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import android.util.Log;
 
+import com.mako.patterngeneratorwfc.Config;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -46,7 +48,9 @@ public class Propagator {
             propagateAt(entryPattern);
             propagationCount++;
         }
-        Log.d(TAG, "propagate: count = " + propagationCount);
+        if (Config.IS_LOGGABLE){
+            Log.d(TAG, "propagate: count = " + propagationCount);
+        }
     }
 
     void propagateAt(EntryPattern entry){
@@ -88,6 +92,7 @@ public class Propagator {
     }
 
     public void finish(){
+        //TBH this do nothing
         /*
         if (null != mExecutor)
             mExecutor.shutdown();
