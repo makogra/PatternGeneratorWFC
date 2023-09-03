@@ -1,13 +1,9 @@
 package com.mako.patterngeneratorwfc.wfc;
 
-import android.util.Log;
-
-import com.mako.patterngeneratorwfc.Config;
 import com.mako.patterngeneratorwfc.DisplayWFC;
 import com.mako.patterngeneratorwfc.TileSet;
 import com.mako.patterngeneratorwfc.ui.WFCFragment;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class WFC {
@@ -35,9 +31,7 @@ public class WFC {
         inputValueMap = tileSet.getValueToStringPath();
 
         displayWFC = new DisplayWFC(patternSize, wave, outputHeight, outputWidth, patternList, inputValueMap);
-        if (Config.IS_LOGGABLE){
-            displayWFC.displayRules(defaultPatternEnablers);
-        }
+        displayWFC.displayRules(defaultPatternEnablers);
     }
 
     //Getters
@@ -64,9 +58,7 @@ public class WFC {
     public void run(int maxPossibleTries){
         int currentTrieCount = 0;
         int collapseCount = 0;
-        if (Config.IS_LOGGABLE){
-            displayWFC.displayPatterns();
-        }
+        displayWFC.displayPatterns();
         Cell observedCell;
         initWave();
         displayWFC.setWave(wave);
@@ -79,9 +71,7 @@ public class WFC {
                     displayWFC.notifyResultUpdate(observedCell);
                     wave.propagate();
                 }
-                if (Config.IS_LOGGABLE){
-                    displayWFC.displayResult();
-                }
+                displayWFC.displayResult();
                 break;
             } catch (IllegalStateException | IllegalArgumentException | IndexOutOfBoundsException  e){
                 collapseCount = 0;
