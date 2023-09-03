@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mako.patterngeneratorwfc.Config;
 import com.mako.patterngeneratorwfc.R;
 import com.mako.patterngeneratorwfc.Result;
 import com.mako.patterngeneratorwfc.TileSet;
@@ -109,15 +110,17 @@ public class WFCFragment extends Fragment {
 
                     //showResult(result, wfc.getInputValueMap());
                     toastUtilsWFC.displayWFCFinished(true);
-                    Bitmap rBitmap = resultViewModel.getBitmap();
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < rBitmap.getHeight(); i++) {
-                        for (int j = 0; j < rBitmap.getWidth(); j++) {
-                            sb.append(rBitmap.getPixel(j,i));
+                    if (Config.IS_LOGGABLE) {
+                        Bitmap rBitmap = resultViewModel.getBitmap();
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < rBitmap.getHeight(); i++) {
+                            for (int j = 0; j < rBitmap.getWidth(); j++) {
+                                sb.append(rBitmap.getPixel(j, i));
+                            }
+                            sb.append("\n");
                         }
-                        sb.append("\n");
+                        Log.i(TAG, "onCreateView: resultBitmap = \n" + sb.toString());
                     }
-                    Log.i(TAG, "onCreateView: resultBitmap = \n" + sb.toString());
                 } else {
                     toastUtilsWFC.displayWFCFinished(false);
                 }
