@@ -196,7 +196,7 @@ public class Wave {
         }
     }
 
-    public Cell collapse() {
+    public Cell collapse() throws IllegalStateException, IllegalArgumentException, IndexOutOfBoundsException{
         Cell cellWithLowestEntropy;
         int row;
         int col;
@@ -210,19 +210,15 @@ public class Wave {
         row = cellWithLowestEntropy.getRow();
         col = cellWithLowestEntropy.getCol();
 
-        patternValue = cellWithLowestEntropy.observe();
 
-        switch (patternValue) {
-            case -1 :
-                throw new IllegalStateException("Contradiction");
-            case -2 :
-                cellWithLowestEntropy.update();
-                if ((cellWithLowestEntropy.isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !cellWithLowestEntropy.isObserved())) // second argument is unnecessary, because it's already checked
-                    throw new IllegalStateException("Contradiction");
-                return cellWithLowestEntropy;
-            case -3 :
-                throw new IllegalStateException("ERROR IDK WTF");
-        }
+        try {
+            patternValue = cellWithLowestEntropy.observe();
+        } catch (IllegalArgumentException e){
+            cellWithLowestEntropy.update();
+            if ((cellWithLowestEntropy.isObserved() && outputPatternGrid[row][col] == -1) || (wave[row][col].getNumberOfPossiblePatterns() == 0 && !cellWithLowestEntropy.isObserved())) // second argument is unnecessary, because it's already checked
+                throw e;
+            return cellWithLowestEntropy;
+        } //others exceptions are rethrown
 
 
         this.outputPatternGrid[row][col] = patternValue;

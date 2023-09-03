@@ -76,7 +76,7 @@ public class WFC {
                 }
                 displayWFC.displayResult();
                 break;
-            } catch (Exception e){
+            } catch (IllegalStateException | IllegalArgumentException | IndexOutOfBoundsException  e){
                 collapseCount = 0;
                 initWave();
                 displayWFC.setWave(wave);
