@@ -95,7 +95,7 @@ public class WFCFragment extends Fragment {
                 wfc.run(30);
                 if (wfc.isCollapsed()){
                     int[][] outputGrid = wfc.getOutputGrid();
-                    Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, wfc.getPatternList());
+                    //Result result = new Result(outputGrid, patternSize, outputHeight, outputWidth, wfc.getPatternList());
 
                     //showResult(result, wfc.getInputValueMap());
                     toastUtilsWFC.displayWFCFinished(true);
