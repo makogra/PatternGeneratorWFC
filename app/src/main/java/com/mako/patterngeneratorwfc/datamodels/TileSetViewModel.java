@@ -53,7 +53,7 @@ public class TileSetViewModel extends AndroidViewModel {
     }
 
     public void setCurrentId(String currentId) {
-        Log.d(TAG, "Current TileSet Id has changed to = " + currentId);
+        Log.i(TAG, "Current TileSet Id has changed to = " + currentId);
         this.currentId = currentId;
     }
 

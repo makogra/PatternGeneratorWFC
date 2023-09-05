@@ -4,9 +4,7 @@ import java.util.List;
 
 public class Result {
 
-    //TODO change to viewModel
-
-    private static final String TAG = "Result";
+    private static final String TAG = Result.class.getName();
     private final List<Integer[][]> patternList;
 
     private int[][] outputGrid;
