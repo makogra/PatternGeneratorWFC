@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.mako.patterngeneratorwfc.Config;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -90,11 +92,15 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public void setMin(int value, int position)  {
         if (outOfArrBound(position)) {
-            Log.d(TAG, "setMin, position: " + position);
+            if (Config.IS_LOGGABLE) {
+                Log.d(TAG, "setMin, position: " + position);
+            }
             return;
         }
         if (value < 0) {
-            Log.d(TAG, "setMin, value: " + value);
+            if (Config.IS_LOGGABLE) {
+                Log.d(TAG, "setMin, value: " + value);
+            }
             return;
         }
         this.settingsMin[position] = value;
@@ -102,7 +108,9 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public void setMax(int value, int position) {
         if (outOfArrBound(position)) {
-            Log.d(TAG, "setMax, position: " + position);
+            if (Config.IS_LOGGABLE) {
+                Log.d(TAG, "setMax, position: " + position);
+            }
             return;
         }
         this.settingsMax[position] = value;
@@ -119,15 +127,21 @@ public class SettingsTileSetViewModel extends ViewModel {
     public boolean setValue(int value, int position) {
         String info = "min: " + getMin(position) + " max: " + getMax(position) + " value: " + value + " at position: " + position;
         if (outOfArrBound(position)){
-            Log.w(TAG, "setValue, FAILED (illegal position): " + info);
+            if (Config.IS_LOGGABLE){
+                Log.d(TAG, "setValue, FAILED (illegal position): " + info);
+            }
             return false;
         }
         if (value < getMin(position) || value > getMax(position)) {
-            Log.d(TAG, "setValue: FAILED (illegal value): " + info);
+            if (Config.IS_LOGGABLE){
+                Log.d(TAG, "setValue: FAILED (illegal value): " + info);
+            }
             return false;
         }
         this.settingsValue[position] = value;
-        Log.d(TAG, "setValue: SUCCESS " + info);
+        if (Config.IS_LOGGABLE) {
+            Log.d(TAG, "setValue: SUCCESS " + info);
+        }
         return true;
     }
 
