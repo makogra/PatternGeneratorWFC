@@ -208,6 +208,7 @@ public class WFCFragment extends Fragment {
             }
         }
 
+        //TODO Does this needs copy?
         executor.execute(() -> bitmapUtilsWFC.attacheScaledBitmapSmooth(resultBitmap.copy(Bitmap.Config.ARGB_8888, false)));
         resultViewModel.setBitmap(resultBitmap);
     }
