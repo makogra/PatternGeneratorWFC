@@ -78,13 +78,13 @@ public class WFCFragment extends Fragment {
             toastUtilsWFC.displayWFCStarted();
             new Thread(() -> {
                 bitmapUtilsWFC.clearPreviousBitmap();
-                int patternSize = settingsTileSetViewModel.getValue(0);
-                int outputHeight = settingsTileSetViewModel.getValue(1);
-                int outputWidth = settingsTileSetViewModel.getValue(2);
+                int patternSize = settingsTileSetViewModel.getValue(SettingsTileSetViewModel.SETTINGS_POSITION_PATTERN_SIZE);
+                int outputHeight = settingsTileSetViewModel.getValue(SettingsTileSetViewModel.SETTINGS_POSITION_OUTPUT_HEIGHT);
+                int outputWidth = settingsTileSetViewModel.getValue(SettingsTileSetViewModel.SETTINGS_POSITION_OUTPUT_WIDTH);
                 boolean rotation = settingsTileSetViewModel.getRotation();
                 boolean reflection = settingsTileSetViewModel.getReflection();
                 TileSet input = tileSetViewModel.getCurrentTileSet();
-                Log.d(TAG, "onCreateView: tileSet = " + input);
+                logInput(input);
 
                 bitmapUtilsWFC.createEmptyBitmap(outputHeight, outputWidth);
 
@@ -116,6 +116,12 @@ public class WFCFragment extends Fragment {
             }).start();
         });
         return view;
+    }
+
+    private void logInput(TileSet input) {
+        if (Config.IS_LOGGABLE) {
+            Log.d(TAG, "onCreateView: tileSet = " + input);
+        }
     }
 
     private void initBitMapUtilsWFC(){

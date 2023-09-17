@@ -47,28 +47,17 @@ public class SettingsTileSetAdapter extends RecyclerView.Adapter<SettingsTileSet
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.name.setText(settingsTileSetViewModel.getHumanName(position));
+        holder.name.setText(settingsTileSetViewModel.getHumanFriendlyNameOFSetting(position));
         holder.value.setText("" + settingsTileSetViewModel.getValue(position));
         holder.incrementButton.setOnClickListener(v -> {
-            try {
-                settingsTileSetViewModel.increment(position);
-                holder.value.setText("" + settingsTileSetViewModel.getValue(position));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            settingsTileSetViewModel.increment(position);
+            holder.value.setText("" + settingsTileSetViewModel.getValue(position));
         });
         holder.decrementButton.setOnClickListener(v -> {
-            try {
-                settingsTileSetViewModel.decrement(position);
-                holder.value.setText("" + settingsTileSetViewModel.getValue(position));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            settingsTileSetViewModel.decrement(position);
+            holder.value.setText("" + settingsTileSetViewModel.getValue(position));
         });
-
     }
-
-
 
     @Override
     public int getItemCount() {

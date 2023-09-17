@@ -18,7 +18,6 @@ public class SettingsTileSetViewModel extends ViewModel {
     private static String[] settingsArr;
     private static int settingsLength;
     private static boolean listInitialized;
-    //TODO add constants for describing position fo specific settings
 
     private boolean newInstance = true;
     private int[] settingsMin;
@@ -27,6 +26,10 @@ public class SettingsTileSetViewModel extends ViewModel {
     private boolean rotation = true;
     private boolean reflection = false;
     private MutableLiveData<Boolean> needUIUpdate = new MutableLiveData<Boolean>(){{postValue(false);}};
+
+    public static final int SETTINGS_POSITION_PATTERN_SIZE = 0;
+    public static final int SETTINGS_POSITION_OUTPUT_HEIGHT = 1;
+    public static final int SETTINGS_POSITION_OUTPUT_WIDTH = 2;
 
 
     // Getters
@@ -47,7 +50,6 @@ public class SettingsTileSetViewModel extends ViewModel {
     }
 
     public int getValue(int position){
-        //TODO add public static final ints to represent each setting by human readable name
         if (outOfArrBound(position))
             throw new ArrayIndexOutOfBoundsException("getValue, position: " + position);
         return settingsValue[position];
@@ -57,7 +59,7 @@ public class SettingsTileSetViewModel extends ViewModel {
         return settingsList.get(position);
     }
 
-    public String getHumanName(int position){
+    public String getHumanFriendlyNameOFSetting(int position){
         return settingsList.get(position).replaceAll("_", " ");
     }
 
@@ -67,7 +69,7 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     // Setters
     public static void setSettingsArr(String[] arr){
-        Log.d(TAG, Arrays.toString(arr));
+        Log.d(TAG, "Set SettingsArr to: " + Arrays.toString(arr));
         settingsArr = arr;
         settingsLength = arr.length;
         setSettingsList();
@@ -145,11 +147,11 @@ public class SettingsTileSetViewModel extends ViewModel {
         return true;
     }
 
-    public void increment(int position) throws IllegalAccessException {
+    public void increment(int position) {
         setValue(getValue(position) + 1, position);
     }
 
-    public void decrement(int position) throws IllegalAccessException {
+    public void decrement(int position) {
         setValue(getValue(position) - 1, position);
     }
 
