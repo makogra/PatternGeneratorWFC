@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -41,26 +42,30 @@ public class BitmapUtilsWFC {
     }
 
     public void attacheScaledBitmapSmooth(Bitmap bitmap){
-        waitForView();
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            int     height,
-                    width,
-                    ratio;
-            frames.getAndDecrement();
-            if (fragment.getView() == null)
-                return;
-            FrameLayout frameLayout = fragment.requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
-            ImageView imageView = fragment.requireView().findViewById(R.id.fragment_wfc_image_view);
-            ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
-            ratio = Math.min(frameLayout.getHeight() / bitmap.getHeight(), frameLayout.getWidth() / bitmap.getWidth());
-            height = bitmap.getHeight() * ratio;
-            width = bitmap.getWidth() * ratio;
-            params.height = height;
-            params.width = width;
-            frameLayout.setLayoutParams(params);
+        try {
+            waitForView();
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                int     height,
+                        width,
+                        ratio;
+                frames.getAndDecrement();
+                if (fragment.getView() == null)
+                    return;
+                FrameLayout frameLayout = fragment.requireView().findViewById(R.id.fragment_wfc_image_frame_layout);
+                ImageView imageView = fragment.requireView().findViewById(R.id.fragment_wfc_image_view);
+                ViewGroup.LayoutParams params = frameLayout.getLayoutParams();
+                ratio = Math.min(frameLayout.getHeight() / bitmap.getHeight(), frameLayout.getWidth() / bitmap.getWidth());
+                height = bitmap.getHeight() * ratio;
+                width = bitmap.getWidth() * ratio;
+                params.height = height;
+                params.width = width;
+                frameLayout.setLayoutParams(params);
 
-            imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, width, height, false));
-        }, frames.getAndIncrement()*DELAY_IN_MILLIS);
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, width, height, false));
+            }, frames.getAndIncrement()*DELAY_IN_MILLIS);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "attacheScaledBitmapSmooth: waiting for view failed. Result wasn't updated", e);
+        }
     }
 
     //TODO move to another class
@@ -68,10 +73,14 @@ public class BitmapUtilsWFC {
         updateQueue.offer(bitmap);
     }
 
-    private void waitForView() {
-        while (true){
-            if (fragment.getView() != null)
-                return;
+    private void waitForView() throws NullPointerException{
+        int waitingLimit = Integer.MAX_VALUE - 1;
+        int currentlyWaiting = 0;
+        while (null == fragment.getView() && currentlyWaiting < waitingLimit){
+            currentlyWaiting++;
+        }
+        if (currentlyWaiting == waitingLimit){
+            throw new NullPointerException("Waiting to long for view from fragment, and this view is still equals null");
         }
     }
 
@@ -138,6 +147,7 @@ public class BitmapUtilsWFC {
     }
 
     public int getColorOfAPixel(Integer valueId, List<String> inputValueMap) {
+        //TODO (YAGNI) add to config file
         int color;
         String value = inputValueMap.get(valueId);
         switch (value){
