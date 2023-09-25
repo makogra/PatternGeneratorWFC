@@ -2,6 +2,8 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import android.util.Log;
 
+import com.mako.patterngeneratorwfc.Config;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -148,8 +150,8 @@ public class Cell implements Comparable<Cell> {
         updatePossiblePatterns();
         updateNumberOfPossiblePatterns();
         updateEntropy();
-        if (numberOfPossiblePatterns == 0)
-            Log.w(TAG, "update: numberOfPossiblePatterns = 0");
+        if (numberOfPossiblePatterns == 0 && Config.IS_LOGGABLE)
+            Log.i(TAG, "update: numberOfPossiblePatterns = 0");
             //isObserved = true;
     }
 

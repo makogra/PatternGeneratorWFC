@@ -26,15 +26,11 @@ public class BitmapUtilsWFC {
     private ResultViewModel resultViewModel;
     private final long DELAY_IN_MILLIS = 40L;
     private final AtomicLong frames = new AtomicLong(1L);
-    //TODO move to another class
-    private LinkedBlockingQueue<Bitmap> updateQueue;
 
 
     public BitmapUtilsWFC(Fragment fragment) {
         this.fragment = fragment;
         resultViewModel = new ViewModelProvider(fragment.requireActivity()).get(ResultViewModel.class);
-        //TODO move to another class
-        updateQueue = new LinkedBlockingQueue<>();
     }
 
     public void attacheScaledBitmap(Bitmap bitmap) {
@@ -68,20 +64,19 @@ public class BitmapUtilsWFC {
         }
     }
 
-    //TODO move to another class
-    public void addToQueueUpdate(Bitmap bitmap){
-        updateQueue.offer(bitmap);
-    }
-
     private void waitForView() throws NullPointerException{
-        int waitingLimit = Integer.MAX_VALUE - 1;
-        int currentlyWaiting = 0;
-        while (null == fragment.getView() && currentlyWaiting < waitingLimit){
-            currentlyWaiting++;
+        //int waitingLimit = Short.MAX_VALUE - 1;
+        //int currentlyWaiting = 0;
+        while (null == fragment.getView()) {//&& currentlyWaiting < waitingLimit){
+            //currentlyWaiting++;
+            continue;
         }
+        /*
         if (currentlyWaiting == waitingLimit){
             throw new NullPointerException("Waiting to long for view from fragment, and this view is still equals null");
         }
+
+         */
     }
 
 
@@ -136,7 +131,6 @@ public class BitmapUtilsWFC {
 
     public void clearPreviousBitmap() {
         frames.set(1);
-        updateQueue.clear();
         //createEmptyBitmap(resultViewModel.getBitmap().getHeight(), resultViewModel.getBitmap().getWidth());
         /*
         resultViewModel.setBitmap(null);
