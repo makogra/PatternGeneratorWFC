@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.mako.patterngeneratorwfc.Config;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +18,6 @@ public class SettingsTileSetViewModel extends ViewModel {
     private static String[] settingsArr;
     private static int settingsLength;
     private static boolean listInitialized;
-    //TODO add constants for describing position fo specific settings
 
     private boolean newInstance = true;
     private int[] settingsMin;
@@ -26,6 +27,10 @@ public class SettingsTileSetViewModel extends ViewModel {
     private boolean reflection = false;
     private MutableLiveData<Boolean> needUIUpdate = new MutableLiveData<Boolean>(){{postValue(false);}};
 
+    public static final int SETTINGS_POSITION_PATTERN_SIZE = 0;
+    public static final int SETTINGS_POSITION_OUTPUT_HEIGHT = 1;
+    public static final int SETTINGS_POSITION_OUTPUT_WIDTH = 2;
+
 
     // Getters
     public static int getSettingsLength(){
@@ -33,19 +38,19 @@ public class SettingsTileSetViewModel extends ViewModel {
     }
 
     public int getMin(int position){
-        if (outOfArr(position))
+        if (outOfArrBound(position))
             throw new ArrayIndexOutOfBoundsException("getMin, position: " + position);
         return settingsMin[position];
     }
 
     public int getMax(int position){
-        if (outOfArr(position))
+        if (outOfArrBound(position))
             throw new ArrayIndexOutOfBoundsException("getMax, position: " + position);
         return settingsMax[position];
     }
 
     public int getValue(int position){
-        if (outOfArr(position))
+        if (outOfArrBound(position))
             throw new ArrayIndexOutOfBoundsException("getValue, position: " + position);
         return settingsValue[position];
     }
@@ -54,7 +59,7 @@ public class SettingsTileSetViewModel extends ViewModel {
         return settingsList.get(position);
     }
 
-    public String getHumanName(int position){
+    public String getHumanFriendlyNameOFSetting(int position){
         return settingsList.get(position).replaceAll("_", " ");
     }
 
@@ -64,7 +69,7 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     // Setters
     public static void setSettingsArr(String[] arr){
-        Log.d(TAG, Arrays.toString(arr));
+        Log.d(TAG, "Set SettingsArr to: " + Arrays.toString(arr));
         settingsArr = arr;
         settingsLength = arr.length;
         setSettingsList();
@@ -88,20 +93,26 @@ public class SettingsTileSetViewModel extends ViewModel {
     }
 
     public void setMin(int value, int position)  {
-        if (outOfArr(position)) {
-            Log.d(TAG, "setMin, position: " + position);
+        if (outOfArrBound(position)) {
+            if (Config.IS_LOGGABLE) {
+                Log.d(TAG, "setMin, position: " + position);
+            }
             return;
         }
         if (value < 0) {
-            Log.d(TAG, "setMin, value: " + value);
+            if (Config.IS_LOGGABLE) {
+                Log.d(TAG, "setMin, value: " + value);
+            }
             return;
         }
         this.settingsMin[position] = value;
     }
 
     public void setMax(int value, int position) {
-        if (outOfArr(position)) {
-            Log.d(TAG, "setMax, position: " + position);
+        if (outOfArrBound(position)) {
+            if (Config.IS_LOGGABLE) {
+                Log.d(TAG, "setMax, position: " + position);
+            }
             return;
         }
         this.settingsMax[position] = value;
@@ -117,24 +128,30 @@ public class SettingsTileSetViewModel extends ViewModel {
 
     public boolean setValue(int value, int position) {
         String info = "min: " + getMin(position) + " max: " + getMax(position) + " value: " + value + " at position: " + position;
-        if (outOfArr(position)){
-            Log.w(TAG, "setValue, FAILED (illegal position): " + info);
+        if (outOfArrBound(position)){
+            if (Config.IS_LOGGABLE){
+                Log.d(TAG, "setValue, FAILED (illegal position): " + info);
+            }
             return false;
         }
         if (value < getMin(position) || value > getMax(position)) {
-            Log.d(TAG, "setValue: FAILED (illegal value): " + info);
+            if (Config.IS_LOGGABLE){
+                Log.d(TAG, "setValue: FAILED (illegal value): " + info);
+            }
             return false;
         }
         this.settingsValue[position] = value;
-        Log.d(TAG, "setValue: SUCCESS " + info);
+        if (Config.IS_LOGGABLE) {
+            Log.d(TAG, "setValue: SUCCESS " + info);
+        }
         return true;
     }
 
-    public void increment(int position) throws IllegalAccessException {
+    public void increment(int position) {
         setValue(getValue(position) + 1, position);
     }
 
-    public void decrement(int position) throws IllegalAccessException {
+    public void decrement(int position) {
         setValue(getValue(position) - 1, position);
     }
 
@@ -142,7 +159,7 @@ public class SettingsTileSetViewModel extends ViewModel {
         return needUIUpdate;
     }
 
-    private boolean outOfArr(int position) {
+    private boolean outOfArrBound(int position) {
         return position < 0 || position > settingsLength;
     }
 

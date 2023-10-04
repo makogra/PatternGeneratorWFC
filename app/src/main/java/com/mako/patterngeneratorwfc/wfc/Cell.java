@@ -2,6 +2,8 @@ package com.mako.patterngeneratorwfc.wfc;
 
 import android.util.Log;
 
+import com.mako.patterngeneratorwfc.Config;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -148,8 +150,8 @@ public class Cell implements Comparable<Cell> {
         updatePossiblePatterns();
         updateNumberOfPossiblePatterns();
         updateEntropy();
-        if (numberOfPossiblePatterns == 0)
-            Log.w(TAG, "update: numberOfPossiblePatterns = 0");
+        if (numberOfPossiblePatterns == 0 && Config.IS_LOGGABLE)
+            Log.i(TAG, "update: numberOfPossiblePatterns = 0");
             //isObserved = true;
     }
 
@@ -175,7 +177,7 @@ public class Cell implements Comparable<Cell> {
     }
 
     void removePatternEnablesExceptPattern(int directionIndex, int patternIndex) {
-        boolean update = false;
+        boolean needUpdate = false;
         List<Integer> listOfPatternEnables;
         List<Integer> listOfPatternsToRemove;
         for (int patternId = 0; patternId < possiblePatterns.length; patternId++) {
@@ -191,41 +193,30 @@ public class Cell implements Comparable<Cell> {
                     continue;
                 }
                 listOfPatternsToRemove.add(pattern);
-
-
             }
 
             patternEnablers.get(patternId).get(directionIndex).removeAll(listOfPatternsToRemove);
-
             if (listOfPatternEnables.isEmpty()) {
-                update = true;
+                needUpdate = true;
                 sPropagator.addToPropagate(row, col, patternId, true);
             }
-
         }
-        if (update) {
+        if (needUpdate) {
             update();
         }
     }
 
-    public int observe() {
+    public int observe() throws IllegalStateException, IllegalArgumentException, IndexOutOfBoundsException{
         if (isObserved) {
-            // Cell is already observed
-            return -2;
+            throw new IllegalStateException("Cell is already observed");
         }
         if (numberOfPossiblePatterns == 0) {
-            // Contradiction. Any pattern can't be placed
-            return -1;
+            throw new IllegalArgumentException("Contradiction. Any pattern can't be placed. NumberOfPossiblePatterns == 0");
         }
 
-
         int patternIndex = getPatternIndex();
-        Log.d(TAG, "observe: returned index = " + patternIndex);
-
-
         if (patternIndex < 0 || patternIndex >= sTotalNumberOfPossiblePatterns) {
-            //Error
-            return -3;
+            throw new IndexOutOfBoundsException("Pattern index is out of bound");
         }
         // success
         setAllPossiblePatternsToFalse();

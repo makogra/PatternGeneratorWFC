@@ -94,7 +94,6 @@ public class ScreenSlidePager extends FragmentActivity {
             switch (position){
                 case 0:
                     return TileSetFragment.newInstance(viewModelProvider);
-                    //TODO Add next pages
                 case 1:
                     return SettingsTileSetFragment.newInstance(viewModelProvider);
                 case 2:
@@ -110,9 +109,4 @@ public class ScreenSlidePager extends FragmentActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy() called");
-    }
 }

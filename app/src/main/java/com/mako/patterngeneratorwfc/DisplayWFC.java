@@ -52,6 +52,9 @@ public class DisplayWFC {
     }
 
     public void displayResult(){
+        if (!Config.IS_LOGGABLE){
+            return;
+        }
         int[][] patternGrid = wave.getOutputPatternGrid();
         Log.d(TAG, Arrays.deepToString(patternGrid));
         Log.d(TAG, "===============================================");
@@ -102,6 +105,9 @@ public class DisplayWFC {
     }
 
     public void displayRules(List<List<List<Integer>>> defaultPatternEnablers){
+        if (!Config.IS_LOGGABLE){
+            return;
+        }
         for (int i = 0; i < defaultPatternEnablers.size(); i++) {
             Log.d(TAG, "-----------------------------------------");
             Log.d(TAG, "For patternId " + i);
@@ -114,6 +120,9 @@ public class DisplayWFC {
     }
 
     public void displayPatterns(){
+        if (!Config.IS_LOGGABLE){
+            return;
+        }
 
         Integer[][] pattern;
         int valueId;
